@@ -1,0 +1,15 @@
+{
+  "php": "7.2.0",
+  "php-ext/ctype": "*",
+  "php-ext/curl": "*",
+  "php-ext/dom": "*",
+  "php-ext/gd": "*",
+  "php-ext/iconv": "*",
+  "php-ext/json": "*",
+  "php-ext/mbstring": "*",
+  "php-ext/mysqli": "*",
+  "php-ext/pcre": "*",
+  "php-ext/simplexml": "*",
+  "php-ext/spl": "*",
+  "mysql": "5.7"
+}

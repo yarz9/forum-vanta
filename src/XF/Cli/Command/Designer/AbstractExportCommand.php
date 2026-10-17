@@ -1,0 +1,108 @@
+<?php
+
+namespace XF\Cli\Command\Designer;
+
+use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use XF\Cli\Command\AbstractCommand;
+use XF\Cli\Command\StyleArchiveTrait;
+use XF\Entity\Style;
+use XF\Mvc\Entity\Entity;
+
+use function strval;
+
+abstract class AbstractExportCommand extends AbstractCommand
+{
+	use RequiresDesignerModeTrait;
+	use StyleArchiveTrait;
+
+	// [command, name, entity]
+	abstract protected function getContentTypeDetails();
+
+	protected function writeContent(Entity $entity)
+	{
+		\XF::app()->designerOutput()->export($entity);
+	}
+
+	protected function configure()
+	{
+		$contentType = $this->getContentTypeDetails();
+
+		$this
+			->setName("xf-designer:export-$contentType[command]")
+			->setDescription("Exports $contentType[name] for the specified designer mode ID.")
+			->addArgument(
+				'designer-mode',
+				InputArgument::REQUIRED,
+				'Designer mode ID'
+			);
+	}
+
+	protected function execute(InputInterface $input, OutputInterface $output)
+	{
+		$style = $this->getStyleByDesignerModeInput($input, $output);
+
+		$contentType = $this->getContentTypeDetails();
+
+		$write = function ($entity)
+		{
+			$this->writeContent($entity);
+		};
+
+		$this->exportData($input, $output, $contentType['name'], $contentType['entity'], $style, $write);
+
+		return 0;
+	}
+
+	protected function exportData(InputInterface $input, OutputInterface $output, $name, $entityName, Style $style, \Closure $write)
+	{
+		$start = microtime(true);
+
+		$output->writeln("Exporting $name...");
+
+		$designerOutput = \XF::app()->designerOutput();
+
+		$finder = \XF::em()->getFinder($entityName)
+			->where('style_id', $style->style_id);
+
+		$printName = ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE);
+
+		if (!$printName)
+		{
+			$progress = new ProgressBar($output, $finder->total());
+			$progress->start();
+		}
+		else
+		{
+			$progress = null;
+		}
+
+		$designerOutput->enableBatchMode();
+
+		foreach ($finder->fetch() AS $entity)
+		{
+			if ($printName)
+			{
+				$output->writeln("\t" . strval($entity));
+			}
+			else
+			{
+				$progress->advance();
+			}
+
+			$write($entity);
+		}
+
+		$designerOutput->clearBatchMode();
+
+		if ($progress)
+		{
+			$progress->finish();
+			$output->writeln("");
+		}
+
+		$output->writeln(sprintf(ucfirst($name) . " exported. (%.02fs)", microtime(true) - $start));
+	}
+}

@@ -1,0 +1,1717 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+  <template type="admin" title="option_template_xs_is_code_buy" version_id="2020300" version_string="2.2.3"><![CDATA[<xf:formrow
+	label="{$option.title}"
+	hint="{$hintHtml}"
+	explain="{$explainHtml}"
+	html="{$listedHtml}">
+	<xf:checkbox>
+		<xf:option name="{$inputName}[enable]" label="{{ phrase('enable') }}"
+				   selected="{$option.option_value.enable}">
+			<xf:dependent>
+				<div>
+					{{ phrase('cost:') }}
+				</div>
+				<div class="inputGroup">
+					<xf:numberbox name="{$inputName}[price]" value="{$option.option_value.price}" step="0.01" min="1.00" />
+					<span class="inputGroup-splitter"></span>
+					<xf:macro template="public:currency_macros" name="currency_list" arg-name="{$inputName}[currency]"
+						arg-value="{{ $option.option_value.currency ?: 'USD' }}"
+						arg-class="input--autoSize" />
+				</div>
+				<div>
+					{{ phrase('payment_profile:') }}
+				</div>
+				<xf:select multiple="true" name="{$inputName}[payment_profile_ids]" value="{$option.option_value.payment_profile_ids}">
+					<xf:option value="" label="{{ phrase('(none)')}}" />
+					<xf:foreach loop="$profiles" key="$profileId" value="$profile">
+						<xf:option value="{$profileId}" label="{$profile.title} - {$profile.Provider.title}" />
+					</xf:foreach>
+				</xf:select>
+			</xf:dependent>
+		</xf:option>
+	</xf:checkbox>
+</xf:formrow>]]></template>
+  <template type="admin" title="option_template_xs_is_code_buy_register" version_id="2040091" version_string="2.4.0 Fix 1"><![CDATA[<xf:formrow
+	label="{$option.title}"
+	hint="{$hintHtml}"
+	explain="{$explainHtml}"
+	html="{$listedHtml}">
+	<xf:checkbox>
+		<xf:option name="{$inputName}[enable]" label="{{ phrase('enable') }}"
+				   selected="{$option.option_value.enable}">
+			<xf:dependent>
+				<div>
+					{{ phrase('cost:') }}
+				</div>
+				<div class="inputGroup">
+					<xf:numberbox name="{$inputName}[price]" value="{$option.option_value.price}" step="0.01" min="1.00" />
+					<span class="inputGroup-splitter"></span>
+					<xf:macro template="public:currency_macros" name="currency_list" arg-name="{$inputName}[currency]"
+						arg-value="{{ $option.option_value.currency ?: 'USD' }}"
+						arg-class="input--autoSize" />
+				</div>
+				<div>
+					{{ phrase('payment_profile:') }}
+				</div>
+				<xf:select multiple="true" name="{$inputName}[payment_profile_ids]" value="{$option.option_value.payment_profile_ids}">
+					<xf:option value="" label="{{ phrase('(none)')}}" />
+					<xf:foreach loop="$profiles" key="$profileId" value="$profile">
+						<xf:option value="{$profileId}" label="{$profile.title} - {$profile.Provider.title}" />
+					</xf:foreach>
+				</xf:select>
+			</xf:dependent>
+		</xf:option>
+	</xf:checkbox>
+</xf:formrow>]]></template>
+  <template type="admin" title="option_template_xs_is_invitation_code_time" version_id="2010200" version_string="2.1.2"><![CDATA[<xf:formrow
+	label="{$option.title}"
+	hint="{$hintHtml}"
+	explain="{$explainHtml}"
+	html="{$listedHtml}">
+	<xf:radio name="{$inputName}[Choose]" value="{$option.option_value.Choose}">
+		<xf:option value="permanent" label="{{ phrase('permanent') }}"/>
+		<xf:option value="until" label="{{ phrase('until') }}">
+			<xf:dependent>
+				<div class="inputGroup">
+					<xf:numberbox name="{$inputName}[time]"  value="{$option.option_value.time}" min="0"/>
+					<span class="inputGroup-text">{{ phrase('day') }}</span>
+				</div>
+			</xf:dependent>
+		</xf:option>
+	</xf:radio>
+</xf:formrow>]]></template>
+  <template type="admin" title="option_template_xs_is_invite_goup" version_id="2010530" version_string="2.1.5 Fix 3"><![CDATA[<xf:formrow
+	label="{$option.title}"
+	hint="{$hintHtml}"
+	explain="{$explainHtml}"
+	html="{$listedHtml}">
+	<xf:radio name="{$inputName}[mandatory]" value="{$option.option_value.mandatory}">
+		<xf:option value="yes" label="{{ phrase('yes') }}"/>
+		<xf:option value="no" label="{{ phrase('no') }}">
+			<xf:dependent>
+				<xf:checkbox>
+					<xf:option name="{$inputName}[first_group]" label="{{ phrase('xs_is_first_group') }}" 
+							   selected="{$option.option_value.first_group}">
+						<xf:dependent>
+							<xf:select name="{$inputName}[first_user_group_id]" value="{$option.option_value.first_user_group_id}" >
+								<xf:foreach loop="{$UserGroups}" value="$UserGroup">
+									<xf:option value="{$UserGroup.user_group_id}" label="{$UserGroup.title}" />
+								</xf:foreach>
+							</xf:select>
+						</xf:dependent>
+					</xf:option>
+					<xf:option name="{$inputName}[secondary_group]" label="{{ phrase('xs_is_secondary_group') }}" 
+							   selected="{$option.option_value.secondary_group}">
+						<xf:dependent>
+							<xf:select multiple="multiple" name="{$inputName}[secondary_user_group_id]" value="{$option.option_value.secondary_user_group_id}" >
+								<xf:foreach loop="{$UserGroups}" value="$UserGroup">
+									<xf:option value="{$UserGroup.user_group_id}" label="{$UserGroup.title}" />
+								</xf:foreach>
+							</xf:select>
+						</xf:dependent>
+					</xf:option>
+				</xf:checkbox>
+				<div class="formRow-explain">{{ phrase('xs_is_user_group_id_select_explaine') }}</div>
+			</xf:dependent>
+		</xf:option>
+	</xf:radio>
+</xf:formrow>]]></template>
+  <template type="admin" title="xs_is_banning_edit" version_id="2000000" version_string="2.0.0"><![CDATA[<xf:if is="$Ban.isInsert()">
+	<xf:title>{{ phrase('ban_user') }}</xf:title>
+<xf:else />
+	<xf:title>{{ phrase('edit_banned_user:') }} {$Ban.User.username}</xf:title>
+</xf:if>
+
+<xf:pageaction if="$Ban.isUpdate()">
+	<xf:button href="{{ link('banning/users/lift', $Ban) }}" overlay="true">{{ phrase('lift_ban') }}</xf:button>
+</xf:pageaction>
+
+<xf:form action="{{ link('invitation/banning/save', $Ban) }}" ajax="true" class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:if is="!$Ban.user_id">
+				<xf:textboxrow name="username" ac="single" value="{$addName}"
+					label="{{ phrase('user_name') }}" />
+			<xf:else />
+				<xf:formrow label="{{ phrase('user_name') }}">{$Ban.User.username}</xf:formrow>
+
+				<xf:formrow label="{{ phrase('banned_by') }}">{$Ban.BanUser.username}</xf:formrow>
+
+				<xf:formrow label="{{ phrase('ban_started') }}">{{ date($Ban.ban_date) }}</xf:formrow>
+
+				<xf:formrow label="{{ phrase('ban_ends') }}">
+					<xf:if is="$Ban.end_date">
+						{{ date($Ban.end_date) }}
+					<xf:else />
+						{{ phrase('never') }}
+					</xf:if>
+				</xf:formrow>
+			</xf:if>
+
+			<xf:radiorow name="ban_length" value="{{ !$Ban.end_date ? 'permanent' : 'temporary' }}"
+				label="{{ phrase('ban_length') }}">
+
+				<xf:option label="{{ phrase('permanent') }}" value="permanent" />
+				<xf:option label="{{ phrase('until:') }}" value="temporary">
+					<xf:dateinput name="end_date" value="{{ $Ban.end_date ? date($Ban.end_date, 'Y-m-d') : '' }}" />
+				</xf:option>
+			</xf:radiorow>
+
+			<xf:textboxrow name="ban_reason" value="{$Ban.ban_reason}" maxlength="{{ max_length($Ban, 'ban_reason') }}"
+				label="{{ phrase('reason_for_banning') }}"
+				explain="{{ phrase('this_will_be_shown_to_user_if_provided') }}" />
+		</div>
+
+		<xf:submitrow icon="save" sticky="true" />
+	</div>
+</xf:form>]]></template>
+  <template type="admin" title="xs_is_banning_lift" version_id="2000000" version_string="2.0.0"><![CDATA[<xf:title>{{ phrase('confirm_action') }}</xf:title>
+
+<xf:form action="{{ link('invitation/banning/lift', $Ban) }}" ajax="true" class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:inforow rowtype="confirm">
+				{{ phrase('please_confirm_that_you_want_to_lift_ban_on_following_user:') }}
+				<strong><a href="{{ link('invitation/banning', $Ban) }}">{$Ban.User.username}</a></strong>
+			</xf:inforow>
+			<xf:formrow label="{{ phrase('banned_by') }}">{$Ban.BanUser.username}</xf:formrow>
+			<xf:formrow label="{{ phrase('ban_started') }}">{{ date($Ban.ban_date) }}</xf:formrow>
+			<xf:formrow label="{{ phrase('ban_ends') }}">
+				<xf:if is="$Ban.end_date">
+					{{ date($Ban.end_date) }}
+				<xf:else />
+					{{ phrase('never') }}
+				</xf:if>
+			</xf:formrow>
+
+			<xf:if is="$Ban.ban_reason">
+				<xf:formrow label="{{ phrase('reason_for_ban') }}">
+					{$Ban.ban_reason}
+				</xf:formrow>
+			</xf:if>
+		</div>
+		<xf:submitrow submit="{{ phrase('lift') }}" sticky="true" />
+	</div>
+</xf:form>]]></template>
+  <template type="admin" title="xs_is_banning_view" version_id="2010100" version_string="2.1.1"><![CDATA[<xf:title>{{ phrase('banned_users') }}</xf:title>
+
+<xf:pageaction>
+	<xf:button href="{{ link('invitation/banning/add') }}" icon="add">{{ phrase('ban_user') }}</xf:button>
+</xf:pageaction>
+
+<xf:if is="$Banning is not empty">
+	<div class="block">
+		<div class="block-container">
+			<div class="block-body">
+				<xf:datalist data-xf-init="responsive-data-list">
+					<xf:datarow rowtype="header">
+						<xf:cell>{{ phrase('user_name') }}</xf:cell>
+						<xf:cell>{{ phrase('end_date') }}</xf:cell>
+						<xf:cell>{{ phrase('reason') }}</xf:cell>
+						<xf:cell>&nbsp;</xf:cell>
+						<xf:cell>&nbsp;</xf:cell>
+					</xf:datarow>
+					<xf:foreach loop="$Banning" value="$Ban">
+						<xf:datarow>
+							<xf:cell href="{{ link('invitation/banning', $Ban.User) }}">{$Ban.User.username}</xf:cell>
+							<xf:cell href="{{ link('invitation/banning', $Ban.User) }}">{{ $Ban.end_date ? date($Ban.end_date) : phrase('permanent') }}</xf:cell>
+							<xf:cell href="{{ link('invitation/banning', $Ban.User) }}">{{ $Ban.ban_reason ?: phrase('n_a') }}</xf:cell>
+							<xf:action href="{{ link('users/edit', $Ban.User) }}">{{ phrase('user') }}</xf:action>
+							<xf:delete href="{{ link('invitation/banning/lift', $Ban.User) }}" tooltip="{{ phrase('lift_ban') }}" />
+						</xf:datarow>
+					</xf:foreach>
+				</xf:datalist>
+			</div>
+			<div class="block-footer">
+				<span class="block-footer-counter">{{ display_totals($Banning, $total) }}</span>
+			</div>
+		</div>
+
+		<xf:pagenav page="{$page}" perpage="{$perPage}" total="{$total}"
+			link="invitation/banning"
+			wrapperclass="block-outer block-outer--after" />
+	</div>
+<xf:else />
+	<div class="blockMessage">{{ phrase('there_no_banned_users') }}</div>
+</xf:if>]]></template>
+  <template type="admin" title="xs_is_code_invitation_macros" version_id="2010620" version_string="2.1.6 Fix 2"><![CDATA[<xf:macro name="user_groupe" arg-UserGroups="!" arg-invitation="">
+	<xf:checkbox>
+		<xf:option name="type_user_group[first_group]" label="{{ phrase('xs_is_first_group') }}" 
+				   selected="{{ in_array($invitation.type_user_group, ['first', 'all']) }}">
+			<xf:dependent>
+				<xf:select name="user_group[first_user_group_id]" value="{$invitation.user_group}" >
+					<xf:foreach loop="{$UserGroups}" value="$UserGroup">
+						<xf:option value="{$UserGroup.user_group_id}" label="{$UserGroup.title}" />
+					</xf:foreach>
+				</xf:select>
+			</xf:dependent>
+		</xf:option>
+		<xf:option name="type_user_group[secondary_group]" label="{{ phrase('xs_is_secondary_group') }}" 
+				   selected="{{ in_array($invitation.type_user_group, ['secondary', 'all']) }}">
+			<xf:dependent>
+				<xf:select multiple="multiple" name="user_group[secondary_user_group_id]" value="{$invitation.secondary_user_group}" >
+					<xf:foreach loop="{$UserGroups}" value="$UserGroup">
+						<xf:option value="{$UserGroup.user_group_id}" label="{$UserGroup.title}" />
+					</xf:foreach>
+				</xf:select>
+			</xf:dependent>
+		</xf:option>
+	</xf:checkbox>
+</xf:macro>]]></template>
+  <template type="admin" title="xs_is_criteria_macro" version_id="2010000" version_string="2.1.0"><![CDATA[<xf:macro name="criteria" arg-criteria="!">
+	<xf:checkboxrow label="{{ phrase('xs_is_most_invitations') }}">
+		<xf:option name="user_criteria[min_invite][rule]" value="min_invite" 
+				   selected="{$criteria.min_invite}"
+				   label="{{ phrase('xs_is_user_has_invited_at_least_x_users:') }}">
+			<xf:numberbox name="user_criteria[min_invite][data][invite]" value="{$criteria.min_invite.invite}"
+						  size="5" min="0" step="1" />
+		</xf:option>
+		<xf:option name="user_criteria[max_invite][rule]" value="max_invite" selected="{$criteria.max_invite}"
+			   label="{{ phrase('xs_is_user_has_invited_no_more_than_x_users:') }}">
+			<xf:numberbox name="user_criteria[max_invite][data][invite]" value="{$criteria.max_invite.invite}"
+						  size="5" min="0" step="1" />
+		</xf:option>
+	</xf:checkboxrow>
+</xf:macro>
+<xf:macro name="search_criteria" arg-criteria="!">
+	<xf:formrow rowtype="input"
+	label="{{ phrase('xs_is_most_invitations_between') }}"
+	explain="{{ phrase('use_negative_one_specify_no_max') }}">
+		<div class="inputGroup">
+			<xf:numberbox name="criteria[xs_is_invite_count][start]" 
+						  value="{$criteria.xs_is_invite_count.start}" 
+						  min="0" readonly="{$readOnly}" />
+			<span class="inputGroup-text">-</span>
+			<xf:numberbox name="criteria[xs_is_invite_count][end]" 
+						  value="{$criteria.xs_is_invite_count.end}" 
+						  min="-1" readonly="{$readOnly}" />
+		</div>
+	</xf:formrow>
+</xf:macro>]]></template>
+  <template type="admin" title="xs_is_filters_macro" version_id="2010800" version_string="2.1.8"><![CDATA[<xf:macro name="filters" arg-Token="!" arg-filters="!" arg-user="!" arg-url="!">
+	<xf:form action="{{ ($url) ? link('invitation/tokens/filters', $Token) : link('invitation/tokens-user/filters', $Token) }}">
+		
+	<div class="menu-row menu-row--separated">
+		<label>{{ phrase('xs_is_code_created_by:') }}</label>
+		<div class="u-inputSpacer">
+			<xf:textbox name="user" value="{$user.username}" ac="single"
+				maxlength="{{ max_length($xf.visitor, 'username') }}"/>
+		</div>
+	</div>
+	<div class="menu-row menu-row--separated">
+		{{ phrase('sort_by:') }}
+		<div class="u-inputSpacer">
+		<xf:checkbox>
+			<xf:option name="code_use" 
+					   label="{{ phrase('xs_is_code_use') }}" 
+					   value="1" selected="{$filters.code_use}"/>
+			<xf:option name="code_not_use" 
+					   label="{{ phrase('xs_is_code_not_use') }}"
+					   value="1" selected="{$filters.code_not_use}"/>
+		</xf:checkbox>
+		</div>
+	</div>
+
+	<div class="menu-footer">
+		<span class="menu-footer-controls">
+			<xf:button type="submit" class="button--primary">{{ phrase('filter') }}</xf:button>
+		</span>
+	</div>
+	<xf:hiddenval name="apply">1</xf:hiddenval>
+</xf:form>
+</xf:macro>]]></template>
+  <template type="admin" title="xs_is_invitation" version_id="2000000" version_string="2.0.0"><![CDATA[<xf:title>{{ phrase('admin_navigation.xsISinvitation') }}</xf:title>
+
+<xf:macro template="section_nav_macros" name="section_nav" arg-section="xsISinvitation" />]]></template>
+  <template type="admin" title="xs_is_invitation_order" version_id="2020300" version_string="2.2.3"><![CDATA[<xf:title>{{ phrase('xs_is_orders') }}</xf:title>
+
+<xf:if is="$carts is not empty">
+	<div class="block">
+		<div class="block-container">
+			<div class="block-body">
+				<xf:datalist>
+					<xf:foreach loop="$carts" value="$cart">
+						<xf:datarow>
+							<xf:main href="{{ link('invitation/logs/orders', $cart) }}" overlay="true">
+								<xf:label>
+									{{ phrase('xs_is_order_x_price', {
+										'id': $cart.getEntityId(),
+										'price': $cart.getCost()|currency($cart.currency)
+									}) }}
+								</xf:label>
+								<xf:hint>
+									{{ $cart.getState() }}
+								</xf:hint>
+								<xf:explain>
+									<ul class="listInline listInline--bullet">
+										<li><xf:date time="{$cart.cart_date}" data-full-date="true" /></li>
+										<li>
+											{$cart.User.username}
+										</li>
+									</ul>
+								</xf:explain>
+							</xf:main>
+						</xf:datarow>
+					</xf:foreach>
+				</xf:datalist>
+			</div>
+			<div class="block-footer">
+				<span class="block-footer-counter">{{ display_totals($carts, $total) }}</span>
+			</div>
+		</div>
+		<xf:pagenav page="{$page}" perpage="{$perPage}" total="{$total}"
+					link="dbtech-ecommerce/logs/orders" params="{{ {'criteria': $criteria, 'order': $order, 'direction': $direction} }}"
+					wrapperclass="block-outer block-outer--after" />
+	</div>
+<xf:else />
+	<div class="blockMessage">{{ $criteria ? phrase('no_records_matched') : phrase('no_entries_have_been_logged') }}</div>
+</xf:if>]]></template>
+  <template type="admin" title="xs_is_invitation_order_view" version_id="2020300" version_string="2.2.3"><![CDATA[<xf:title>{{ phrase('xs_is_order_id_x', {'orderId': $order.getEntityId()}) }}</xf:title>
+
+<div class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:formrow label="{{ phrase('user') }}">
+				<xf:username user="{$order.User}" defaultname="{{ phrase('unknown_user') }}" />
+			</xf:formrow>
+			
+			<xf:formrow label="{{ phrase('date') }}">
+				<xf:date time="{$order.cart_date}" data-full-date="true" />
+			</xf:formrow>
+			
+			<xf:formrow label="{{ phrase('purchase_request_key') }}">
+				<xf:if is="$order.purchase_request_key">
+					<a href="{{ link('logs/payment-provider', null, {'purchase_request_key': $order.purchase_request_key}) }}">
+						{$order.purchase_request_key}
+					</a>
+				<xf:else />
+					N/A
+				</xf:if>
+			</xf:formrow>
+
+			<xf:formrow label="{{ phrase('price') }}">
+				{$order.price|currency($order.currency)}
+			</xf:formrow>	
+			<xf:formrow label="{{ phrase('total') }}">
+				{$order.getCost()|currency($order.currency)}
+			</xf:formrow>	
+			<xf:formrow label="{{ phrase('state') }}">
+				{$order.getState()}
+			</xf:formrow>	
+			<xf:formrow label="{{ phrase('xs_is_number_invitation') }}">
+				{$order.number}
+			</xf:formrow>	
+		</div>
+
+		<h3 class="block-formSectionHeader">
+			<span class="block-formSectionHeader-aligner">{{ phrase('xs_is_invitation_code') }}</span>
+		</h3>
+		<xf:if is="$order.state == 'validate'">
+			<xf:foreach loop="$order.InvitationBuy" value="$code">
+				<xf:formrow>
+					<div class="inputGroup inputGroup--joined">
+						<div class="input {{ $code.registered_user_id ? 'is-disabled' : '' }}" {{ $code.registered_user_id ? 'disabled' : '' }}>
+							{$code.code}
+						</div>
+						<xf:if is="$code.registered_user_id">
+							<a class="inputGroup-text is-disabled" disabled >
+								<i class="fas fa-clipboard"></i>
+							</a>
+						<xf:else />
+							<a class="inputGroup-text"
+							   data-xf-init="copy-to-clipboard" data-copy-text="{$code.code}" >
+								<span data-xf-init="tooltip" title="{{ phrase('copy_to_clipboard')}}">
+									<i class="fas fa-clipboard"></i>
+								</span>
+							</a>
+						</xf:if>
+							
+						</div>
+					<div class="u-muted">
+						<xf:if is="$code.registered_user_id">
+							<xf:set var="$userRich"><xf:username user="$code.RegisteredUser" rich="true" /></xf:set>
+							{{ phrase('xs_is_invitation_code_use_by_x', {'user' : $userRich}) }}
+						<xf:else />
+							{{ phrase('xs_is_invitation_code_not_use') }}
+						</xf:if>
+					</div>
+				</xf:formrow>
+			</xf:foreach>
+		<xf:else />
+			<div class="formInfoRow">
+				<div class="blockMessage blockMessage--important">
+					{{ phrase('xs_is_your_state', {'state' : $order.getState()}) }}
+				</div>
+			</div>
+		</xf:if>
+	</div>
+</div>]]></template>
+  <template type="admin" title="xs_is_list_code" version_id="2000000" version_string="2.0.0"><![CDATA[<xf:title>{{ phrase('xs_is_list_code') }}</xf:title>
+
+<xf:if is="$codes is not empty || $filters is not empty">
+	<div class="block">
+		<div class="block-container">
+			<div class="block-filterBar">
+				<div class="filterBar">
+					<xf:if contentcheck="true">
+						<ul class="filterBar-filters">
+							<xf:contentcheck>
+								<xf:if is="$filters.user is not empty">
+									<li><a href="{{ link('invitation/list-code', '', $filters|replace('user', null)) }}"
+										   class="filterBar-filterToggle" data-xf-init="tooltip" title="{{ phrase('remove_this_filter')|for_attr }}">
+										<span class="filterBar-filterToggle-label">{{ phrase('xs_is_code_created_by:') }}</span>
+										{$user.username}</a></li>
+								</xf:if>
+								<xf:if is="$filters.code_use is not empty">
+									<li><a href="{{ link('invitation/list-code', '', $filters|replace('code_use', null)) }}"
+										   class="filterBar-filterToggle" data-xf-init="tooltip" title="{{ phrase('remove_this_filter')|for_attr }}">
+										<span class="filterBar-filterToggle-label">{{ phrase('sort_by:') }}</span>
+										{{ phrase('xs_is_code_use') }}</a></li>
+								</xf:if>
+								<xf:if is="$filters.code_not_use is not empty">
+									<li><a href="{{ link('invitation/list-code', '', $filters|replace('code_not_use', null)) }}"
+										   class="filterBar-filterToggle" data-xf-init="tooltip" title="{{ phrase('remove_this_filter')|for_attr }}">
+										<span class="filterBar-filterToggle-label">{{ phrase('sort_by:') }}</span>
+										{{ phrase('xs_is_code_not_use') }}</a></li>
+								</xf:if>
+							</xf:contentcheck>
+						</ul>
+					</xf:if>
+					<a class="filterBar-menuTrigger" data-xf-click="menu" role="button" tabindex="0" 
+					   aria-expanded="false" aria-haspopup="true">{{ phrase('filters') }}</a>
+					<div class="menu menu--wide" data-menu="menu" aria-hidden="true"
+						 data-href="{{ link('invitation/list-code/filters', '', $filters) }}"
+						 data-load-target=".js-filterMenuBody">
+						<div class="menu-content">
+							<h4 class="menu-header">{{ phrase('show_only:') }}</h4>
+							<div class="js-filterMenuBody">
+								<div class="menu-row">{{ phrase('loading...') }}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="block-body">
+				<xf:datalist>
+					<xf:foreach loop="$codes" value="$code">
+						<xf:datarow overlay="true"
+							label="{{ phrase('xs_is_code:') }} {$code.code}"
+							href="{{ link('invitation/list-code', $code) }}"
+							delete="{{ link('invitation/list-code/delete', $code) }}"
+							dir="auto">
+							<xf:explain>
+								<ul class="listInline listInline--bullet">
+									<li><xf:date time="{$code.invitation_date}" /></li>
+									<li>{$code.Token.title} : {$code.Token.token}</li>
+									<li>{$code.User.username}</li>
+									<li>{{ $code.registered_user_id ? {$code.RegisteredUser.username} : phrase('n_a') }}</li>
+								</ul>
+							</xf:explain>
+						</xf:datarow>
+					</xf:foreach>
+				</xf:datalist>
+			</div>
+			<div class="block-footer">
+				<span class="block-footer-counter">{{ display_totals($codes, $total) }}</span>
+			</div>
+		</div>
+		<xf:pagenav page="{$page}" perpage="{$perPage}" total="{$total}"
+			link="invitation/list-code" params="{$filters}"
+			wrapperclass="block-outer block-outer--after" />
+	</div>
+<xf:else />
+	<div class="blockMessage">{{ phrase('xs_is_no_code_has_been_generated') }}</div>
+</xf:if>]]></template>
+  <template type="admin" title="xs_is_list_code_delete" version_id="2000000" version_string="2.0.0"><![CDATA[<xf:title>{{ phrase('confirm_action') }}</xf:title>
+
+<xf:form action="{{ link('invitation/list-code/delete', $code) }}" ajax="true" class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:inforow rowtype="confirm">
+				{{ phrase('please_confirm_that_you_want_to_delete_following:') }}
+				<strong>{$code.code}</strong>
+			</xf:inforow>
+		</div>
+		<xf:submitrow rowtype="simple" icon="delete" />
+	</div>
+</xf:form>]]></template>
+  <template type="admin" title="xs_is_list_code_filters" version_id="2030100" version_string="2.3.1"><![CDATA[<xf:form action="{{ link('invitation/list-code/filters') }}">
+	<div class="menu-row menu-row--separated">
+		<label>{{ phrase('xs_is_code_created_by:') }}</label>
+		<div class="u-inputSpacer">
+			<xf:textbox name="user" value="{{ $user != '' ? $user.username : ''}}" ac="single"
+				maxlength="{{ max_length($xf.visitor, 'username') }}"/>
+		</div>
+	</div>
+	<div class="menu-row menu-row--separated">
+		{{ phrase('sort_by:') }}
+		<div class="u-inputSpacer">
+		<xf:checkbox>
+			<xf:option name="code_use" 
+					   label="{{ phrase('xs_is_code_use') }}" 
+					   value="1" selected="{$filters.code_use}"/>
+			<xf:option name="code_not_use" 
+					   label="{{ phrase('xs_is_code_not_use') }}"
+					   value="1" selected="{$filters.code_not_use}"/>
+		</xf:checkbox>
+		</div>
+	</div>
+
+	<div class="menu-footer">
+		<span class="menu-footer-controls">
+			<xf:button type="submit" class="button--primary">{{ phrase('filter') }}</xf:button>
+		</span>
+	</div>
+	<xf:hiddenval name="apply">1</xf:hiddenval>
+</xf:form>]]></template>
+  <template type="admin" title="xs_is_list_code_view" version_id="2000000" version_string="2.0.0"><![CDATA[<xf:title>{{ phrase('xs_is_list_code') }}</xf:title>
+
+<div class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:formrow label="{{ phrase('xs_is_user_create') }}">
+				<a href="{{ link('users/edit', $code.User) }}">{$code.User.username}</a>
+			</xf:formrow>
+			<xf:formrow label="{{ phrase('xs_is_code') }}">
+				{$code.code}
+			</xf:formrow>
+			<xf:formrow label="{{ phrase('date') }}">
+				<xf:date time="{$code.invitation_date}" />
+			</xf:formrow>
+			<hr class="formRowSep" />
+			<xf:formrow label="{{ phrase('xs_is_token') }}">
+				<a href="{{ link('invitation/tokens', $code.Token) }}">
+					{$code.Token.token}
+				</a>
+			</xf:formrow>
+			<xf:formrow label="{{ phrase('xs_is_token_title') }}">
+				<a href="{{ link('invitation/tokens', $code.Token) }}">
+					{$code.Token.title}
+				</a>
+			</xf:formrow>
+			<hr class="formRowSep" />
+			<xf:formrow label="{{ phrase('xs_is_registered_user') }}">
+				{{ $code.registered_user_id ? {$code.RegisteredUser.username} : phrase('n_a') }}
+			</xf:formrow>
+		</div>
+	</div>
+</div>]]></template>
+  <template type="admin" title="xs_is_personalized_invitation_code" version_id="2010400" version_string="2.1.4"><![CDATA[<xf:title>{{ phrase('xs_is_personalized_invitation_code') }}</xf:title>
+
+<xf:pageaction>
+    <div class="buttonGroup">
+		<xf:button href="{{ link('invitation/personalized-invitation-code/add') }}" icon="add">{{ phrase('xs_is_add_personalized_invitation_code') }}</xf:button>
+    </div>
+</xf:pageaction>
+
+<xf:if is="$Invitations is not empty">
+	<xf:form action="{{ link('invitation/personalized-invitation-code/toggle', $upgrade) }}" class="block" ajax="true">
+		<div class="block-container">
+			<div class="block-body">
+				<xf:datalist>
+					<xf:foreach loop="{$Invitations}" value="$Invitation">
+						<xf:datarow>
+							<xf:main href="{{ link('invitation/personalized-invitation-code', $Invitation) }}"
+								label="{$Invitation.title}" hint="{$Invitation.code}"/>
+							<xf:action>
+								<label>
+									<xf:if is="{$validCode.{$Invitation.ic_personalize_id}}">
+										<xf:fa icon="fas fa-check" style="color: #4ecd32;font-size: 20px;" />
+										<xf:else/>
+										<xf:fa icon="fas fa-times" style="color: #d13530;font-size: 20px;" />
+									</xf:if>
+								</label>
+							</xf:action>
+							<xf:action>
+								<label>
+									<xf:if is="{$Invitation.limit_use} == -1">
+										{{ phrase('unlimited') }}
+										<xf:else/>
+										{{ count($Invitation.registered_user_id) }} / {$Invitation.limit_use}
+									</xf:if>
+								</label>
+							</xf:action>
+							<xf:action>
+								<label>
+									<xf:if is="{$Invitation.limit_time} == -1">
+										{{ phrase('unlimited') }}
+										<xf:else/>
+										<xf:date time="{$Invitation.limit_time}" />
+									</xf:if>
+								</label>
+							</xf:action>
+							<xf:toggle name="enable[{$Invitation.ic_personalize_id}]" selected="$Invitation.enable"
+									   class="dataList-cell--separated" submit="true"
+									   tooltip="{{ phrase('enable_disable_x', {'title' : $Invitation.title}) }}" />
+							<xf:delete href="{{ link('invitation/personalized-invitation-code/delete', $Invitation) }}" />
+						</xf:datarow>
+					</xf:foreach>
+				</xf:datalist>
+			</div>
+		</div>
+	</xf:form>
+<xf:else />
+	<div class="blockMessage">{{ phrase('xs_is_no_invitation_tokens_have_been_created') }}</div>
+</xf:if>]]></template>
+  <template type="admin" title="xs_is_personalized_invitation_code_delete" version_id="2010400" version_string="2.1.4"><![CDATA[<xf:title>{{ phrase('confirm_action') }}</xf:title>
+
+<xf:form action="{{ link('invitation/personalized-invitation-code/delete', $code) }}" ajax="true" class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:inforow rowtype="confirm">
+				{{ phrase('please_confirm_that_you_want_to_delete_following:') }}
+				<strong><a href="{{ link('invitation/personalized-invitation-code/edit', $code) }}">{$code.title}</a></strong>
+			</xf:inforow>
+		</div>
+		<xf:submitrow rowtype="simple" icon="delete" />
+	</div>
+</xf:form>]]></template>
+  <template type="admin" title="xs_is_personalized_invitation_code_edit" version_id="2010620" version_string="2.1.6 Fix 2"><![CDATA[<xf:if is="$code.isInsert()">
+	<xf:title>{{ phrase('xs_is_add_personalized_invitation_code') }}</xf:title>
+<xf:else />
+    <xf:title>{{ phrase('xs_is_edit_personalized_invitation_code:') }} {$code.code}</xf:title>
+</xf:if>
+
+<xf:pageaction if="$code.isUpdate()">
+	<xf:button href="{{ link('invitation/personalized-invitation-code/delete', $code) }}" icon="delete" overlay="true" />
+</xf:pageaction>
+
+<xf:form action="{{ link('invitation/personalized-invitation-code/save', $code) }}" ajax="true" class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:textboxrow name="title" value="{$code.title}" maxlength="{{ max_length($code, 'title') }}"
+						   label="{{ phrase('title') }}"  />
+			<xf:if is="$code.isUpdate()">
+				<xf:formrow label="{{ phrase('xs_is_invitation_code') }}">
+					{$code.code} 
+					<a  href="#" class="xs_is_copy_token button button--link" 
+							data-clipboard-text="{$code.code}" 
+							style="font-size: 10px; padding: 2px 5px;">
+					{{ phrase('xs_is_copy') }}
+					</a>
+				</xf:formrow>
+				<xf:else/>
+				<xf:textboxrow name="code" value="{$code.code}" maxlength="{{ max_length($code, 'code') }}"
+						   label="{{ phrase('xs_is_invitation_code') }}" explain="{{ phrase('xs_is_invitation_code_explain') }}" />
+			</xf:if>
+			<xf:radiorow label="{{ phrase('xs_is_number_times_usable') }}" name="limit_use">
+				<xf:option value="unlimited" label="{{ phrase('unlimited') }}"
+						   selected="{{ $code.limit_use == -1 ? true : false }}"/>
+				<xf:option value="limited_use" label="{{ phrase('xs_is_limited_use') }}" 
+						   selected="{{ $code.limit_use >= 1 ? true : false }}">
+					<xf:numberbox value="{{ $code.limit_use == -1 ? 0 : $code.limit_use }}" name="limit_use_number"/>
+				</xf:option>
+			</xf:radiorow>
+			<xf:radiorow label="{{ phrase('xs_is_limit_in_time') }}" name="limit_time">
+				<xf:option value="unlimited" label="{{ phrase('unlimited') }}"
+						   selected="{{ $code.limit_time == -1 ? true : false }}"/>
+				<xf:option value="limited_time" label="{{ phrase('xs_is_limited_time') }}" 
+						   selected="{{ $code.limit_time >= 1 ? true : false }}">
+					<xf:dependent>
+						<xf:if is="$code.limit_time == -1">		
+							<xf:dateinput name="limit_time_number" value="{{ date($xf.time, 'picker') }}" />
+							<xf:else/>
+							<xf:dateinput name="limit_time_number" value="{{ $code.isUpdate() ? date($code.limit_time, 'picker') : date($xf.time, 'picker') }}" />
+						</xf:if>
+					</xf:dependent>
+				</xf:option>
+			</xf:radiorow>
+			<xf:checkboxrow label="{{ phrase('enable') }}" >
+				<xf:option name="enable" selected="{$code.enable}" label="{{ phrase('xs_is_enable_this_invitation') }}" />
+			</xf:checkboxrow>
+			<hr class="formRowSep" />
+			<xf:checkboxrow  explain="{{ phrase('xs_is_explain_add_user_group') }}">
+				<xf:option name="enable_add_user_group" label="{{ phrase('xs_is_enable_add_user_group') }}" 
+							   selected="{{ $UserGroupCode is not empty }}">
+					<xf:dependent>
+						<xf:macro template="xs_is_code_invitation_macros" name="user_groupe" arg-UserGroups="{$UserGroups}" arg-invitation="{$UserGroupCode}"/>
+					</xf:dependent>
+				</xf:option>
+			</xf:checkboxrow>
+		</div>
+		<xf:submitrow icon="save" sticky="true" />
+	</div>
+</xf:form>
+<xf:if is="$users is not empty && $code.isUpdate()">
+	<div class="block">
+		<div class="block-outer">
+			<xf:macro template="filter_macros" 
+					  name="quick_filter" 
+					  arg-key="invitation/personalized-invitation-code/{$code.ic_personalize_id}" 
+					  arg-class="block-outer-opposite" />
+		</div>
+		<div class="block-container">
+			<div class="block-body">
+				<xf:datalist>
+					<xf:foreach loop="$users" value="$user">
+						<xf:datarow>
+							<xf:cell class="dataList-cell--min dataList-cell--image dataList-cell--imageSmall"
+								href="{{ link('users/edit', $user) }}">
+								<xf:avatar user="$user" size="s" href="" />
+							</xf:cell>
+							<xf:main href="{{ link('users/edit', $user) }}" label="{$user.username}"/>
+						</xf:datarow>
+					</xf:foreach>
+				</xf:datalist>
+			</div>
+			<div class="block-footer block-footer--split">
+				<span class="block-footer-counter">{{ display_totals($users, $total) }}</span>
+			</div>
+		</div>
+
+		<xf:pagenav page="{$page}" perpage="{$perPage}" total="{$total}"
+			link="invitation/personalized-invitation-code"
+			data="{$code}"
+			wrapperclass="js-filterHide block-outer block-outer--after" />
+	</div>
+<xf:elseif is="$code.isUpdate()" />
+	<div class="blockMessage">{{ phrase('no_records_matched') }}</div>
+</xf:if>]]></template>
+  <template type="admin" title="xs_is_send_email" version_id="2030010" version_string="2.3.0 Fix 1"><![CDATA[<xf:title>{{ phrase('xs_is_send_email_invitation') }}</xf:title>
+<xf:form action="{{ link('invitation/send-email') }}" ajax="true" class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:formrow rowtype="input" label="{{ phrase('email') }}">
+				<ul class="listPlain inputGroup-container">
+					<li class="inputGroup" data-xf-init="field-adder"
+						data-increment-format="emails[{counter}]" data-remaining="9">
+						<xf:textbox name="emails[{$nextCounter}]"
+									placeholder="{{ phrase('email') }}"/>
+					</li>
+				</ul>
+			</xf:formrow>
+			<xf:textboxrow name="subject"
+						   label="{{ phrase('subject') }}"/>
+			
+			<xf:checkboxrow label="">
+				<xf:option name="verify_email" checked="{{ true }}">{{ phrase('xs_is_check_whether_the_email_addresses_entered_have_already_been_invited_or_registered') }}</xf:option>
+			</xf:checkboxrow>
+		</div>
+		<xf:submitrow submit="{{ phrase('send') }}" sticky="true" />
+	</div>
+</xf:form>]]></template>
+  <template type="admin" title="xs_is_token_delete" version_id="2000000" version_string="2.0.0"><![CDATA[<xf:title>{{ phrase('confirm_action') }}</xf:title>
+
+<xf:form action="{{ link('invitation/tokens/delete', $token) }}" ajax="true" class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:inforow rowtype="confirm">
+				{{ phrase('please_confirm_that_you_want_to_delete_following:') }}
+				<strong><a href="{{ link('invitation/tokens/edit', $token) }}">{$token.title}</a></strong>
+			</xf:inforow>
+		</div>
+		<xf:submitrow rowtype="simple" icon="delete" />
+	</div>
+</xf:form>]]></template>
+  <template type="admin" title="xs_is_token_edit" version_id="2010620" version_string="2.1.6 Fix 2"><![CDATA[<xf:if is="$token.isInsert()">
+    <xf:title>{{ phrase('xs_is_add_tokens') }}</xf:title>
+<xf:else />
+    <xf:title>{{ phrase('xs_is_edit_tokens:') }} {$token.title}</xf:title>
+</xf:if>
+
+<xf:pageaction if="$token.isUpdate()">
+	<xf:button href="{{ link('invitation/tokens/delete', $token) }}" icon="delete" overlay="true" />
+</xf:pageaction>
+
+<xf:form action="{{ link('invitation/tokens/save', $token) }}" ajax="true" class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:if is="$token.isUpdate()">
+				<xf:formrow label="{{ phrase('xs_is_token') }}">
+					{$token.token} 
+					<a  href="#" class="xs_is_copy_token button button--link" 
+							data-clipboard-text="{$token.token}" 
+							style="font-size: 10px; padding: 2px 5px;">
+					{{ phrase('xs_is_copy') }}
+					</a>
+				</xf:formrow>
+			</xf:if>
+			<xf:textboxrow name="title" value="{$token.title}" maxlength="{{ max_length($token, 'title') }}"
+						   label="{{ phrase('xs_is_title') }}" explain="{{ phrase('xs_is_title_explain') }}" />
+			<xf:checkboxrow name="user" value="{$token.user}" 
+							listclass="listColumns"
+							label="{{ phrase('xs_is_user_group') }}" explain="{{ phrase('xs_is_user_group_explain') }}" >
+				<xf:options source="$userGroups"/>
+			</xf:checkboxrow>
+			<xf:numberboxrow name="number_use" value="{$token.number_use}" min="0"
+							 label="{{ phrase('xs_is_maximum_usable') }}" 
+							 explain="{{ phrase('xs_is_maximum_usable_explain') }}" />
+			<hr class="formRowSep" />
+			<xf:checkboxrow explain="{{ phrase('xs_is_explain_add_user_group') }}">
+				<xf:option name="enable_add_user_group" label="{{ phrase('xs_is_enable_add_user_group') }}" 
+							   selected="{$token.enable_add_user_group}">
+					<xf:dependent>
+						<xf:macro template="xs_is_code_invitation_macros" 
+								  name="user_groupe" 
+								  arg-UserGroups="{$UserGroups}" 
+								  arg-invitation="{$token}"/>
+					</xf:dependent>
+				</xf:option>
+			</xf:checkboxrow>
+		</div>
+		<xf:submitrow icon="save" sticky="true" />
+	</div>
+</xf:form>]]></template>
+  <template type="admin" title="xs_is_token_list" version_id="2000000" version_string="2.0.0"><![CDATA[<xf:title>{{ phrase('xs_is_invitation_tokens') }}</xf:title>
+
+<xf:pageaction>
+    <div class="buttonGroup">
+		<xf:button href="{{ link('invitation/tokens/add') }}" icon="add">{{ phrase('xs_is_add_tokens') }}</xf:button>
+    </div>
+</xf:pageaction>
+<xf:css src="xs_is_token_view.less"/>
+
+<xf:if is="$tokens is not empty">
+		<div class="block-container">
+			<div class="block-body">
+				<xf:datalist>
+					<xf:foreach loop="{$tokens}" value="$token">
+						<xf:datarow>
+							<xf:main href="{{ link('invitation/tokens', $token) }}"
+								label="{$token.title}" hint="{$token.token}"/>
+							<xf:action href="{{ link('invitation/tokens/list', $token) }}">
+								{{ phrase('xs_is_use') }}
+							</xf:action>
+							<xf:action>
+								<label>{$token.number_use}</label>
+							</xf:action>
+							<xf:action class="xs_is_user_group">
+								<label>
+									<xf:foreach loop="{$userGroups}" key="$userGroupkey" value="$userGroup">
+										<xf:if is="in_array($userGroupkey, $token.user)">
+											{$userGroup}<span>,</span>
+										</xf:if>
+									</xf:foreach>
+								</label>
+							</xf:action>
+							<xf:delete href="{{ link('invitation/tokens/delete', $token) }}" />
+						</xf:datarow>
+					</xf:foreach>
+				</xf:datalist>
+			</div>
+		</div>
+<xf:else />
+	<div class="blockMessage">{{ phrase('xs_is_no_invitation_tokens_have_been_created') }}</div>
+</xf:if>]]></template>
+  <template type="admin" title="xs_is_token_user_add_user" version_id="2000000" version_string="2.0.0"><![CDATA[<xf:title>{{ phrase('xs_is_add_user') }}</xf:title>
+
+<xf:form action="{{ link('invitation/tokens-user/add-user', $token) }}" ajax="true" class="block">
+	<div class="block-container">
+		<div class="block-body">
+				<xf:tokeninputrow name="username"  href="{{ link('users/find') }}" label="{{ phrase('xs_is_usernames') }}"
+								  explain="{{ phrase('separate_names_with_comma') }}"/>
+		</div>
+		<xf:submitrow icon="save" sticky="true" />
+	</div>
+</xf:form>]]></template>
+  <template type="admin" title="xs_is_token_user_delete" version_id="2000000" version_string="2.0.0"><![CDATA[<xf:title>{{ phrase('confirm_action') }}</xf:title>
+
+<xf:form action="{{ link('invitation/tokens-user/delete', $token) }}" ajax="true" class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:inforow rowtype="confirm">
+				{{ phrase('please_confirm_that_you_want_to_delete_following:') }}
+				<strong><a href="{{ link('invitation/tokens/edit', $token) }}">{$token.title}</a></strong>
+			</xf:inforow>
+		</div>
+		<xf:submitrow rowtype="simple" icon="delete" />
+	</div>
+</xf:form>]]></template>
+  <template type="admin" title="xs_is_token_user_delete_user" version_id="2000000" version_string="2.0.0"><![CDATA[<xf:title>{{ phrase('confirm_action') }}</xf:title>
+
+<xf:form action="{{ link('invitation/tokens-user/delete-user', $token) }}&user={$user.user_id}" ajax="true" class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:inforow rowtype="confirm">
+				{{ phrase('xs_is_please_confirm_that_you_want_the_user_x_of_this_token_y', 
+				{
+					'user':{$user.username}, 
+					'token':{$token.title}
+				})}}
+			</xf:inforow>
+		</div>
+		<xf:submitrow rowtype="simple" icon="delete" />
+	</div>
+</xf:form>]]></template>
+  <template type="admin" title="xs_is_token_user_edit" version_id="2010620" version_string="2.1.6 Fix 2"><![CDATA[<xf:if is="$token.isInsert()">
+	<xf:title>{{ phrase('xs_is_add_tokens_user') }}</xf:title>
+<xf:else />
+    <xf:title>{{ phrase('xs_is_edit_tokens_user:') }} {$token.title}</xf:title>
+</xf:if>
+
+<xf:pageaction if="$token.isUpdate()">
+	<xf:button href="{{ link('invitation/tokens-user/add-user', $token) }}" overlay="true" icon="add">{{ phrase('xs_is_add_user') }}</xf:button>
+	<xf:button href="{{ link('invitation/tokens-user/delete', $token) }}" icon="delete" overlay="true" />
+</xf:pageaction>
+
+
+<xf:form action="{{ link('invitation/tokens-user/save', $token) }}" ajax="true" class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:if is="$token.isUpdate()">
+				<xf:formrow label="{{ phrase('xs_is_token') }}">
+					{$token.token} 
+					<a  href="#" class="xs_is_copy_token button button--link" 
+							data-clipboard-text="{$token.token}" 
+							style="font-size: 10px; padding: 2px 5px;">
+					{{ phrase('xs_is_copy') }}
+					</a>
+				</xf:formrow>
+			</xf:if>
+			<xf:textboxrow name="title" value="{$token.title}" maxlength="{{ max_length($token, 'title') }}"
+						   label="{{ phrase('xs_is_title') }}" explain="{{ phrase('xs_is_title_explain') }}" />
+			<xf:if is="$token.isInsert()">
+				<xf:tokeninputrow name="username"  href="{{ link('users/find') }}" label="{{ phrase('xs_is_usernames') }}"
+								  explain="{{ phrase('separate_names_with_comma') }}"/>
+			</xf:if>
+			<xf:numberboxrow name="number_use" value="{$token.number_use}" min="0"
+							 label="{{ phrase('xs_is_maximum_usable') }}" 
+							 explain="{{ phrase('xs_is_maximum_usable_explain') }}" />
+			<hr class="formRowSep" />
+			<xf:checkboxrow  explain="{{ phrase('xs_is_explain_add_user_group') }}">
+				<xf:option name="enable_add_user_group" label="{{ phrase('xs_is_enable_add_user_group') }}" 
+							   selected="{$token.enable_add_user_group}">
+					<xf:dependent>
+						<xf:macro template="xs_is_code_invitation_macros" 
+								  name="user_groupe" 
+								  arg-UserGroups="{$UserGroups}" 
+								  arg-invitation="{$token}"/>
+					</xf:dependent>
+				</xf:option>
+			</xf:checkboxrow>
+		</div>
+		<xf:submitrow icon="save" sticky="true" />
+	</div>
+</xf:form>
+
+<xf:if is="$users is not empty && $token.isUpdate()">
+	<div class="block">
+		<div class="block-outer">
+			<xf:macro template="filter_macros" 
+					  name="quick_filter" 
+					  arg-key="invitation/tokens-user/{$token.token_id}" 
+					  arg-class="block-outer-opposite" />
+		</div>
+		<div class="block-container">
+			<div class="block-body">
+				<xf:datalist>
+					<xf:foreach loop="$users" value="$user">
+						<xf:datarow>
+							<xf:cell class="dataList-cell--min dataList-cell--image dataList-cell--imageSmall"
+								href="{{ link('users/edit', $user) }}">
+								<xf:avatar user="$user" size="s" href="" />
+							</xf:cell>
+							<xf:main href="{{ link('users/edit', $user) }}" label="{$user.username}"/>
+							<xf:action>
+								<label>
+									{$CodeUser.{$user.user_id}.count}
+								</label>
+							</xf:action>
+							<xf:action>
+								<xf:if is="{$CodeUser.{$user.user_id}.code}">
+									<xf:if is="{$CodeUser.{$user.user_id}.registered}">
+										<label><xf:fa icon="fas fa-check" style="color: #4ecd32;font-size: 20px;" /></label>
+										<xf:else/>
+										<label><xf:fa icon="fas fa-check" style="color: #cd8232;font-size: 20px;" /></label>
+									</xf:if>
+									<xf:else/>
+									<label><xf:fa icon="fas fa-times" style="color: #d13530;font-size: 20px;" /></label>
+								</xf:if>
+							</xf:action>
+							<xf:delete href="{{ link('invitation/tokens-user/delete-user', $token) }}&user={$user.user_id}" />
+						</xf:datarow>
+					</xf:foreach>
+				</xf:datalist>
+			</div>
+			<div class="block-footer block-footer--split">
+				<span class="block-footer-counter">{{ display_totals($users, $total) }}</span>
+			</div>
+		</div>
+
+		<xf:pagenav page="{$page}" perpage="{$perPage}" total="{$total}"
+			link="invitation/tokens-user"
+			data="{$token}"
+			wrapperclass="js-filterHide block-outer block-outer--after" />
+	</div>
+<xf:elseif is="$token.isUpdate()" />
+	<div class="blockMessage">{{ phrase('no_records_matched') }}</div>
+</xf:if>]]></template>
+  <template type="admin" title="xs_is_token_user_filters" version_id="2000000" version_string="2.0.0"><![CDATA[<xf:macro template="xs_is_filters_macro" name="filters" 
+		  arg-Token="{$Token}" arg-filters="{$filters}" 
+		  arg-user="{$user}" arg-url="0"/>]]></template>
+  <template type="admin" title="xs_is_token_user_list" version_id="2000000" version_string="2.0.0"><![CDATA[<xf:title>{{ phrase('xs_is_token_user') }}</xf:title>
+
+<xf:pageaction>
+    <div class="buttonGroup">
+		<xf:button href="{{ link('invitation/tokens-user/add') }}" icon="add">{{ phrase('xs_is_add_tokens_user') }}</xf:button>
+    </div>
+</xf:pageaction>
+
+<xf:if is="$tokens is not empty">
+		<div class="block-container">
+			<div class="block-body">
+				<xf:datalist>
+					<xf:foreach loop="{$tokens}" value="$token">
+						<xf:datarow>
+							<xf:main href="{{ link('invitation/tokens-user', $token) }}"
+								label="{$token.title}" hint="{$token.token}"/>
+							<xf:action>
+								<label>{$token.number_use}</label>
+							</xf:action>
+							<xf:action>
+								<label>{$count.{$token.token_id}}</label>
+							</xf:action>
+							<xf:action href="{{ link('invitation/tokens-user/list', $token) }}">
+								{{ phrase('xs_is_use') }}
+							</xf:action>
+							<xf:delete href="{{ link('invitation/tokens-user/delete', $token) }}" />
+						</xf:datarow>
+					</xf:foreach>
+				</xf:datalist>
+			</div>
+		</div>
+<xf:else />
+	<div class="blockMessage">{{ phrase('xs_is_no_invitation_tokens_have_been_created') }}</div>
+</xf:if>]]></template>
+  <template type="admin" title="xs_is_token_user_list_code" version_id="2000000" version_string="2.0.0"><![CDATA[<xf:title>{{ phrase('xs_is_list_code') }}</xf:title>
+
+<xf:if is="$codes is not empty || $filters is not empty">
+	<div class="block">
+		<div class="block-container">
+			<div class="block-filterBar">
+				<div class="filterBar">
+					<xf:if contentcheck="true">
+						<ul class="filterBar-filters">
+							<xf:contentcheck>
+								<xf:if is="$filters.user is not empty">
+									<li><a href="{{ link('invitation/tokens-user/list', $Token, $filters|replace('user', null)) }}"
+										   class="filterBar-filterToggle" data-xf-init="tooltip" title="{{ phrase('remove_this_filter')|for_attr }}">
+										<span class="filterBar-filterToggle-label">{{ phrase('xs_is_code_created_by:') }}</span>
+										{$user.username}</a></li>
+								</xf:if>
+								<xf:if is="$filters.code_use is not empty">
+									<li><a href="{{ link('invitation/tokens-user/list', $Token, $filters|replace('code_use', null)) }}"
+										   class="filterBar-filterToggle" data-xf-init="tooltip" title="{{ phrase('remove_this_filter')|for_attr }}">
+										<span class="filterBar-filterToggle-label">{{ phrase('sort_by:') }}</span>
+										{{ phrase('xs_is_code_use') }}</a></li>
+								</xf:if>
+								<xf:if is="$filters.code_not_use is not empty">
+									<li><a href="{{ link('invitation/tokens-user/list', $Token, $filters|replace('code_not_use', null)) }}"
+										   class="filterBar-filterToggle" data-xf-init="tooltip" title="{{ phrase('remove_this_filter')|for_attr }}">
+										<span class="filterBar-filterToggle-label">{{ phrase('sort_by:') }}</span>
+										{{ phrase('xs_is_code_not_use') }}</a></li>
+								</xf:if>
+							</xf:contentcheck>
+						</ul>
+					</xf:if>
+					<a class="filterBar-menuTrigger" data-xf-click="menu" role="button" tabindex="0" 
+					   aria-expanded="false" aria-haspopup="true">{{ phrase('filters') }}</a>
+					<div class="menu menu--wide" data-menu="menu" aria-hidden="true"
+						 data-href="{{ link('invitation/tokens-user/filters', $Token, $filters) }}"
+						 data-load-target=".js-filterMenuBody">
+						<div class="menu-content">
+							<h4 class="menu-header">{{ phrase('show_only:') }}</h4>
+							<div class="js-filterMenuBody">
+								<div class="menu-row">{{ phrase('loading...') }}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="block-body">
+				<xf:datalist>
+					<xf:foreach loop="$codes" value="$code">
+						<xf:datarow overlay="true"
+							label="{{ phrase('xs_is_code:') }} {$code.code}"
+							href="{{ link('invitation/tokens-user/list', $code) }}"
+							delete="{{ link('invitation/tokens/delete-code', $code) }}"
+							dir="auto">
+							<xf:explain>
+								<ul class="listInline listInline--bullet">
+									<li><xf:date time="{$code.invitation_date}" /></li>
+									<li>{$code.Token.title} : {$code.Token.token}</li>
+									<li>{$code.User.username}</li>
+									<li>{{ $code.registered_user_id ? {$code.RegisteredUser.username} : phrase('n_a') }}</li>
+								</ul>
+							</xf:explain>
+						</xf:datarow>
+					</xf:foreach>
+				</xf:datalist>
+			</div>
+			<div class="block-footer">
+				<span class="block-footer-counter">{{ display_totals($codes, $total) }}</span>
+			</div>
+		</div>
+		<xf:pagenav page="{$page}" perpage="{$perPage}" total="{$total}"
+			link="invitation/list-code" params="{$filters}"
+			wrapperclass="block-outer block-outer--after" />
+	</div>
+<xf:else />
+	<div class="blockMessage">{{ phrase('xs_is_no_code_has_been_generated') }}</div>
+</xf:if>]]></template>
+  <template type="admin" title="xs_is_token_user_view_code" version_id="2000000" version_string="2.0.0"><![CDATA[<xf:title>{{ phrase('xs_is_list_code') }}</xf:title>
+
+<div class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:formrow label="{{ phrase('xs_is_user_create') }}">
+				<a href="{{ link('users/edit', $code.User) }}">{$code.User.username}</a>
+			</xf:formrow>
+			<xf:formrow label="{{ phrase('xs_is_code') }}">
+				{$code.code}
+			</xf:formrow>
+			<xf:formrow label="{{ phrase('date') }}">
+				<xf:date time="{$code.invitation_date}" />
+			</xf:formrow>
+			<hr class="formRowSep" />
+			<xf:formrow label="{{ phrase('xs_is_token') }}">
+				<a href="{{ link('invitation/tokens-user', $code.Token) }}">
+					{$code.Token.token}
+				</a>
+			</xf:formrow>
+			<xf:formrow label="{{ phrase('xs_is_token_title') }}">
+				<a href="{{ link('invitation/tokens-user', $code.Token) }}">
+					{$code.Token.title}
+				</a>
+			</xf:formrow>
+			<hr class="formRowSep" />
+			<xf:formrow label="{{ phrase('xs_is_registered_user') }}">
+				{{ $code.registered_user_id ? {$code.RegisteredUser.username} : phrase('n_a') }}
+			</xf:formrow>
+		</div>
+	</div>
+</div>]]></template>
+  <template type="admin" title="xs_is_token_view.less" version_id="2000000" version_string="2.0.0"><![CDATA[.xs_is_user_group
+{
+	width: 30%!important; 
+	white-space: normal!important;
+	span:last-child {
+		display:none;
+	}
+}]]></template>
+  <template type="admin" title="xs_is_tokens_delete_code" version_id="2000000" version_string="2.0.0"><![CDATA[<xf:title>{{ phrase('confirm_action') }}</xf:title>
+
+<xf:form action="{{ link('invitation/tokens/delete-code', $code) }}" ajax="true" class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:inforow rowtype="confirm">
+				{{ phrase('please_confirm_that_you_want_to_delete_following:') }}
+				<strong>{$code.code}</strong>
+			</xf:inforow>
+		</div>
+		<xf:submitrow rowtype="simple" icon="delete" />
+	</div>
+</xf:form>]]></template>
+  <template type="admin" title="xs_is_tokens_filters" version_id="2000000" version_string="2.0.0"><![CDATA[<xf:macro template="xs_is_filters_macro" name="filters" 
+		  arg-Token="{$Token}" arg-filters="{$filters}" 
+		  arg-user="{$user}" arg-url="1"/>]]></template>
+  <template type="admin" title="xs_is_tokens_list_code" version_id="2000000" version_string="2.0.0"><![CDATA[<xf:title>{{ phrase('xs_is_list_code') }}</xf:title>
+
+<xf:if is="$codes is not empty || $filters is not empty">
+	<div class="block">
+		<div class="block-container">
+			<div class="block-filterBar">
+				<div class="filterBar">
+					<xf:if contentcheck="true">
+						<ul class="filterBar-filters">
+							<xf:contentcheck>
+								<xf:if is="$filters.user is not empty">
+									<li><a href="{{ link('invitation/tokens/list', $Token, $filters|replace('user', null)) }}"
+										   class="filterBar-filterToggle" data-xf-init="tooltip" title="{{ phrase('remove_this_filter')|for_attr }}">
+										<span class="filterBar-filterToggle-label">{{ phrase('xs_is_code_created_by:') }}</span>
+										{$user.username}</a></li>
+								</xf:if>
+								<xf:if is="$filters.code_use is not empty">
+									<li><a href="{{ link('invitation/tokens/list', $Token, $filters|replace('code_use', null)) }}"
+										   class="filterBar-filterToggle" data-xf-init="tooltip" title="{{ phrase('remove_this_filter')|for_attr }}">
+										<span class="filterBar-filterToggle-label">{{ phrase('sort_by:') }}</span>
+										{{ phrase('xs_is_code_use') }}</a></li>
+								</xf:if>
+								<xf:if is="$filters.code_not_use is not empty">
+									<li><a href="{{ link('invitation/tokens/list', $Token, $filters|replace('code_not_use', null)) }}"
+										   class="filterBar-filterToggle" data-xf-init="tooltip" title="{{ phrase('remove_this_filter')|for_attr }}">
+										<span class="filterBar-filterToggle-label">{{ phrase('sort_by:') }}</span>
+										{{ phrase('xs_is_code_not_use') }}</a></li>
+								</xf:if>
+							</xf:contentcheck>
+						</ul>
+					</xf:if>
+					<a class="filterBar-menuTrigger" data-xf-click="menu" role="button" tabindex="0" 
+					   aria-expanded="false" aria-haspopup="true">{{ phrase('filters') }}</a>
+					<div class="menu menu--wide" data-menu="menu" aria-hidden="true"
+						 data-href="{{ link('invitation/tokens/filters', $Token, $filters) }}"
+						 data-load-target=".js-filterMenuBody">
+						<div class="menu-content">
+							<h4 class="menu-header">{{ phrase('show_only:') }}</h4>
+							<div class="js-filterMenuBody">
+								<div class="menu-row">{{ phrase('loading...') }}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="block-body">
+				<xf:datalist>
+					<xf:foreach loop="$codes" value="$code">
+						<xf:datarow overlay="true"
+							label="{{ phrase('xs_is_code:') }} {$code.code}"
+							href="{{ link('invitation/tokens/list', $code) }}"
+							delete="{{ link('invitation/tokens/delete-code', $code) }}"
+							dir="auto">
+							<xf:explain>
+								<ul class="listInline listInline--bullet">
+									<li><xf:date time="{$code.invitation_date}" /></li>
+									<li>{$code.Token.title} : {$code.Token.token}</li>
+									<li>{$code.User.username}</li>
+									<li>{{ $code.registered_user_id ? {$code.RegisteredUser.username} : phrase('n_a') }}</li>
+								</ul>
+							</xf:explain>
+						</xf:datarow>
+					</xf:foreach>
+				</xf:datalist>
+			</div>
+			<div class="block-footer">
+				<span class="block-footer-counter">{{ display_totals($codes, $total) }}</span>
+			</div>
+		</div>
+		<xf:pagenav page="{$page}" perpage="{$perPage}" total="{$total}"
+			link="invitation/list-code" params="{$filters}"
+			wrapperclass="block-outer block-outer--after" />
+	</div>
+<xf:else />
+	<div class="blockMessage">{{ phrase('xs_is_no_code_has_been_generated') }}</div>
+</xf:if>]]></template>
+  <template type="admin" title="xs_is_tokens_view_code" version_id="2000000" version_string="2.0.0"><![CDATA[<xf:title>{{ phrase('xs_is_list_code') }}</xf:title>
+
+<div class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:formrow label="{{ phrase('xs_is_user_create') }}">
+				<a href="{{ link('users/edit', $code.User) }}">{$code.User.username}</a>
+			</xf:formrow>
+			<xf:formrow label="{{ phrase('xs_is_code') }}">
+				{$code.code}
+			</xf:formrow>
+			<xf:formrow label="{{ phrase('date') }}">
+				<xf:date time="{$code.invitation_date}" />
+			</xf:formrow>
+			<hr class="formRowSep" />
+			<xf:formrow label="{{ phrase('xs_is_token') }}">
+				<a href="{{ link('invitation/tokens', $code.Token) }}">
+					{$code.Token.token}
+				</a>
+			</xf:formrow>
+			<xf:formrow label="{{ phrase('xs_is_token_title') }}">
+				<a href="{{ link('invitation/tokens', $code.Token) }}">
+					{$code.Token.title}
+				</a>
+			</xf:formrow>
+			<hr class="formRowSep" />
+			<xf:formrow label="{{ phrase('xs_is_registered_user') }}">
+				{{ $code.registered_user_id ? {$code.RegisteredUser.username} : phrase('n_a') }}
+			</xf:formrow>
+		</div>
+	</div>
+</div>]]></template>
+  <template type="email" title="payment_received_receipt_xs_invite_system" version_id="2040091" version_string="2.4.0 Fix 1"><![CDATA[<mail:subject>{{ phrase('xs_is_receipt_for_the_purchase_of_invitation_codes_at_x', {'board_title': $xf.options.boardTitle}) }}</mail:subject>
+
+<p>{{ phrase('xs_is_thank_you_for_purchasing_invitation_codes_at_x', {'board_url': link('canonical:index'), 'board_title': $xf.options.boardTitle}) }}</p>
+
+<table border="0" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+	<td><b>{{ phrase('purchased_item') }}</b></td>
+	<td align="right"><b>{{ phrase('price') }}</b></td>
+</tr>
+<tr>
+	<td>
+		<xf:if is="$purchasable.purchasable.buy_type === 'login'">
+			<a href="{{ link('canonical:account/invitation-buy', $purchasable.purchasable) }}">{$purchasable.title}</a>
+		<xf:else />
+			{{ phrase('xs_is_invitation_code:') }} {$purchasable.purchasable.InvitationBuy.first().code}
+		</xf:if>
+	</td>
+	<td align="right">{$purchasable.purchasable.cost_phrase}</td>
+</tr>
+</table>
+
+<xf:if is="$xf.toUser.canUseContactForm()">
+	<p>{{ phrase('thank_you_for_your_purchase_questions_contact_us', {'contacturl': link('canonical:misc/contact') }) }}</p>
+<xf:else />
+	<p>{{ phrase('thank_you_for_your_purchase') }}</p>
+</xf:if>]]></template>
+  <template type="email" title="xs_is_invitation_email" version_id="2020000" version_string="2.2.0"><![CDATA[<mail:subject>{$subject}</mail:subject>
+
+<p>{$message|nl2br}</p>
+
+<p>{{ phrase('xs_is_invitation_code:') }} {$invitation.code}</p>]]></template>
+  <template type="public" title="alert_user_xs_is_invitations_alert" version_id="2000000" version_string="2.0.0"><![CDATA[{{ phrase('xs_is_x_has_registered_using_your_invitation_code', {
+	'user': username_link($user, false, {'defaultname': $alert.username})
+}) }}]]></template>
+  <template type="public" title="xs_is_account_Invitation" version_id="2030291" version_string="2.3.2 Fix 1"><![CDATA[<xf:title>{{ phrase('xs_is_invitation_code') }}</xf:title>
+
+<xf:wrap template="account_wrapper" />
+<xf:js src="xf/action.js" min="1" />
+<xf:js src="XenSoluce/InviteSystem/invite_system.js" min="1" />
+
+<xf:if is="$code">
+	<div class="blockMessage blockMessage--success">
+		{{ phrase('xs_is_code_generate:') }} {$code}
+		<xf:button  class="xs_is_copy_token button button--link" 
+				   data-xf-init="copy-to-clipboard" data-copy-text="{$code}"
+		   style="font-size: 10px; padding: 2px 5px;">
+			{{ phrase('xs_is_copy') }}
+		</xf:button>
+	</div>
+</xf:if>
+
+{{ phrase('xs_is_token:') }}{$Invitations.total}
+
+<xf:set var="$phraseCopy">{{ phrase('xs_is_copy') }}</xf:set>
+<div class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:datalist data-xf-init="responsive-data-list">
+				<thead>
+					<xf:datarow rowtype="header">
+						<xf:if is="$xf.options.xs_is_enable_token_in_account">
+							<xf:cell>{{ phrase('xs_is_token') }}</xf:cell>
+						</xf:if>
+						<xf:cell>{{ phrase('date') }}</xf:cell>
+						<xf:cell>{{ phrase('xs_is_code') }}</xf:cell>
+						<xf:cell>{{ phrase('xs_is_registered_user') }}</xf:cell>
+						<xf:cell>&nbsp;</xf:cell>
+					</xf:datarow>
+				</thead>
+				<xf:foreach loop="$Codes" value="$Invitation">
+					<xf:datarow>
+						<xf:if is="$xf.options.xs_is_enable_token_in_account">
+							<xf:cell>{$Invitation.token}</xf:cell>
+						</xf:if>
+						<xf:cell>
+							<xf:date time="{$Invitation.invitation_date}" />
+						</xf:cell>
+						<xf:cell>
+							{$Invitation.code}
+						</xf:cell>
+						<xf:cell>
+							<xf:if is="$Invitation.registered_user_id && $Invitation.user_id == {$xf.visitor.user_id}">
+								<xf:username user="$Invitation.RegisteredUser" rich="true" />
+							<xf:else />
+								--
+							</xf:if>
+						</xf:cell>
+						<xf:cell href="{{ !$Invitation.registered_user_id  ? '#' : null }}" 
+								 data-copy-text="{$Invitation.code}" 
+								 class="xs_is_copy_code dataList-cell--separated" 
+								 style="text-align: center;" 
+								 data-xf-init="xs-tooltip-copy"
+								 data-copy="{{ !$Invitation.registered_user_id  ?  true : false }}"
+								 title="{$phraseCopy}">
+							<xf:fa icon="far fa-copy"/>
+						</xf:cell>
+					</xf:datarow>
+					<xf:else />
+					<xf:datarow rowclass="dataList-row--noHover dataList-row--note" colspan="4">
+						<xf:cell class="dataList-cell--noSearch">
+							{{ phrase('xs_is_no_invitation_has_been_created') }}
+						</xf:cell>
+					</xf:datarow>
+				</xf:foreach>
+			</xf:datalist>
+		</div>
+	</div>
+	<xf:pagenav page="{$page}" perpage="{$perPage}" total="{$total}"
+				link="account/invitation"
+				wrapperclass="block-outer block-outer--after" />
+</div>
+<xf:if is="$Invitations.tokenGenerate && $Invitations.Between">
+	<xf:form action="{{ link('account/invitation') }}" ajax="true" class="block">
+		<div class="block-container">
+			<div class="block-body">
+				<xf:if is="{{ count({$Invitations.tokenGenerate}) }} > 1">
+					<xf:selectrow label="{{ phrase('xs_is_token') }}" name="token">
+						<xf:foreach loop="$Invitations.tokenGenerate" key="$tokenKey" value="$token">
+							<xf:option label="{$token.tokenName}" value="{$token.tokenID}" />
+						</xf:foreach>
+					</xf:selectrow>
+					<xf:else />
+					<xf:formrow label="{{ phrase('xs_is_token') }}">
+						<xf:foreach loop="$Invitations.tokenGenerate" key="$tokenKey" value="$token">
+							{$token.tokenName} 
+							<xf:hiddenval name="token">{$token.tokenID}</xf:hiddenval>
+						</xf:foreach>
+					</xf:formrow>
+				</xf:if>
+				<xf:if is="$xf.options.xs_is_predefined_message_email && $xf.visitor.hasPermission('xs_is', 'xs_is_only_with_email')">			
+					<xf:textboxrow name="email" label="{{ phrase('email') }}" explain="{{ phrase('xs_is_send_invite_by_email_explain') }}"/>
+				<xf:else />
+					<xf:checkboxrow explain="{{ phrase('xs_is_send_invite_by_email_explain') }}">
+						<xf:option name="send_invite" label="{{ phrase('xs_is_send_invite_by_email') }}">
+							<xf:dependent>
+								<label>{{ phrase('email:') }}</label>
+								<xf:textbox name="email" />
+							</xf:dependent>
+						</xf:option>
+					</xf:checkboxrow>
+				</xf:if>
+			</div>
+			<xf:submitrow icon="add" submit="{{ phrase('xs_is_generate') }}"/>
+		</div>
+	</xf:form>
+	<xf:elseif is="!$Invitations.Between"/>
+	<div class="block-container">
+		<div class="block-body">
+			<div class="formInfoRow">
+				{{ phrase('xs_is_general_code_limit_reached', {'PerMonth': {$Invitations.PerMonth}, 'xDay': convert_to_time_units($Invitations.xDay) }) }}
+			</div>
+		</div>
+	</div>
+</xf:if>]]></template>
+  <template type="public" title="xs_is_account_Invitation_ban" version_id="2020130" version_string="2.2.1 Fix 3"><![CDATA[<xf:title>{{ phrase('oops_we_ran_into_some_problems') }}</xf:title>
+
+<div class="blockMessage">
+	<xf:set var="$message">{{ phrase('xs_is_account_ban_reason:') }} {$Ban.ban_reason}</xf:set>
+	{{ $Ban.ban_reason ? {$message} : phrase('xs_is_account_ban') }}
+</div>]]></template>
+  <template type="public" title="xs_is_account_invitation_buy" version_id="2040091" version_string="2.4.0 Fix 1"><![CDATA[<xf:title>{{ phrase('xs_is_invitation_buy') }}</xf:title>
+
+<xf:wrap template="account_wrapper" />
+
+<xf:form action="{{ link('purchase', { 'purchasable_type_id' : 'xs_invite_system'}) }}" ajax="true" class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<div class="formInfoRow">
+				<div class="blockMessage blockMessage--important">
+					{{ phrase('xs_is_price_of_an_invitation_code', 
+						{'price' : $xf.options.xs_is_code_buy.price|currency($xf.options.xs_is_code_buy.currency)}) 
+					}}
+				</div>
+			</div>
+			<xf:numberboxrow label="{{ phrase('xs_is_number_invitation') }}" name="number" value="1" min="1" explain="{{ phrase('xs_is_number_buy_explain') }}"/>
+			<xf:formrow label="" rowtype="button">
+				<div class="inputGroup">
+					<xf:if is="{{ count($profiles) > 1 }}">
+						<xf:select name="payment_profile_id">
+							<xf:option>{{ phrase('(choose_payment_method)') }}</xf:option>
+							<xf:foreach loop="$profiles" key="$profileId" value="$titleProfile">
+								<xf:option value="{$profileId}">{$titleProfile}</xf:option>
+							</xf:foreach>
+						</xf:select>
+						<span class="inputGroup-splitter"></span>
+						<xf:button class="button--primary" type="submit" icon="purchase" />
+						<xf:else />
+						<xf:button class="button--primary" type="submit" icon="purchase" />
+						<xf:hiddenval name="payment_profile_id">{$xf.options.xs_is_code_buy.payment_profile_ids|first}</xf:hiddenval>
+					</xf:if>
+				</div>
+			</xf:formrow>
+		</div>
+	</div>
+</xf:form>
+
+<xf:if is="$invitationCarts is not empty">
+	<div class="block">
+		<div class="block-container">
+			<div class="block-body">
+				<xf:datalist>
+					<xf:foreach loop="{$invitationCarts}" value="$cart">
+						<xf:datarow>
+							<xf:main href="{{ link('account/invitation-buy', $cart) }}" 
+									 label="{{ phrase('xs_is_order_id_x', {'orderId': $cart.invitation_cart_id}) }}" 
+									 hint="{$cart.getCost()|currency($cart.currency)}" overlay="true">
+								<xf:explain>
+									<xf:date time="$cart.cart_date" />
+								</xf:explain>
+							</xf:main>
+							<xf:action>
+								<label>
+									{{ phrase('xs_is_number_code_invitation_buy', {'number' : $cart.number}) }}
+								</label>
+							</xf:action>
+							<xf:action>
+								<xf:if is="$cart.state == 'validate'">
+									<label>
+										<xf:fa icon="fas fa-check" style="color: #4ecd32;font-size: 20px;" />
+									</label>
+								<xf:else/>
+									<label>
+										<xf:fa icon="fas fa-sync-alt" style="color: orange;font-size: 20px;" />
+									</label>
+								</xf:if>
+							</xf:action>
+						</xf:datarow>
+					</xf:foreach>
+				</xf:datalist>
+			</div>
+		</div>
+	</div>
+	<xf:pagenav page="{$page}" perpage="{$perPage}" total="{$total}"
+					link="account/invitation-buy"
+					wrapperclass="block-outer block-outer--after" />
+<xf:else />
+	<div class="block-container">
+		<div class="block-body">
+			<div class="block-row">{{ phrase('xs_is_no_invitation_was_purchased') }}</div>
+		</div>
+	</div>
+</xf:if>]]></template>
+  <template type="public" title="xs_is_account_invitation_buy_complete" version_id="2020300" version_string="2.2.3"><![CDATA[<xf:title>{{ phrase('thanks_for_your_purchase') }}</xf:title>
+
+<xf:wrap template="account_wrapper" />
+
+<div class="blockMessage">{{ phrase('xs_is_thank_you_for_purchasing_x_invitation_codes', {'number' : $invitationCart.number}) }}</div>]]></template>
+  <template type="public" title="xs_is_account_invitation_buy_view" version_id="2020300" version_string="2.2.3"><![CDATA[<xf:title>{{ phrase('xs_is_invitation_code_id_x', {'orderId': $invitationCart.invitation_cart_id}) }}</xf:title>
+<xf:wrap template="account_wrapper" />
+<div class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:formrow label="{{ phrase('date') }}">
+				<xf:date time="{$invitationCart.cart_date}" />
+			</xf:formrow>
+			<xf:formrow label="{{ phrase('price') }}">
+				{$invitationCart.price|currency($invitationCart.currency)}
+			</xf:formrow>	
+			<xf:formrow label="{{ phrase('total') }}">
+				{$invitationCart.getCost()|currency($invitationCart.currency)}
+			</xf:formrow>	
+			<xf:formrow label="{{ phrase('state') }}">
+				{$invitationCart.getState()}
+			</xf:formrow>	
+			<xf:formrow label="{{ phrase('xs_is_number_invitation') }}">
+				{$invitationCart.number}
+			</xf:formrow>	
+			<h3 class="block-formSectionHeader">
+				<span class="block-formSectionHeader-aligner">{{ phrase('xs_is_invitation_code') }}</span>
+			</h3>
+			<xf:if is="$invitationCart.state == 'validate'">
+				<xf:foreach loop="$invitationCart.InvitationBuy" value="$code">
+					<xf:formrow>
+						<div class="inputGroup inputGroup--joined">
+							<div class="input {{ $code.registered_user_id ? 'is-disabled' : '' }}" {{ $code.registered_user_id ? 'disabled' : '' }}>
+								{$code.code}
+							</div>
+							<xf:if is="$code.registered_user_id">
+								<a class="inputGroup-text is-disabled" disabled >
+									<i class="fas fa-clipboard"></i>
+								</a>
+							<xf:else />
+								<a class="inputGroup-text"
+								   data-xf-init="copy-to-clipboard" data-copy-text="{$code.code}" >
+									<span data-xf-init="tooltip" title="{{ phrase('copy_to_clipboard')}}">
+										<i class="fas fa-clipboard"></i>
+									</span>
+								</a>
+							</xf:if>
+							
+						</div>
+						<div class="u-muted">
+							<xf:if is="$code.registered_user_id">
+								<xf:set var="$userRich"><xf:username user="$code.RegisteredUser" rich="true" /></xf:set>
+								{{ phrase('xs_is_invitation_code_use_by_x', {'user' : $userRich}) }}
+							<xf:else />
+								{{ phrase('xs_is_invitation_code_not_use') }}
+							</xf:if>
+						</div>
+					</xf:formrow>
+				</xf:foreach>
+			<xf:else />
+				<div class="formInfoRow">
+					<div class="blockMessage blockMessage--important">
+						{{ phrase('xs_is_your_state', {'state' : $invitationCart.getState()}) }}
+					</div>
+				</div>
+			</xf:if>
+		</div>
+	</div>
+</div>]]></template>
+  <template type="public" title="xs_is_buy_invite_code" version_id="2040100" version_string="2.4.1"><![CDATA[<xf:title>{{ phrase('xs_is_invitation_buy') }}</xf:title>
+
+<xf:form action="{{ link('purchase', { 'purchasable_type_id' : 'xs_invite_system'}) }}" ajax="true" class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:inforow>
+				{{ phrase('xs_is_buy_invitation_code_explain', {'email': $xf.options.contactEmailAddress}) }}
+			</xf:inforow>
+			
+			<xf:textboxrow name="email" type="email" autocomplete="email" required="required"
+						maxlength="{{ max_length($xf.visitor, 'email') }}"
+						label="{{ phrase('xs_is_your_email_address') }}"
+						hint="{{ phrase('required') }}" />
+			
+			<xf:if is="{{ count($profiles) > 1 }}">
+				<xf:formrow label="{{ phrase('payment_profile') }}" rowtype="button">
+					<div class="inputGroup">
+						<xf:select name="payment_profile_id">
+							<xf:option>{{ phrase('(choose_payment_method)') }}</xf:option>
+							<xf:foreach loop="$profiles" key="$profileId" value="$titleProfile">
+								<xf:option value="{$profileId}">{$titleProfile}</xf:option>
+							</xf:foreach>
+						</xf:select>
+					</div>
+				</xf:formrow>
+			</xf:if>
+			
+			<xf:formrow label="{{ phrase('xs_is_usage_limit') }}">
+				1
+			</xf:formrow>
+			<xf:if is="{{ count($xf.options.xs_is_code_buy_register.payment_profile_ids) === 1 }}">
+				<xf:hiddenval name="payment_profile_id">{$xf.options.xs_is_code_buy_register.payment_profile_ids|first}</xf:hiddenval>
+			</xf:if>
+		</div>
+		<xf:submitrow rowtype="simple">
+			<xf:html>
+				<xf:if is="$xf.options.xs_is_code_buy_register.enable">
+					<xf:button type="submit" class="button--primary">
+						{{ phrase('xs_is_buy_invitation_code_for_price', {'price' : $xf.options.xs_is_code_buy_register.price|currency($xf.options.xs_is_code_buy_register.currency)}) }}
+					</xf:button>
+				</xf:if>
+				<xf:button href="{{ link('register') }}">
+					{{ phrase('xs_is_i_have_an_invitation_code') }}
+				</xf:button>
+			</xf:html>
+		</xf:submitrow>
+	</div>
+</xf:form>]]></template>
+  <template type="public" title="xs_is_member_invitation" version_id="2010010" version_string="2.1.0 Fix 1"><![CDATA[<xf:title>{{ phrase('xs_is_list_of_invitations_by_x', {'user': $user.username}) }}</xf:title>
+
+<div class="block">
+	<div class="block-container">
+		<ol class="block-body">
+			<xf:foreach loop="$Codes" value="$Code">
+				<li class="block-row block-row--separated">
+					<xf:macro template="member_list_macros" name="item"
+							  arg-user="{$Code.RegisteredUser}"
+							  arg-extraData="{{ date_time($Code.RegisteredUser.register_date) }}" />
+				</li>
+				<xf:else />
+				<li class="blockMessage">{{ phrase('xs_is_no_intation') }}</li>
+			</xf:foreach>
+		</ol>
+	</div>
+
+	<xf:pagenav link="members/invitations" page="{$page}" perpage="{$perPage}" total="{$total}" data="{$user}"
+				wrapperclass="block-outer block-outer--after" />
+</div>]]></template>
+  <template type="public" title="xs_is_payment_processing" version_id="2040100" version_string="2.4.1"><![CDATA[<xf:title>{{ phrase('xs_si_registration_invites') }}</xf:title>
+
+<xf:js src="XenSoluce/InviteSystem/invite_system.js"
+	   addon="XenSoluce/InviteSystem" min="1"/>
+
+<div data-xf-init="registration-invites-auto-refresh" class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:inforow rowtype="confirm">
+				<strong>{{ phrase('xs_is_payment_still_processing') }}</strong>
+				<div>
+					{{ phrase('xs_is_payment_still_processing_explain', {'contacturl': link('canonical:misc/contact') }) }}
+				</div>
+				
+				<div>
+					{{ phrase('xs_is_page_will_be_auto_refreshed_in_x_seconds', {'count': 5}) }}
+				</div>
+			</xf:inforow>
+		</div>
+	</div>
+</div>]]></template>
+</templates>

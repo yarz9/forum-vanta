@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<routes>
+  <route route_type="admin" route_prefix="invitation" controller="XenSoluce\InviteSystem:Invitation" context="xsISinvitation"/>
+  <route route_type="admin" route_prefix="invitation" sub_name="banning" format="banning/:int&lt;user_id,username&gt;/" controller="XenSoluce\InviteSystem:Invitation" context="xsISbanning" action_prefix="Banning"/>
+  <route route_type="admin" route_prefix="invitation" sub_name="list-code" format="list-code/:int&lt;code_id&gt;/" controller="XenSoluce\InviteSystem:Invitation" context="xsISlistcode" action_prefix="ListCode"/>
+  <route route_type="admin" route_prefix="invitation" sub_name="logs" format="logs" controller="XenSoluce\InviteSystem:Logs" context="xsISinvitationLogs"/>
+  <route route_type="admin" route_prefix="invitation" sub_name="logs/orders" format="logs/orders/:int&lt;invitation_cart_id&gt;/" controller="XenSoluce\InviteSystem:Logs" context="xsISinvitationLogsOrders" action_prefix="Order"/>
+  <route route_type="admin" route_prefix="invitation" sub_name="personalized-invitation-code" format="personalized-invitation-code/:int&lt;ic_personalize_id&gt;/" controller="XenSoluce\InviteSystem:Invitation" context="xsISPersonalizedInvitationCode" action_prefix="PersonalizedInvitationCode"/>
+  <route route_type="admin" route_prefix="invitation" sub_name="tokens" format="tokens/:int&lt;token_id&gt;/:int&lt;code_id&gt;/" controller="XenSoluce\InviteSystem:Invitation" context="xsIStokens" action_prefix="tokens"/>
+  <route route_type="admin" route_prefix="invitation" sub_name="tokens-user" format="tokens-user/:int&lt;token_id&gt;/:int&lt;code_id&gt;/" controller="XenSoluce\InviteSystem:Invitation" context="xsIStokensUser" action_prefix="TokensUser"/>
+  <route route_type="public" route_prefix="account" sub_name="invitation-buy" format="invitation-buy/:int&lt;invitation_cart_id&gt;/:page" controller="XF:Account" context="account" action_prefix="InvitationBuy"/>
+  <route route_type="public" route_prefix="buy-invite-code" controller="XenSoluce\InviteSystem:BuyInviteCodeController"/>
+</routes>

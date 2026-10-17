@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class_extensions>
+  <extension from_class="XF\Entity\User" to_class="XenSoluce\InviteSystem\XF\Entity\User" execute_order="10" active="1"/>
+  <extension from_class="XF\Payment\PayPal" to_class="XenSoluce\InviteSystem\XF\Payment\PayPal" execute_order="10000" active="1"/>
+  <extension from_class="XF\Pub\Controller\Account" to_class="XenSoluce\InviteSystem\XF\Pub\Controller\Account" execute_order="10" active="1"/>
+  <extension from_class="XF\Pub\Controller\Member" to_class="XenSoluce\InviteSystem\XF\Pub\Controller\Member" execute_order="10" active="1"/>
+  <extension from_class="XF\Pub\Controller\Register" to_class="XenSoluce\InviteSystem\XF\Pub\Controller\Register" execute_order="10" active="1"/>
+  <extension from_class="XF\Service\User\Registration" to_class="XenSoluce\InviteSystem\XF\Service\User\Registration" execute_order="10" active="1"/>
+</class_extensions>

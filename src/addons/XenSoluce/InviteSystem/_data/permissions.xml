@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<permissions>
+  <permission permission_group_id="xs_is" permission_id="xs_is_can_invite_per_x_d" permission_type="integer" interface_group_id="xs_is" display_order="3"/>
+  <permission permission_group_id="xs_is" permission_id="xs_is_can_invite_someone" permission_type="flag" interface_group_id="xs_is" display_order="1"/>
+  <permission permission_group_id="xs_is" permission_id="xs_is_mtutis" permission_type="integer" interface_group_id="xs_is" display_order="4"/>
+  <permission permission_group_id="xs_is" permission_id="xs_is_only_with_email" permission_type="flag" interface_group_id="xs_is" display_order="5"/>
+  <permission permission_group_id="xs_is" permission_id="xs_is_x_d" permission_type="integer" interface_group_id="xs_is" display_order="2"/>
+</permissions>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cron>
+  <entry entry_id="xsDeleteExpiredBans" cron_class="XenSoluce\InviteSystem\Cron\InvitationBan" cron_method="deleteExpiredBans" active="1"><![CDATA[{"day_type":"dom","dom":[-1],"hours":[-1],"minutes":[0,45]}]]></entry>
+  <entry entry_id="xsDeleteExpiredCode" cron_class="XenSoluce\InviteSystem\Cron\InviteCodeTime" cron_method="deleteExpiredCode" active="0"><![CDATA[{"day_type":"dom","dom":[-1],"hours":[-1],"minutes":[45]}]]></entry>
+</cron>

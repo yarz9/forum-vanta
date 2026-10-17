@@ -1,0 +1,13 @@
+{
+  "build": {
+    "dockerfilePath": "Dockerfile",
+    "noCache": true
+  },
+  "deploy": {
+    "startCommand": "/usr/local/bin/start-apache.sh",
+    "restartPolicy": {
+      "type": "on-failure"
+    }
+  },
+  "$schema": "https://railway.app/railway.json"
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<admin_navigation>
+  <admin_navigation_entry navigation_id="xsISPersonalizedInvitationCode" parent_navigation_id="xsISinvitation" display_order="3" link="invitation/personalized-invitation-code/" admin_permission_id="xsISmanageInvitation" debug_only="0" development_only="0" hide_no_children="0"/>
+  <admin_navigation_entry navigation_id="xsISSendEmail" parent_navigation_id="xsISinvitation" display_order="6" link="invitation/send-email" admin_permission_id="xsISmanageInvitation" debug_only="0" development_only="0" hide_no_children="0"/>
+  <admin_navigation_entry navigation_id="xsISbanning" parent_navigation_id="xsISinvitation" display_order="5" link="invitation/banning/" admin_permission_id="xsISmanageInvitation" debug_only="0" development_only="0" hide_no_children="0"/>
+  <admin_navigation_entry navigation_id="xsISinvitation" display_order="10000" link="invitation/" icon="fa-user-friends" admin_permission_id="xsISmanageInvitation" debug_only="0" development_only="0" hide_no_children="0"/>
+  <admin_navigation_entry navigation_id="xsISinvitationLog" parent_navigation_id="xsISinvitation" display_order="100" link="invitation/logs" icon="fa-history" admin_permission_id="xsISmanageInvitation" debug_only="0" development_only="0" hide_no_children="0"/>
+  <admin_navigation_entry navigation_id="xsISinvitationLogsOrders" parent_navigation_id="xsISinvitationLog" display_order="1" link="invitation/logs/orders" admin_permission_id="xsISmanageInvitation" debug_only="0" development_only="0" hide_no_children="0"/>
+  <admin_navigation_entry navigation_id="xsISlistcode" parent_navigation_id="xsISinvitation" display_order="4" link="invitation/list-code/" admin_permission_id="xsISmanageInvitation" debug_only="0" development_only="0" hide_no_children="0"/>
+  <admin_navigation_entry navigation_id="xsIStokens" parent_navigation_id="xsISinvitation" display_order="1" link="invitation/tokens/" admin_permission_id="xsISmanageInvitation" debug_only="0" development_only="0" hide_no_children="0"/>
+  <admin_navigation_entry navigation_id="xsIStokensUser" parent_navigation_id="xsISinvitation" display_order="2" link="invitation/tokens-user" debug_only="0" development_only="0" hide_no_children="0"/>
+</admin_navigation>

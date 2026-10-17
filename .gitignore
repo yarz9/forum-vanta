@@ -1,0 +1,21 @@
+# XenForo runtime data (ignored for git, created at runtime)
+internal_data/
+data/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+*.zip
+*.tar.gz
+
+# Environment files
+.env

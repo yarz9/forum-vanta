@@ -1,0 +1,200 @@
+/**
+ * Vanta Theme - CSS for extra.less
+ * Black with Glowing Pink-Purple Accents (#E993FA)
+ * XenForo 2.3.6
+ */
+
+/* ---- Global ---- */
+html { background-color: #08070B; }
+body { background-color: #08070B; color: #F7F2FA; }
+a { color: #E993FA; }
+a:hover { color: #F3B8FF; text-shadow: 0 0 8px rgba(233, 147, 250, 0.4); }
+.u-muted { color: #A79BAE !important; }
+.u-dimmed { color: #7A6D87 !important; }
+
+/* ---- Page Header ---- */
+.p-header { background-color: #08070B; border-bottom: 1px solid #302138; }
+.p-header-content { padding: 10px 0; }
+
+/* ---- Navigation ---- */
+.p-nav { background: rgba(8, 7, 11, 0.95); border-bottom: 1px solid #302138; backdrop-filter: blur(10px); }
+.p-navEl { margin: 0 4px; border-radius: 4px; }
+.p-navEl-link { color: #A79BAE; padding: 8px 12px; border-radius: 4px; transition: all 0.2s ease; }
+.p-navEl-link:hover { color: #F3B8FF; text-shadow: 0 0 8px rgba(233, 147, 250, 0.4); }
+.p-navEl.is-selected .p-navEl-link { color: #E993FA; text-shadow: 0 0 10px rgba(233, 147, 250, 0.5); }
+.p-navgroup-link { color: #A79BAE; }
+.p-navgroup-link:hover { color: #F3B8FF; }
+.p-navgroup-link--icon { border-right: 1px solid #302138; }
+
+/* ---- Blocks ---- */
+.block { background-color: #100D14; border: 1px solid #302138; border-radius: 6px; box-shadow: 0 0 15px rgba(233, 147, 250, 0.05); }
+.block-header { background-color: #17121C; color: #F7F2FA; border-bottom: 1px solid #302138; border-radius: 6px 6px 0 0; }
+.block-row { background-color: #100D14; color: #F7F2FA; border-bottom: 1px solid #302138; }
+.block-row:hover { background-color: rgba(233, 147, 250, 0.05); }
+.block-desc { color: #A79BAE; }
+
+/* ---- Nodes ---- */
+.node { background-color: #100D14; border: 1px solid #302138; border-radius: 6px; transition: all 0.2s ease; }
+.node:hover { border-color: rgba(233, 147, 250, 0.3); }
+.node--unread .node-title a { color: #E993FA; text-shadow: 0 0 8px rgba(233, 147, 250, 0.4); }
+.node-title a { color: #F3B8FF; }
+.node-meta { color: #A79BAE; font-size: 12px; }
+.node-stats-value { color: #F7F2FA; }
+.node--unread .node-stats-value { color: #E993FA; }
+
+/* ---- Thread List ---- */
+.threadListItem { background-color: #100D14; border-bottom: 1px solid #302138; }
+.threadListItem:hover { background-color: #17121C; }
+.threadListItem--pinned { background-color: rgba(233, 147, 250, 0.05); }
+.threadListItem--unread { background-color: rgba(233, 147, 250, 0.08); }
+.threadTitle { color: #F3B8FF; }
+.threadTitle:hover { color: #E993FA; text-shadow: 0 0 8px rgba(233, 147, 250, 0.4); }
+.thread-prefix { background: rgba(233, 147, 250, 0.1); color: #E993FA; border: 1px solid #302138; border-radius: 4px; padding: 2px 6px; font-size: 11px; }
+
+/* ---- Posts ---- */
+.message { background-color: #100D14; border-bottom: 1px solid #302138; }
+.message-body { background-color: #08070B; border: 1px solid #302138; border-radius: 6px; }
+.message-user { background-color: #17121C; border-right: 1px solid #302138; }
+.message-userHeader { color: #F7F2FA; }
+.message-userTitle { color: #A79BAE; font-size: 12px; }
+.message-userBanner { color: #E993FA; }
+.message-actionBar { background-color: #17121C; border-top: 1px solid #302138; }
+.message-actionBar a { color: #A79BAE; }
+.message-actionBar a:hover { color: #E993FA; }
+
+/* ---- User Group Styling ---- */
+.username--vantaMember { color: #F3B8FF; text-shadow: 0 0 8px rgba(233, 147, 250, 0.4); }
+.vantaMember { color: #E993FA; text-shadow: 0 0 6px rgba(233, 147, 250, 0.3); }
+
+/* ---- Reaction Bar ---- */
+.reaction-bar { color: #A79BAE; }
+.reaction-bar .reaction-label { color: #E993FA; }
+.reaction-springs { background-color: rgba(233, 147, 250, 0.05); }
+
+/* ---- Quotes & Spoilers ---- */
+.quoteBlock { background: rgba(233, 147, 250, 0.05); border: 1px solid #302138; border-radius: 6px; }
+.quoteBlock-header { background: #17121C; color: #E993FA; border-bottom: 1px solid #302138; }
+.spoilerBlock { background: rgba(122, 109, 135, 0.1); border: 1px solid #302138; border-radius: 6px; }
+
+/* ---- Code Blocks ---- */
+.codeBlock { background: #0D0812; border: 1px solid #302138; border-radius: 6px; }
+.codeBlock-header { background: #100A19; color: #A79BAE; border-bottom: 1px solid #302138; }
+.codeBlock-code { color: #E4E0EB; }
+
+/* ---- Member List ---- */
+.memberListItem { background: #100D14; border-bottom: 1px solid #302138; }
+.memberListItem:hover { background: rgba(233, 147, 250, 0.05); }
+.memberListItem-name { color: #F3B8FF; }
+.memberList-online { color: #E993FA; }
+
+/* ---- Profile ---- */
+.profilePage { background: #08070B; }
+.profilePage .profileContent { background: #100D14; border: 1px solid #302138; border-radius: 6px; }
+.profilePage .profileUserDetails { background: #17121C; border-bottom: 1px solid #302138; }
+.profileUserTitle { color: #E993FA; }
+.profilePage .profileTags { color: #A79BAE; }
+.profilePage .profilebadge { background: rgba(233, 147, 250, 0.1); color: #E993FA; }
+
+/* ---- Alerts ---- */
+.alerts--list .alert-item { background: #100D14; border-bottom: 1px solid #302138; }
+.alerts--list .alert-item.alert-item--unread { background: rgba(233, 147, 250, 0.08); }
+.alert-item-username { color: #F3B8FF; }
+.alert-item-alert { color: #A79BAE; }
+.alert-item-alert.strong { color: #E993FA; }
+
+/* ---- Forms & Buttons ---- */
+.form-row .input { background: #17121C; border: 1px solid #302138; color: #F7F2FA; }
+.form-row .input:focus { border-color: #E993FA; box-shadow: 0 0 10px rgba(233, 147, 250, 0.3); }
+.form-row .input--error { border-color: #FF6B9A; }
+.form-row label { color: #F7F2FA; }
+.form-row .formRow-desc { color: #A79BAE; }
+.form-row .formValidation { color: #FF6B9A; }
+.button--primary { background: #E993FA; color: #08070B; border: 1px solid #E993FA; }
+.button--primary:hover { background: #F3B8FF; }
+.button { background: #17121C; border: 1px solid #302138; color: #F7F2FA; }
+.button:hover { background: rgba(233, 147, 250, 0.08); }
+.button--cta { background: #E993FA; color: #08070B; }
+
+/* ---- Dropdowns ---- */
+.menu-content { background: #17121C; border: 1px solid #302138; }
+.menu-item:hover { background: rgba(233, 147, 250, 0.08); }
+
+/* ---- Pagination ---- */
+.pagination { background: #17121C; border: 1px solid #302138; border-radius: 6px; }
+.pagination button, .pagination a { background: #17121C; color: #A79BAE; border: 1px solid #302138; }
+.pagination button:hover, .pagination a:hover { background: rgba(233, 147, 250, 0.08); color: #F3B8FF; }
+.pagination button:disabled, .pagination a:disabled { background: #100D14; color: #7A6D87; border-color: #302138; cursor: not-allowed; }
+.pagination--active { background: rgba(233, 147, 250, 0.08) !important; color: #E993FA !important; }
+.pagination--separator { color: #7A6D87; }
+
+/* ---- Footer ---- */
+.p-footer { background: #08070B; border-top: 1px solid #302138; color: #7A6D87; }
+.p-footer a { color: #A79BAE; }
+.p-footer a:hover { color: #E993FA; }
+
+/* ---- Conversations ---- */
+.conversation .message { background: #100D14; }
+.conversation-list .conversationListItem { background: #100D14; border-bottom: 1px solid #302138; }
+.conversation-list .conversationListItem:hover { background: #17121C; }
+.conversation-title { color: #F3B8FF; }
+.conversation-title:hover { color: #E993FA; }
+
+/* ---- Media Previews ---- */
+.responsiveMedia { border: 1px solid #302138; background: #0D0812; }
+.responsiveMedia-image { background: #0D0812; }
+.responsiveVideo-container { background: #0D0812; }
+
+/* ---- Thread View ---- */
+.thread-view .message { border-bottom: 1px solid #302138; }
+.thread-view .message--postInline { background: #100D14; }
+.article-body { color: #F7F2FA; }
+
+/* ---- Empty States ---- */
+.block-body .emptyContainer {
+  padding: 40px 20px;
+  text-align: center;
+  color: #A79BAE;
+}
+.block-body .emptyContainer .button {
+  margin-top: 15px;
+}
+.node-extra-placeholder {
+  color: #7A6D87;
+  font-style: italic;
+  font-size: 12px;
+}
+
+/* ---- Node Stats ---- */
+.node-stats dl.pairs--inline,
+.node-statsMeta dl.pairs--inline {
+  gap: 8px 12px;
+}
+
+/* ---- Sidebar ---- */
+.p-body-sidebar .block {
+  margin-bottom: 12px;
+}
+.p-body-sidebar .block-minorHeader {
+  background: #17121C;
+  color: #F7F2FA;
+  border-bottom: 1px solid #302138;
+}
+
+/* ---- Share Buttons ---- */
+.shareButtons-button {
+  background: #17121C;
+  border: 1px solid #302138;
+  color: #A79BAE;
+}
+.shareButtons-button:hover {
+  background: rgba(233, 147, 250, 0.1);
+  color: #F3B8FF;
+}
+
+/* ---- Response ---- */
+@media (max-width: 768px) {
+  .block { border-radius: 0; }
+  .message-user { display: none; }
+  .message-cell { padding: 10px; }
+  .p-nav { padding: 0; }
+}

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<options>
+  <option option_id="xs_is_check_email_exist" edit_format="onoff" data_type="boolean" advanced="0">
+    <default_value>0</default_value>
+    <relation group_id="xs_is_settings" display_order="130"/>
+  </option>
+  <option option_id="xs_is_code_buy" edit_format="callback" data_type="array" advanced="0">
+    <default_value>{"enable":false,"price":false,"currency":false,"payment_profile_ids":false}</default_value>
+    <edit_format_params>XenSoluce\InviteSystem\Option\InvitePayment::renderOptionInvitePayment</edit_format_params>
+    <sub_options>enable
+price
+currency
+payment_profile_ids</sub_options>
+    <relation group_id="xs_is_settings" display_order="200"/>
+  </option>
+  <option option_id="xs_is_code_buy_register" edit_format="callback" data_type="array" advanced="0">
+    <default_value>{"enable":false,"price":false,"currency":false,"payment_profile_ids":false}</default_value>
+    <edit_format_params>XenSoluce\InviteSystem\Option\InvitePayment::renderOptionInvitePaymentRegister</edit_format_params>
+    <sub_options>enable
+price
+currency
+payment_profile_ids</sub_options>
+    <relation group_id="xs_is_settings" display_order="210"/>
+  </option>
+  <option option_id="xs_is_code_required" edit_format="callback" data_type="array" advanced="0">
+    <default_value>{"mandatory":"yes","first_group":false,"first_user_group_id":0,"secondary_group":false,"secondary_user_group_id":0}</default_value>
+    <edit_format_params>XenSoluce\InviteSystem\Option\InviteGroup::renderOptionInviteGroup</edit_format_params>
+    <sub_options>mandatory
+first_group
+first_user_group_id
+secondary_group
+secondary_user_group_id</sub_options>
+    <relation group_id="xs_is_settings" display_order="10"/>
+  </option>
+  <option option_id="xs_is_enable_token_in_account" edit_format="onoff" data_type="string" advanced="0">
+    <default_value>1</default_value>
+    <relation group_id="xs_is_settings" display_order="40"/>
+  </option>
+  <option option_id="xs_is_invitation_code_time" edit_format="callback" data_type="array" advanced="0">
+    <default_value>{"Choose":"permanent","time":"0"}</default_value>
+    <edit_format_params>XenSoluce\InviteSystem\Option\InviteCodeTime::renderOptionInviteCodeTime</edit_format_params>
+    <sub_options>Choose
+time</sub_options>
+    <relation group_id="xs_is_settings" display_order="30"/>
+  </option>
+  <option option_id="xs_is_perPage_account" edit_format="spinbox" data_type="string" advanced="0">
+    <default_value>10</default_value>
+    <relation group_id="xs_is_settings" display_order="20"/>
+  </option>
+  <option option_id="xs_is_predefined_message_email" edit_format="textbox" data_type="string" advanced="0">
+    <default_value></default_value>
+    <edit_format_params>rows=5</edit_format_params>
+    <relation group_id="xs_is_settings" display_order="120"/>
+  </option>
+  <option option_id="xs_is_sender_email_address" edit_format="textbox" data_type="string" advanced="0">
+    <default_value></default_value>
+    <relation group_id="xs_is_settings" display_order="100"/>
+  </option>
+  <option option_id="xs_is_sender_name" edit_format="textbox" data_type="string" advanced="0">
+    <default_value></default_value>
+    <relation group_id="xs_is_settings" display_order="110"/>
+  </option>
+</options>

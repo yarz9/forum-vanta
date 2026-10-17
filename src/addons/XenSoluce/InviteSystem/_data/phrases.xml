@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phrases>
+  <phrase title="admin_navigation.xsISPersonalizedInvitationCode" version_id="2010400" version_string="2.1.4"><![CDATA[Personalized invitation code]]></phrase>
+  <phrase title="admin_navigation.xsISSendEmail" version_id="2010800" version_string="2.1.8"><![CDATA[Send email invitation]]></phrase>
+  <phrase title="admin_navigation.xsISbanning" version_id="2000000" version_string="2.0.0"><![CDATA[Banned users]]></phrase>
+  <phrase title="admin_navigation.xsISinvitation" version_id="2000000" version_string="2.0.0"><![CDATA[Invitation]]></phrase>
+  <phrase title="admin_navigation.xsISinvitationLog" version_id="2020300" version_string="2.2.3"><![CDATA[Logs]]></phrase>
+  <phrase title="admin_navigation.xsISinvitationLogsOrders" version_id="2020300" version_string="2.2.3"><![CDATA[Orders]]></phrase>
+  <phrase title="admin_navigation.xsISlistcode" version_id="2000000" version_string="2.0.0"><![CDATA[List code]]></phrase>
+  <phrase title="admin_navigation.xsIStokens" version_id="2000000" version_string="2.0.0"><![CDATA[Tokens]]></phrase>
+  <phrase title="admin_navigation.xsIStokensUser" version_id="2000000" version_string="2.0.0"><![CDATA[Tokens user]]></phrase>
+  <phrase title="admin_permission.xsISmanageInvitation" version_id="2000000" version_string="2.0.0"><![CDATA[Manage invitation system]]></phrase>
+  <phrase title="cron_entry.xsDeleteExpiredBans" version_id="2000000" version_string="2.0.0"><![CDATA[[Xen-Soluce] Invite System : Delete expired bans]]></phrase>
+  <phrase title="cron_entry.xsDeleteExpiredCode" version_id="2010010" version_string="2.1.0 Fix 1"><![CDATA[[Xen-Soluce] Invite System : Delete expired code]]></phrase>
+  <phrase title="member_stat.most_invitations" version_id="2000000" version_string="2.0.0"><![CDATA[Most invitations]]></phrase>
+  <phrase title="option.xs_is_check_email_exist" version_id="2030130" version_string="2.3.1 Fix 3"><![CDATA[Check whether the email addresses entered have already been invited or registered]]></phrase>
+  <phrase title="option.xs_is_code_buy" version_id="2020300" version_string="2.2.3"><![CDATA[Invitation code sale]]></phrase>
+  <phrase title="option.xs_is_code_buy_register" version_id="2040091" version_string="2.4.0 Fix 1"><![CDATA[Registration purchase invitation code]]></phrase>
+  <phrase title="option.xs_is_code_required" version_id="2010200" version_string="2.1.2"><![CDATA[Code required during registration]]></phrase>
+  <phrase title="option.xs_is_enable_token_in_account" version_id="2010400" version_string="2.1.4"><![CDATA[Display tokens]]></phrase>
+  <phrase title="option.xs_is_invitation_code_time" version_id="2010010" version_string="2.1.0 Fix 1"><![CDATA[Validity of the invitation code]]></phrase>
+  <phrase title="option.xs_is_perPage_account" version_id="2000000" version_string="2.0.0"><![CDATA[Tokens per page]]></phrase>
+  <phrase title="option.xs_is_predefined_message_email" version_id="2010800" version_string="2.1.8"><![CDATA[Predefined message (email)]]></phrase>
+  <phrase title="option.xs_is_sender_email_address" version_id="2010800" version_string="2.1.8"><![CDATA[Sender email address]]></phrase>
+  <phrase title="option.xs_is_sender_name" version_id="2010800" version_string="2.1.8"><![CDATA[Sender name]]></phrase>
+  <phrase title="option_explain.xs_is_check_email_exist" version_id="2030130" version_string="2.3.1 Fix 3"><![CDATA[]]></phrase>
+  <phrase title="option_explain.xs_is_code_buy" version_id="2020300" version_string="2.2.3"><![CDATA[This option allows you to configure the sale of invitation codes<br >
+<strong>Note:</strong> Ensure your merchant account with the selected payment profiles supports the above currencies. Currency support may vary by region.]]></phrase>
+  <phrase title="option_explain.xs_is_code_buy_register" version_id="2040091" version_string="2.4.0 Fix 1"><![CDATA[This option allows you to configure the sale of invitation codes during registration.<br >
+<strong>Note:</strong> Ensure your merchant account with the selected payment profiles supports the above currencies. Currency support may vary by region.]]></phrase>
+  <phrase title="option_explain.xs_is_code_required" version_id="2010200" version_string="2.1.2"><![CDATA[If you put yes the invitation code will be required during registration]]></phrase>
+  <phrase title="option_explain.xs_is_enable_token_in_account" version_id="2010400" version_string="2.1.4"><![CDATA[If this option is enabled, will display the tokens on the account page.]]></phrase>
+  <phrase title="option_explain.xs_is_invitation_code_time" version_id="2010010" version_string="2.1.0 Fix 1"><![CDATA[Choose the time an invitation code is valid]]></phrase>
+  <phrase title="option_explain.xs_is_perPage_account" version_id="2000000" version_string="2.0.0"><![CDATA[This option allow you to choose the number of tokens to display per page for the account page.]]></phrase>
+  <phrase title="option_explain.xs_is_predefined_message_email" version_id="2010800" version_string="2.1.8"><![CDATA[You can set the email that will be sent to the invited user, you can use :<br />
+- {code} : this allows you to put the invitation code in the message <br />
+- {username} : will be replaced by the username of the user who is prompted]]></phrase>
+  <phrase title="option_explain.xs_is_sender_email_address" version_id="2010800" version_string="2.1.8"><![CDATA[This option allows you to set an email address for invitation emails.]]></phrase>
+  <phrase title="option_explain.xs_is_sender_name" version_id="2020200" version_string="2.2.2"><![CDATA[This option allows you to set a custom sender name for invitation emails. If left blank, it will use the name of the user.]]></phrase>
+  <phrase title="option_group.xs_is_settings" version_id="2000000" version_string="2.0.0"><![CDATA[[Xen-Soluce] Invite System]]></phrase>
+  <phrase title="option_group_description.xs_is_settings" version_id="2000000" version_string="2.0.0"><![CDATA[Options here control the Invite System add-on by Xen-Soluce.]]></phrase>
+  <phrase title="permission.xs_is_xs_is_can_invite_per_x_d" version_id="2010800" version_string="2.1.8"><![CDATA[Invitations per X day]]></phrase>
+  <phrase title="permission.xs_is_xs_is_can_invite_someone" version_id="2000000" version_string="2.0.0"><![CDATA[Can invite someone]]></phrase>
+  <phrase title="permission.xs_is_xs_is_mtutis" version_id="2020130" version_string="2.2.1 Fix 3"><![CDATA[X message to use the invitation system]]></phrase>
+  <phrase title="permission.xs_is_xs_is_only_with_email" version_id="2020220" version_string="2.2.2 Fix 2"><![CDATA[Send invitation by email only]]></phrase>
+  <phrase title="permission.xs_is_xs_is_x_d" version_id="2010800" version_string="2.1.8"><![CDATA[X day]]></phrase>
+  <phrase title="permission_interface.xs_is" version_id="2000000" version_string="2.0.0"><![CDATA[[Xen-Soluce] Invite System]]></phrase>
+  <phrase title="xs_is_a_user_buy_an_invitation_code" version_id="2040091" version_string="2.4.0 Fix 1"><![CDATA[A user to buy an invitation code.]]></phrase>
+  <phrase title="xs_is_account_ban" version_id="2000000" version_string="2.0.0"><![CDATA[You had been banned from the invitation system]]></phrase>
+  <phrase title="xs_is_account_ban_reason" version_id="2000000" version_string="2.0.0"><![CDATA[You have been banned from the invitation system for the following reason]]></phrase>
+  <phrase title="xs_is_add_personalized_invitation_code" version_id="2010400" version_string="2.1.4"><![CDATA[Add personalized invitation code]]></phrase>
+  <phrase title="xs_is_add_tokens" version_id="2000000" version_string="2.0.0"><![CDATA[Add token]]></phrase>
+  <phrase title="xs_is_add_tokens_user" version_id="2000000" version_string="2.0.0"><![CDATA[Add token user]]></phrase>
+  <phrase title="xs_is_add_user" version_id="2000000" version_string="2.0.0"><![CDATA[Add user]]></phrase>
+  <phrase title="xs_is_awaiting_payment" version_id="2020300" version_string="2.2.3"><![CDATA[Awaiting payment]]></phrase>
+  <phrase title="xs_is_buy_code_explain" version_id="2040100" version_string="2.4.1"><![CDATA[Enter an invitation code given to you by a forum member or <a href="{linkBuyInvite}">buy an invitation code</a>.]]></phrase>
+  <phrase title="xs_is_buy_invitation_code" version_id="2020300" version_string="2.2.3"><![CDATA[Buy invitation code]]></phrase>
+  <phrase title="xs_is_buy_invitation_code_explain" version_id="2040091" version_string="2.4.0 Fix 1"><![CDATA[The invitation code will be sent by email once payment has been validated (remember to check your spam folder).<br/>
+
+<strong>Note:</strong> If there is any problem, if the payment is successful but the account registration code is not obtained, please send an email to the official mailbox for consultation . Will reply as soon as possible. Email: {email}]]></phrase>
+  <phrase title="xs_is_buy_invitation_code_for_price" version_id="2040091" version_string="2.4.0 Fix 1"><![CDATA[Buy invitation code for {price}]]></phrase>
+  <phrase title="xs_is_cancelled" version_id="2020300" version_string="2.2.3"><![CDATA[Cancelled]]></phrase>
+  <phrase title="xs_is_check_whether_the_email_addresses_entered_have_already_been_invited_or_registered" version_id="2030010" version_string="2.3.0 Fix 1"><![CDATA[Check whether the email addresses entered have already been invited or registered]]></phrase>
+  <phrase title="xs_is_code" version_id="2000000" version_string="2.0.0"><![CDATA[Invitation code]]></phrase>
+  <phrase title="xs_is_code_already_used" version_id="2000000" version_string="2.0.0"><![CDATA[The invitation code ({code}) you entered has already been used, please enter another one.]]></phrase>
+  <phrase title="xs_is_code_buy_register_sender_email_address_explain" version_id="2040091" version_string="2.4.0 Fix 1"><![CDATA[This option allows you to set an email address for invitation emails.]]></phrase>
+  <phrase title="xs_is_code_buy_register_sender_name_explain" version_id="2040091" version_string="2.4.0 Fix 1"><![CDATA[This option allows you to set a custom sender name for invitation emails.]]></phrase>
+  <phrase title="xs_is_code_created_by" version_id="2000000" version_string="2.0.0"><![CDATA[Code created by]]></phrase>
+  <phrase title="xs_is_code_explain" version_id="2000000" version_string="2.0.0"><![CDATA[Enter an invitation code that a forum member has given you.]]></phrase>
+  <phrase title="xs_is_code_generate" version_id="2000000" version_string="2.0.0"><![CDATA[Here is the invitation code]]></phrase>
+  <phrase title="xs_is_code_not_use" version_id="2000000" version_string="2.0.0"><![CDATA[Code not to use]]></phrase>
+  <phrase title="xs_is_code_reached_maximum_number_registrations" version_id="2010400" version_string="2.1.4"><![CDATA[The invitation code ({code}) you entered has reached the maximum number of registrations ({number}), please enter another one.]]></phrase>
+  <phrase title="xs_is_code_use" version_id="2000000" version_string="2.0.0"><![CDATA[Code use]]></phrase>
+  <phrase title="xs_is_convert_month_and_day" version_id="2030000" version_string="2.3.0"><![CDATA[{month} and {day}]]></phrase>
+  <phrase title="xs_is_convert_month_and_week" version_id="2030000" version_string="2.3.0"><![CDATA[{month} and {week}]]></phrase>
+  <phrase title="xs_is_convert_month_week_and_day" version_id="2030000" version_string="2.3.0"><![CDATA[{month}, {week} and {day}]]></phrase>
+  <phrase title="xs_is_convert_week_and_day" version_id="2030000" version_string="2.3.0"><![CDATA[{week} and {day}]]></phrase>
+  <phrase title="xs_is_convert_year_and_day" version_id="2030000" version_string="2.3.0"><![CDATA[{year} and {day}]]></phrase>
+  <phrase title="xs_is_convert_year_and_month" version_id="2030000" version_string="2.3.0"><![CDATA[{yeah} and {month}]]></phrase>
+  <phrase title="xs_is_convert_year_and_week" version_id="2030000" version_string="2.3.0"><![CDATA[{year} and {week}]]></phrase>
+  <phrase title="xs_is_convert_year_month_and_day" version_id="2030000" version_string="2.3.0"><![CDATA[{year}, {month} and {day}]]></phrase>
+  <phrase title="xs_is_convert_year_month_and_week" version_id="2030000" version_string="2.3.0"><![CDATA[{year}, {month} and {week}]]></phrase>
+  <phrase title="xs_is_convert_year_month_week_and_day" version_id="2030000" version_string="2.3.0"><![CDATA[{year}, {month}, {week} and {day}]]></phrase>
+  <phrase title="xs_is_convert_year_week_and_day" version_id="2030000" version_string="2.3.0"><![CDATA[{year}, {week} and {day}]]></phrase>
+  <phrase title="xs_is_copied" version_id="2000000" version_string="2.0.0"><![CDATA[copied !]]></phrase>
+  <phrase title="xs_is_copy" version_id="2000000" version_string="2.0.0"><![CDATA[Copy]]></phrase>
+  <phrase title="xs_is_edit_personalized_invitation_code" version_id="2010400" version_string="2.1.4"><![CDATA[Edit personalized invitation code]]></phrase>
+  <phrase title="xs_is_edit_tokens" version_id="2000000" version_string="2.0.0"><![CDATA[Edit token]]></phrase>
+  <phrase title="xs_is_edit_tokens_user" version_id="2000000" version_string="2.0.0"><![CDATA[Edit token user]]></phrase>
+  <phrase title="xs_is_email_info_name" version_id="2040091" version_string="2.4.0 Fix 1"><![CDATA[Email info ({name})]]></phrase>
+  <phrase title="xs_is_enable_add_user_group" version_id="2040100" version_string="2.4.1"><![CDATA[User group on signup]]></phrase>
+  <phrase title="xs_is_enable_this_invitation" version_id="2010400" version_string="2.1.4"><![CDATA[Enable this invitation]]></phrase>
+  <phrase title="xs_is_explain_add_user_group" version_id="2010620" version_string="2.1.6 Fix 2"><![CDATA[This option allows you to define a user group that a member will have when they register with an invitation code.]]></phrase>
+  <phrase title="xs_is_first_group" version_id="2010530" version_string="2.1.5 Fix 3"><![CDATA[Added as first user group]]></phrase>
+  <phrase title="xs_is_general_code_limit_reached" version_id="2030000" version_string="2.3.0"><![CDATA[You had reached the maximum number of invitation codes you could generate per month ({PerMonth} invitation code per {xDay})]]></phrase>
+  <phrase title="xs_is_generate" version_id="2000000" version_string="2.0.0"><![CDATA[Generate]]></phrase>
+  <phrase title="xs_is_i_have_an_invitation_code" version_id="2040091" version_string="2.4.0 Fix 1"><![CDATA[I have an invitation code]]></phrase>
+  <phrase title="xs_is_invalid_code" version_id="2000000" version_string="2.0.0"><![CDATA[The invitation code ({code}) you entered is not valid, please enter another one.]]></phrase>
+  <phrase title="xs_is_invitation_buy" version_id="2020300" version_string="2.2.3"><![CDATA[Buy invitation codes]]></phrase>
+  <phrase title="xs_is_invitation_code" version_id="2000000" version_string="2.0.0"><![CDATA[Invitation code ]]></phrase>
+  <phrase title="xs_is_invitation_code_explain" version_id="2010200" version_string="2.1.2"><![CDATA[Entered a custom invitation code ]]></phrase>
+  <phrase title="xs_is_invitation_code_id_x" version_id="2030000" version_string="2.3.0"><![CDATA[Invitation code #{orderId}]]></phrase>
+  <phrase title="xs_is_invitation_code_not_use" version_id="2020300" version_string="2.2.3"><![CDATA[The invitation code is not yet in use.]]></phrase>
+  <phrase title="xs_is_invitation_code_use" version_id="2010200" version_string="2.1.2"><![CDATA[The personalized invitation code is already in use, please put another one]]></phrase>
+  <phrase title="xs_is_invitation_code_use_by_x" version_id="2020300" version_string="2.2.3"><![CDATA[The invitation code is already used by : {user}.]]></phrase>
+  <phrase title="xs_is_invitation_tokens" version_id="2000000" version_string="2.0.0"><![CDATA[Invitation tokens]]></phrase>
+  <phrase title="xs_is_invitations" version_id="2010010" version_string="2.1.0 Fix 1"><![CDATA[Invitations]]></phrase>
+  <phrase title="xs_is_invited_by" version_id="2010000" version_string="2.1.0"><![CDATA[Invited by]]></phrase>
+  <phrase title="xs_is_limit_in_time" version_id="2010400" version_string="2.1.4"><![CDATA[Limit in time]]></phrase>
+  <phrase title="xs_is_limited_time" version_id="2010400" version_string="2.1.4"><![CDATA[Limited time]]></phrase>
+  <phrase title="xs_is_limited_use" version_id="2010400" version_string="2.1.4"><![CDATA[Limited use]]></phrase>
+  <phrase title="xs_is_list_code" version_id="2000000" version_string="2.0.0"><![CDATA[List code]]></phrase>
+  <phrase title="xs_is_list_of_invitations_by_x" version_id="2010010" version_string="2.1.0 Fix 1"><![CDATA[List of invitations by {user}]]></phrase>
+  <phrase title="xs_is_maximum_usable" version_id="2000000" version_string="2.0.0"><![CDATA[Maximum usable]]></phrase>
+  <phrase title="xs_is_maximum_usable_explain" version_id="2000000" version_string="2.0.0"><![CDATA[Enter the number of times the token can be used ]]></phrase>
+  <phrase title="xs_is_most_invitations" version_id="2000000" version_string="2.0.0"><![CDATA[Most invitations]]></phrase>
+  <phrase title="xs_is_no_code_has_been_generated" version_id="2000000" version_string="2.0.0"><![CDATA[No code has been generated ]]></phrase>
+  <phrase title="xs_is_no_intation" version_id="2010010" version_string="2.1.0 Fix 1"><![CDATA[No invitation at this time]]></phrase>
+  <phrase title="xs_is_no_invitation_has_been_created" version_id="2000000" version_string="2.0.0"><![CDATA[No invitation has been created.]]></phrase>
+  <phrase title="xs_is_no_invitation_tokens_have_been_created" version_id="2000000" version_string="2.0.0"><![CDATA[No invitation tokens have been created]]></phrase>
+  <phrase title="xs_is_no_invitation_was_purchased" version_id="2040091" version_string="2.4.0 Fix 1"><![CDATA[No invitation was purchased]]></phrase>
+  <phrase title="xs_is_no_longer_valid" version_id="2010400" version_string="2.1.4"><![CDATA[The invitation code ({code}) you entered is no longer valid, please enter another one.]]></phrase>
+  <phrase title="xs_is_number_buy_explain" version_id="2020300" version_string="2.2.3"><![CDATA[Enter the number of invitation codes you wish to purchase.]]></phrase>
+  <phrase title="xs_is_number_code_invitation_buy" version_id="2020300" version_string="2.2.3"><![CDATA[{number} invitation code to buy]]></phrase>
+  <phrase title="xs_is_number_invitation" version_id="2020300" version_string="2.2.3"><![CDATA[Number of invitation codes]]></phrase>
+  <phrase title="xs_is_number_times_usable" version_id="2010400" version_string="2.1.4"><![CDATA[Number of times usable]]></phrase>
+  <phrase title="xs_is_order_id_x" version_id="2020300" version_string="2.2.3"><![CDATA[Order #{orderId}]]></phrase>
+  <phrase title="xs_is_order_x_price" version_id="2020300" version_string="2.2.3"><![CDATA[Order #{id} ({price})]]></phrase>
+  <phrase title="xs_is_orders" version_id="2020300" version_string="2.2.3"><![CDATA[Orders]]></phrase>
+  <phrase title="xs_is_page_will_be_auto_refreshed_in_x_seconds" version_id="2040091" version_string="2.4.0 Fix 1"><![CDATA[The page will be automatically refreshed in <span class="js-autoRefreshCounter">{count}</span> seconds]]></phrase>
+  <phrase title="xs_is_payment_still_processing" version_id="2040091" version_string="2.4.0 Fix 1"><![CDATA[Your payment is being validated.]]></phrase>
+  <phrase title="xs_is_payment_still_processing_explain" version_id="2040091" version_string="2.4.0 Fix 1"><![CDATA[Please try refreshing the page after some time. If nothing happened after a sufficient amount of time, please, <a href="{contacturl}">contact us</a>.]]></phrase>
+  <phrase title="xs_is_pending_validation" version_id="2020300" version_string="2.2.3"><![CDATA[Pending validation]]></phrase>
+  <phrase title="xs_is_personalized_invitation_code" version_id="2010400" version_string="2.1.4"><![CDATA[Personalized invitation code]]></phrase>
+  <phrase title="xs_is_please_confirm_that_you_want_the_user_x_of_this_token_y" version_id="2000000" version_string="2.0.0"><![CDATA[Please confirm that you want the user : <b>{user}</b> to be deleted from this token : <b>{token}</b>]]></phrase>
+  <phrase title="xs_is_please_enter_a_number_above_0" version_id="2020300" version_string="2.2.3"><![CDATA[Please enter a number above 0]]></phrase>
+  <phrase title="xs_is_please_enter_a_number_less_than_x" version_id="2020300" version_string="2.2.3"><![CDATA[Please enter a number less than {number}]]></phrase>
+  <phrase title="xs_is_price_of_an_invitation_code" version_id="2020300" version_string="2.2.3"><![CDATA[<b>Note :</b> Price of an invitation code : {price}]]></phrase>
+  <phrase title="xs_is_purchase_of_invitations_codes" version_id="2020300" version_string="2.2.3"><![CDATA[Purchase of invitations codes.]]></phrase>
+  <phrase title="xs_is_purchase_of_x_invitation_codes" version_id="2020300" version_string="2.2.3"><![CDATA[Purchase of {number} invitation codes.]]></phrase>
+  <phrase title="xs_is_receipt_for_the_purchase_of_invitation_codes_at_x" version_id="2020300" version_string="2.2.3"><![CDATA[Receipt for the purchase of invitation codes at {board_title}]]></phrase>
+  <phrase title="xs_is_registered_user" version_id="2000000" version_string="2.0.0"><![CDATA[Registered user]]></phrase>
+  <phrase title="xs_is_secondary_group" version_id="2010530" version_string="2.1.5 Fix 3"><![CDATA[Addition as a second user group]]></phrase>
+  <phrase title="xs_is_send_email_invitation" version_id="2010800" version_string="2.1.8"><![CDATA[Send email invitation]]></phrase>
+  <phrase title="xs_is_send_invite_by_email" version_id="2020200" version_string="2.2.2"><![CDATA[Send email invitation]]></phrase>
+  <phrase title="xs_is_send_invite_by_email_explain" version_id="2020200" version_string="2.2.2"><![CDATA[This option allows you to send the invitation by email]]></phrase>
+  <phrase title="xs_is_sender_email_address" version_id="2040091" version_string="2.4.0 Fix 1"><![CDATA[Sender email address]]></phrase>
+  <phrase title="xs_is_sender_name" version_id="2040091" version_string="2.4.0 Fix 1"><![CDATA[Sender name]]></phrase>
+  <phrase title="xs_is_subject_of_the_email_by_default" version_id="2020130" version_string="2.2.1 Fix 3"><![CDATA[The user {username} invites you to join {boardTitle}]]></phrase>
+  <phrase title="xs_is_thank_you_for_purchasing_invitation_codes_at_x" version_id="2020300" version_string="2.2.3"><![CDATA[Thank you for purchasing invitation codes at <a href="{board_url}">{board_title}</a>.]]></phrase>
+  <phrase title="xs_is_thank_you_for_purchasing_x_invitation_codes" version_id="2020300" version_string="2.2.3"><![CDATA[Thank you for purchasing {number} invitation codes]]></phrase>
+  <phrase title="xs_is_the_user_x_to_buy_number_invitation_code" version_id="2020300" version_string="2.2.3"><![CDATA[The user {user} to buy {number} invitation code.]]></phrase>
+  <phrase title="xs_is_title" version_id="2000000" version_string="2.0.0"><![CDATA[Title]]></phrase>
+  <phrase title="xs_is_title_explain" version_id="2000000" version_string="2.0.0"><![CDATA[Entered a title for the token]]></phrase>
+  <phrase title="xs_is_token" version_id="2000000" version_string="2.0.0"><![CDATA[Token]]></phrase>
+  <phrase title="xs_is_token_title" version_id="2000000" version_string="2.0.0"><![CDATA[Token title]]></phrase>
+  <phrase title="xs_is_token_user" version_id="2000000" version_string="2.0.0"><![CDATA[Token user]]></phrase>
+  <phrase title="xs_is_usage_limit" version_id="2040091" version_string="2.4.0 Fix 1"><![CDATA[Usage limit]]></phrase>
+  <phrase title="xs_is_use" version_id="2000000" version_string="2.0.0"><![CDATA[Use]]></phrase>
+  <phrase title="xs_is_user_already_added" version_id="2000000" version_string="2.0.0"><![CDATA[The user: <b>{username}</b> has already been added]]></phrase>
+  <phrase title="xs_is_user_create" version_id="2000000" version_string="2.0.0"><![CDATA[User created code]]></phrase>
+  <phrase title="xs_is_user_group" version_id="2000000" version_string="2.0.0"><![CDATA[User groups]]></phrase>
+  <phrase title="xs_is_user_group_explain" version_id="2000000" version_string="2.0.0"><![CDATA[Select the user groups that will be able to use this invitation token]]></phrase>
+  <phrase title="xs_is_user_group_id_select_explaine" version_id="2010200" version_string="2.1.2"><![CDATA[This option allows you to define a user group that a member will have when they register with an invitation code. To disable this option you just had to put: (None).
+<br/> ]]></phrase>
+  <phrase title="xs_is_user_has_invited_at_least_x_users" version_id="2010000" version_string="2.1.0"><![CDATA[User has invited at least X users]]></phrase>
+  <phrase title="xs_is_user_has_invited_no_more_than_x_users" version_id="2010000" version_string="2.1.0"><![CDATA[User has invited no more than X users]]></phrase>
+  <phrase title="xs_is_username" version_id="2010200" version_string="2.1.2"><![CDATA[Username]]></phrase>
+  <phrase title="xs_is_username_explain" version_id="2010200" version_string="2.1.2"><![CDATA[Between the username of a member who invites.]]></phrase>
+  <phrase title="xs_is_username_not_correct" version_id="2010200" version_string="2.1.2"><![CDATA[The username entered is not correct]]></phrase>
+  <phrase title="xs_is_usernames" version_id="2000000" version_string="2.0.0"><![CDATA[Usernames]]></phrase>
+  <phrase title="xs_is_validate" version_id="2020300" version_string="2.2.3"><![CDATA[Validate]]></phrase>
+  <phrase title="xs_is_x_day" version_id="2030000" version_string="2.3.0"><![CDATA[{day} day]]></phrase>
+  <phrase title="xs_is_x_has_registered_using_your_invitation_code" version_id="2000000" version_string="2.0.0"><![CDATA[{user} registered using your invitation code!]]></phrase>
+  <phrase title="xs_is_x_is_already_invited_or_registered" version_id="2030010" version_string="2.3.0 Fix 1"><![CDATA[The {email} e-mail address has already been invited or registered.]]></phrase>
+  <phrase title="xs_is_x_month" version_id="2030000" version_string="2.3.0"><![CDATA[{month} month]]></phrase>
+  <phrase title="xs_is_x_week" version_id="2030000" version_string="2.3.0"><![CDATA[{week} week]]></phrase>
+  <phrase title="xs_is_x_year" version_id="2030000" version_string="2.3.0"><![CDATA[{year} year]]></phrase>
+  <phrase title="xs_is_you_had_to_provide_at_least_one_email_address" version_id="2030010" version_string="2.3.0 Fix 1"><![CDATA[You had to provide at least one e-mail address]]></phrase>
+  <phrase title="xs_is_your_email_address" version_id="2040091" version_string="2.4.0 Fix 1"><![CDATA[Your email address]]></phrase>
+  <phrase title="xs_si_registration_invites" version_id="2040091" version_string="2.4.0 Fix 1"><![CDATA[Registration invites]]></phrase>
+</phrases>

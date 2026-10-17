@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<code_event_listeners>
+  <listener event_id="criteria_user" execute_order="10" callback_class="XenSoluce\InviteSystem\Listener" callback_method="criteriaUser" active="1"/>
+  <listener event_id="templater_setup" execute_order="10" callback_class="XenSoluce\InviteSystem\Listener" callback_method="templaterSetup" active="1"/>
+  <listener event_id="user_searcher_orders" execute_order="10" callback_class="XenSoluce\InviteSystem\Listener" callback_method="userSearcherOrders" active="1"/>
+</code_event_listeners>
