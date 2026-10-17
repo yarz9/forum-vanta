@@ -43,6 +43,29 @@ EOF
 # Test config
 apache2ctl configtest 2>&1
 
+# Run XenForo install if database is not yet set up
+echo "=== Checking if XenForo is installed ==="
+lockFile="/var/www/html/src/install-lock.php"
+if [ ! -f "$lockFile" ]; then
+    echo "=== Running XenForo install ==="
+    php /var/www/html/cmd.php xf:install \
+        --user=admin \
+        --password=VantaForum2026! \
+        --email=admin@vanta-forum.com \
+        --title="Vanta Forum" \
+        --url="${APP_URL:-https://forum-vanta-production.up.railway.app}" \
+        --skip-statistics \
+        --clear \
+        --no-interaction
+    if [ $? -eq 0 ]; then
+        echo "=== XenForo install completed successfully ==="
+    else
+        echo "=== XenForo install failed ==="
+    fi
+else
+    echo "=== XenForo is already installed ==="
+fi
+
 # Start Apache
 echo "=== Starting Apache ==="
 exec apache2-foreground
