@@ -1,17 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <permissions>
   <permission_group permission_group_id="VantaLoader" is_moderator="0" display_order="100" />
-  <permission permission_group_id="VantaLoader" permission_id="vanta_loader_view" permission_type="flag" display_order="10" />
-  <permission permission_group_id="VantaLoader" permission_id="vanta_loader_hwid_reset" permission_type="flag" display_order="20">
-    <title>Reset device binding</title>
-    <description>Allow resetting device bindings for the Vanta Loader.</description>
-  </permission>
-  <permission permission_group_id="VantaLoader" permission_id="vanta_loader_ban" permission_type="flag" display_order="30">
-    <title>Manage loader bans</title>
-    <description>Allow banning/unbanning users and devices from the Vanta Loader.</description>
-  </permission>
-  <permission permission_group_id="VantaLoader" permission_id="vanta_loader_admin" permission_type="flag" display_order="40">
-    <title>Manage loader configuration</title>
-    <description>Configure maintenance mode, version policy, and download URLs for the Vanta Loader.</description>
-  </permission>
+  <permission permission_group_id="VantaLoader" permission_id="vanta_loader_view" permission_type="flag" interface_group_id="VantaLoader" display_order="10" />
+  <permission permission_group_id="VantaLoader" permission_id="vanta_loader_hwid_reset" permission_type="flag" interface_group_id="VantaLoader" display_order="20" />
+  <permission permission_group_id="VantaLoader" permission_id="vanta_loader_ban" permission_type="flag" interface_group_id="VantaLoader" display_order="30" />
+  <permission permission_group_id="VantaLoader" permission_id="vanta_loader_admin" permission_type="flag" interface_group_id="VantaLoader" display_order="40" />
 </permissions>

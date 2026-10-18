@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phrases>
+  <phrase title="permission_interface_group.VantaLoader" version_id="1000000" version_string="1.0.0">Vanta Loader</phrase>
+  <phrase title="permission.VantaLoader_vanta_loader_view" version_id="1000000" version_string="1.0.0">View loader access</phrase>
+  <phrase title="permission.VantaLoader_vanta_loader_hwid_reset" version_id="1000000" version_string="1.0.0">Reset device binding</phrase>
+  <phrase title="permission.VantaLoader_vanta_loader_ban" version_id="1000000" version_string="1.0.0">Manage loader bans</phrase>
+  <phrase title="permission.VantaLoader_vanta_loader_admin" version_id="1000000" version_string="1.0.0">Manage loader configuration</phrase>
+  <phrase title="option_group.VantaLoader" version_id="1000000" version_string="1.0.0">Vanta Loader</phrase>
+  <phrase title="option_group_desc.VantaLoader" version_id="1000000" version_string="1.0.0">Settings for the Vanta loader authentication system.</phrase>
+</phrases>
