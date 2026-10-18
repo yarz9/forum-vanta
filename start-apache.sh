@@ -72,6 +72,15 @@ else
     fi
 fi
 
+# Recompile templates if the compiled template cache is empty (fresh install or wiped cache)
+echo "=== Checking compiled template cache ==="
+if [ -z "$(ls -A /var/www/html/internal_data/code_cache/templates 2>/dev/null)" ]; then
+    echo "=== Compiled template cache is empty, recompiling ==="
+    php /var/www/html/cmd.php xf-dev:recompile-templates || echo "=== Template recompile failed ==="
+else
+    echo "=== Compiled template cache present ==="
+fi
+
 # Start Apache
 echo "=== Starting Apache ==="
 exec apache2-foreground
