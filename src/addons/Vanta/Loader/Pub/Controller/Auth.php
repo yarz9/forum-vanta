@@ -4,6 +4,7 @@ namespace Vanta\Loader\Pub\Controller;
 
 use XF\Mvc\Controller;
 use XF\Mvc\ParameterBag;
+use XF\Service\User\LoginService;
 use Vanta\Loader\Service\Authenticator;
 
 class Auth extends Controller
@@ -15,10 +16,10 @@ class Auth extends Controller
     public function actionLogin()
     {
         $input = $this->filter([
-            'username' => 's',
-            'password' => 's',
-            'hwid' => 's',
-            'client_version' => 's',
+            'username' => 'str',
+            'password' => 'str',
+            'hwid' => 'str',
+            'client_version' => 'str',
         ]);
 
         $result = $this->authenticate($input);
@@ -97,8 +98,8 @@ class Auth extends Controller
 
         return [
             'success' => true,
-            'user_id' => $user->getUserId(),
-            'username' => $user->getUsername(),
+            'user_id' => $user->user_id,
+            'username' => $user->username,
             'session_token' => $session['token'],
             'expires' => $session['expires'],
             'device_bound' => $session['device_bound'],
@@ -115,43 +116,43 @@ class Auth extends Controller
 
     protected function attemptLogin(string $username, string $password): array
     {
-        $app = \XF::app();
         $ip = $this->getClientIp();
 
-        $login = $app->auth()->login($username, $password, $ip, false);
+        /** @var LoginService $loginService */
+        $loginService = $this->service(LoginService::class, $username, $ip);
 
-        if ($login->isSuccess()) {
-            $user = $login->getUser();
-            if ($user) {
-                return [
-                    'success' => true,
-                    'user' => $user,
-                ];
-            }
+        $limitType = null;
+        if ($loginService->isLoginLimited($limitType)) {
+            return [
+                'success' => false,
+                'error' => 'Your account has temporarily been locked due to failed login attempts.',
+                'error_key' => 'account_restricted',
+            ];
         }
 
-        $errors = $login->getErrors();
-        $errorKey = 'invalid_credentials';
+        $error = null;
+        $user = $loginService->validate($password, $error);
 
-        if (!empty($errors['error_key'])) {
-            $errorKey = $errors['error_key'];
-        } elseif (!empty($errors['error'])) {
-            $errorKey = $errors['error'];
+        if ($user) {
+            return [
+                'success' => true,
+                'user' => $user,
+            ];
         }
 
         return [
             'success' => false,
-            'error' => $this->getErrorMessage($errorKey),
-            'error_key' => $errorKey,
+            'error' => $this->getErrorMessage('invalid_credentials'),
+            'error_key' => 'invalid_credentials',
         ];
     }
 
     public function actionVerify()
     {
         $input = $this->filter([
-            'session_token' => 's',
-            'hwid' => 's',
-            'client_version' => 's',
+            'session_token' => 'str',
+            'hwid' => 'str',
+            'client_version' => 'str',
         ]);
 
         $authenticator = new Authenticator(\XF::app());
@@ -189,7 +190,7 @@ class Auth extends Controller
     public function actionLogout()
     {
         $input = $this->filter([
-            'session_token' => 's',
+            'session_token' => 'str',
         ]);
 
         $authenticator = new Authenticator(\XF::app());
@@ -213,16 +214,30 @@ class Auth extends Controller
         ]);
     }
 
+    protected function responseJson(array $data)
+    {
+        $reply = $this->view('', '', ['innerContent' => $data]);
+        $reply->setResponseType('json');
+        $reply->setViewOption('skipDefaultJsonParams', true);
+
+        return $reply;
+    }
+
     protected function getClientIp(): string
     {
         $request = \XF::app()->request();
-        if ($request->getEnv('HTTP_CF_CONNECTING_IP')) {
-            return $request->getEnv('HTTP_CF_CONNECTING_IP');
+
+        $cfIp = $request->getServer('HTTP_CF_CONNECTING_IP');
+        if ($cfIp) {
+            return $cfIp;
         }
-        if ($request->getEnv('HTTP_X_FORWARDED_FOR')) {
-            $ips = explode(',', $request->getEnv('HTTP_X_FORWARDED_FOR'));
+
+        $forwardedFor = $request->getServer('HTTP_X_FORWARDED_FOR');
+        if ($forwardedFor) {
+            $ips = explode(',', $forwardedFor);
             return trim($ips[0]);
         }
+
         return $request->getIp();
     }
 

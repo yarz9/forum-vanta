@@ -39,7 +39,7 @@ class Setup extends AbstractSetup
                 $table->addColumn('token_hash', 'varbinary', 64);
                 $table->addColumn('created', 'int');
                 $table->addColumn('expires', 'int');
-                $table->addColumn('device_token', 'varbinary', 32)->nullable();
+                $table->addColumn('device_token', 'varbinary', 64)->nullable();
                 $table->addColumn('login_ip', 'varbinary', 16)->nullable();
                 $table->addColumn('login_user_agent', 'varchar', 255)->nullable();
                 $table->addColumn('last_activity', 'int');

@@ -4,6 +4,7 @@ namespace Vanta\Loader\Service;
 
 use XF\App;
 use XF\Entity\User;
+use XF\Service\User\LoginService;
 
 class Authenticator
 {
@@ -48,20 +49,23 @@ class Authenticator
             return $result;
         }
 
-        $loginResult = $this->app->auth()->login(
+        /** @var LoginService $loginService */
+        $loginService = $this->app->service(
+            LoginService::class,
             $usernameOrEmail,
-            $password,
-            $this->getClientIp(),
-            false
+            $this->getClientIp()
         );
 
-        if (!$loginResult->isSuccess()) {
-            $result['error'] = 'Invalid username or password.';
-            $result['error_key'] = 'invalid_credentials';
+        $limitType = null;
+        if ($loginService->isLoginLimited($limitType)) {
+            $result['error'] = 'Your account has temporarily been locked due to failed login attempts.';
+            $result['error_key'] = 'account_restricted';
             return $result;
         }
 
-        $user = $loginResult->getUser();
+        $error = null;
+        $user = $loginService->validate($password, $error);
+
         if (!$user) {
             $result['error'] = 'Invalid username or password.';
             $result['error_key'] = 'invalid_credentials';
@@ -90,13 +94,17 @@ class Authenticator
 
     public function authenticateWithPassword(string $username, string $password): array
     {
-        $login = $this->app->auth()->login($username, $password, $this->getClientIp(), false);
+        /** @var LoginService $loginService */
+        $loginService = $this->app->service(LoginService::class, $username, $this->getClientIp());
 
-        if (!$login->isSuccess()) {
-            return ['success' => false, 'error_key' => 'invalid_credentials'];
+        $limitType = null;
+        if ($loginService->isLoginLimited($limitType)) {
+            return ['success' => false, 'error_key' => 'account_restricted'];
         }
 
-        $user = $login->getUser();
+        $error = null;
+        $user = $loginService->validate($password, $error);
+
         if (!$user) {
             return ['success' => false, 'error_key' => 'invalid_credentials'];
         }
@@ -120,52 +128,42 @@ class Authenticator
 
         $db = $this->app->db();
 
-        $activeUpgrades = $db->fetchAll("
+        $upgrade = $db->fetchRow("
             SELECT ua.*, uupg.title AS upgrade_name
             FROM xf_user_upgrade_active ua
             LEFT JOIN xf_user_upgrade uupg ON ua.user_upgrade_id = uupg.user_upgrade_id
-            WHERE ua.user_id = ? AND (ua.end_date = 0 OR ua.end_date > ?)
+            WHERE ua.user_id = ?
+                AND ua.user_upgrade_id = ?
+                AND (ua.end_date = 0 OR ua.end_date > ?)
             ORDER BY ua.start_date DESC
             LIMIT 1
-        ", [$user->user_id, time()]);
+        ", [$user->user_id, $this->qualifyingUpgradeId, time()]);
 
-        if (empty($activeUpgrades)) {
-            $entitlement['reason'] = 'No active qualifying subscription.';
-            return $entitlement;
-        }
+        if (!$upgrade) {
+            $expired = $db->fetchRow("
+                SELECT end_date
+                FROM xf_user_upgrade_active
+                WHERE user_id = ? AND user_upgrade_id = ?
+                ORDER BY end_date DESC
+                LIMIT 1
+            ", [$user->user_id, $this->qualifyingUpgradeId]);
 
-        $upgrade = $activeUpgrades[0];
+            if ($expired && (int) $expired['end_date'] > 0) {
+                $entitlement['reason'] = 'Your subscription has expired.';
+                $entitlement['error_key'] = 'subscription_expired';
+                $entitlement['expiry_timestamp'] = (int) $expired['end_date'];
+            } else {
+                $entitlement['reason'] = 'No active qualifying subscription.';
+            }
 
-        $allUpgrades = $db->fetchAll("
-            SELECT user_upgrade_id, title, user_group_id, is_purchasable
-            FROM xf_user_upgrade
-            WHERE user_upgrade_id = ?
-        ", [$this->qualifyingUpgradeId]);
-
-        if (empty($allUpgrades)) {
-            $entitlement['reason'] = 'You do not have an active qualifying subscription.';
-            return $entitlement;
-        }
-
-        $qualifying = $allUpgrades[0];
-
-        $activeUpgradeIds = array_column($activeUpgrades, 'user_upgrade_id');
-        if (!in_array($this->qualifyingUpgradeId, $activeUpgradeIds)) {
-            $entitlement['reason'] = 'You do not have a qualifying subscription.';
-            return $entitlement;
-        }
-
-        if (!empty($upgrade['end_date']) && $upgrade['end_date'] <= time()) {
-            $entitlement['reason'] = 'Your subscription has expired.';
-            $entitlement['error_key'] = 'subscription_expired';
-            $entitlement['expiry_timestamp'] = $upgrade['end_date'];
             return $entitlement;
         }
 
         $entitlement['has'] = true;
-        $entitlement['is_permanent'] = ($upgrade['end_date'] == 0);
-        $entitlement['upgrade_name'] = $upgrade['upgrade_name'] ?: $qualifying['title'];
-        $entitlement['expiry_timestamp'] = $upgrade['end_date'];
+        $entitlement['is_permanent'] = ((int) $upgrade['end_date'] === 0);
+        $entitlement['upgrade_name'] = $upgrade['upgrade_name'] ?: '';
+        $entitlement['expiry_timestamp'] = (int) $upgrade['end_date'];
+
         return $entitlement;
     }
 
@@ -314,17 +312,6 @@ class Authenticator
 
     protected function checkEntitlementFromUserId(int $userId): array
     {
-        $db = $this->app->db();
-
-        $activeUpgrades = $db->fetchAll("
-            SELECT ua.*, uupg.title AS upgrade_name
-            FROM xf_user_upgrade_active ua
-            LEFT JOIN xf_user_upgrade uupg ON ua.user_upgrade_id = uupg.user_upgrade_id
-            WHERE ua.user_id = ? AND (ua.end_date = 0 OR ua.end_date > ?)
-            ORDER BY ua.start_date DESC
-            LIMIT 1
-        ", [$userId, time()]);
-
         $entitlement = [
             'has' => false,
             'is_permanent' => false,
@@ -333,13 +320,27 @@ class Authenticator
             'error_key' => 'no_active_subscription',
         ];
 
-        if (!empty($activeUpgrades) && in_array($this->qualifyingUpgradeId, array_column($activeUpgrades, 'user_upgrade_id'))) {
-            $upgrade = $activeUpgrades[0];
-            $entitlement['has'] = true;
-            $entitlement['is_permanent'] = ($upgrade['end_date'] == 0);
-            $entitlement['upgrade_name'] = $upgrade['upgrade_name'];
-            $entitlement['expiry_timestamp'] = $upgrade['end_date'];
+        $db = $this->app->db();
+
+        $upgrade = $db->fetchRow("
+            SELECT ua.*, uupg.title AS upgrade_name
+            FROM xf_user_upgrade_active ua
+            LEFT JOIN xf_user_upgrade uupg ON ua.user_upgrade_id = uupg.user_upgrade_id
+            WHERE ua.user_id = ?
+                AND ua.user_upgrade_id = ?
+                AND (ua.end_date = 0 OR ua.end_date > ?)
+            ORDER BY ua.start_date DESC
+            LIMIT 1
+        ", [$userId, $this->qualifyingUpgradeId, time()]);
+
+        if (!$upgrade) {
+            return $entitlement;
         }
+
+        $entitlement['has'] = true;
+        $entitlement['is_permanent'] = ((int) $upgrade['end_date'] === 0);
+        $entitlement['upgrade_name'] = $upgrade['upgrade_name'] ?: '';
+        $entitlement['expiry_timestamp'] = (int) $upgrade['end_date'];
 
         return $entitlement;
     }
@@ -405,13 +406,18 @@ class Authenticator
     protected function getClientIp(): string
     {
         $request = $this->app->request();
-        if ($request->getEnv('HTTP_CF_CONNECTING_IP')) {
-            return $request->getEnv('HTTP_CF_CONNECTING_IP');
+
+        $cfIp = $request->getServer('HTTP_CF_CONNECTING_IP');
+        if ($cfIp) {
+            return $cfIp;
         }
-        if ($request->getEnv('HTTP_X_FORWARDED_FOR')) {
-            $ips = explode(',', $request->getEnv('HTTP_X_FORWARDED_FOR'));
+
+        $forwardedFor = $request->getServer('HTTP_X_FORWARDED_FOR');
+        if ($forwardedFor) {
+            $ips = explode(',', $forwardedFor);
             return trim($ips[0]);
         }
+
         return $request->getIp();
     }
 

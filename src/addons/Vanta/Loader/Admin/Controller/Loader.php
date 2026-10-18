@@ -64,10 +64,10 @@ class Loader extends AbstractController
         if ($this->request->getMethod() === 'POST') {
             $input = $this->filter([
                 'user_id' => 'uint',
-                'hwid' => 's',
-                'reason' => 's',
+                'hwid' => 'str',
+                'reason' => 'str',
                 'expires' => 'uint',
-                'type' => 's',
+                'type' => 'str',
             ]);
 
             if (empty($input['user_id']) && empty($input['hwid'])) {
@@ -145,8 +145,8 @@ class Loader extends AbstractController
         if ($this->request->getMethod() === 'POST') {
             $input = $this->filter([
                 'user_id' => 'uint',
-                'hwid' => 's',
-                'reason' => 's',
+                'hwid' => 'str',
+                'reason' => 'str',
             ]);
 
             if (empty($input['user_id']) || empty($input['hwid'])) {
@@ -245,10 +245,10 @@ class Loader extends AbstractController
         if ($this->request->getMethod() === 'POST') {
             $input = $this->filter([
                 'enabled' => 'bool',
-                'message' => 's',
-                'min_version' => 's',
-                'download_url' => 's',
-                'support_url' => 's',
+                'message' => 'str',
+                'min_version' => 'str',
+                'download_url' => 'str',
+                'support_url' => 'str',
             ]);
 
             $db = \XF::db();
