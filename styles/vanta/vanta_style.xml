@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<style title="Vanta" export_version="2" addon_id="XF" base_version_id="2030670">
+ <assets>
+  <asset key="logo" path="styles/vanta/xenforo/vanta-logo.png"/>
+ </assets>
+ <properties>
+  <property name="buttonPrimaryBgColor" group_name="buttonPrimary" property_type="styleProp" value="#b551e6"/>
+  <property name="buttonPrimaryTextColor" group_name="buttonPrimary" property_type="styleProp" value="#08070B"/>
+  <property name="buttonPrimaryBorderColor" group_name="buttonPrimary" property_type="styleProp" value="#b551e6"/>
+  <property name="buttonPrimaryHoverBgColor" group_name="buttonPrimary" property_type="styleProp" value="#C96AFD"/>
+ </properties>
+ <templates>
+ </templates>
+</style>
