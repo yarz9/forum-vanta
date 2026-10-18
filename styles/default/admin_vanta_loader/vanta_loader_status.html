@@ -1,0 +1,37 @@
+<div class="block">
+    <div class="block-container">
+        <div class="block-container-outer">
+            <div class="block-container-title">
+                <span>Loader Maintenance</span>
+            </div>
+        </div>
+        <form method="post" action="{{ link('vanta-loader/status') }}">
+            {{ csrf_input() }}
+            <div class="block-container-inner">
+                <div class="block-row">
+                    <label class="block-row-label">Maintenance mode</label>
+                    <div class="block-row-control">
+                        <input type="checkbox" name="enabled" value="1" {{ config.enabled == '1' ? 'checked' }} />
+                    </div>
+                </div>
+                <div class="block-row">
+                    <label class="block-row-label">Maintenance message</label>
+                    <input type="text" name="message" value="{{ config.message }}" class="input" />
+                </div>
+                <div class="block-row">
+                    <label class="block-row-label">Minimum client version</label>
+                    <input type="text" name="min_version" value="{{ config.min_version }}" class="input" />
+                </div>
+                <div class="block-row">
+                    <label class="block-row-label">Download URL</label>
+                    <input type="text" name="download_url" value="{{ config.download_url }}" class="input" />
+                </div>
+                <div class="block-row">
+                    <label class="block-row-label">Support URL</label>
+                    <input type="text" name="support_url" value="{{ config.support_url }}" class="input" />
+                </div>
+                <xf:submitrow sticky="true" />
+            </div>
+        </form>
+    </div>
+</div>

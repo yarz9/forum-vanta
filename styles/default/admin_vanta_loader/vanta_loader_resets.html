@@ -1,0 +1,48 @@
+<div class="block">
+    <div class="block-container">
+        <div class="block-container-outer">
+            <div class="block-container-title">
+                <span>HWID Resets</span>
+            </div>
+        </div>
+        <div class="block-container-inner">
+        <table class="dataTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>HWID Hash</th>
+                    <th>Reason</th>
+                    <th>Requested By</th>
+                    <th>Created</th>
+                    <th>Processed</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reset in resets %}
+                <tr>
+                    <td>{{ reset.reset_id }}</td>
+                    <td>{{ reset.username ?: reset.user_id }}</td>
+                    <td>{{ reset.hwid_hash ? (reset.hwid_hash|truncate(16) + '...') : '' }}</td>
+                    <td>{{ reset.reason }}</td>
+                    <td>{{ reset.requested_by_username }}</td>
+                    <td>{{ unixTime(reset.created) }}</td>
+                    <td>{{ reset.processed ? unixTime(reset.processed) : '-' }}</td>
+                    <td>{{ reset.status }}</td>
+                    <td>
+                        {% if reset.status == 'pending' %}
+                        <a href="{{ link('vanta-loader/approve-reset', {'reset_id': reset.reset_id}) }}">Approve</a>
+                        <a href="{{ link('vanta-loader/reject-reset', {'reset_id': reset.reset_id}) }}">Reject</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="9">No reset requests found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div>

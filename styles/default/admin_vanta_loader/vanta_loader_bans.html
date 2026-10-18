@@ -1,0 +1,43 @@
+<div class="block">
+    <div class="block-container">
+        <div class="block-container-outer">
+            <div class="block-container-title">
+                <span>Loader Bans</span>
+            </div>
+        </div>
+        <div class="block-container-inner">
+        <table class="dataTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>User ID</th>
+                    <th>HWID Hash</th>
+                    <th>Reason</th>
+                    <th>Banned By</th>
+                    <th>Created</th>
+                    <th>Expires</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ban in bans %}
+                <tr>
+                    <td>{{ ban.ban_id }}</td>
+                    <td>{{ ban.type }}</td>
+                    <td>{{ ban.user_id ?: '' }}</td>
+                    <td>{{ ban.hwid_hash ? (ban.hwid_hash|truncate(16) + '...') : '' }}</td>
+                    <td>{{ ban.reason }}</td>
+                    <td>{{ ban.created_by_username }}</td>
+                    <td>{{ unixTime(ban.created) }}</td>
+                    <td>{{ ban.expires ? unixTime(ban.expires) : 'Never' }}</td>
+                    <td><a href="{{ link('vanta-loader/unban', {'ban_id': ban.ban_id}) }}">Unban</a></td>
+                </tr>
+                {% else %}
+                <tr><td colspan="9">No bans found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+<div class="block">
+    <div class="block-container">
+        <div class="block-tabMenu">
+            <nav class="tabMenu-tabs">
+                <a href="{{ link('vanta-loader') }}" class="tabs-tab"><span>Overview</span></a>
+                <a href="{{ link('vanta-loader/bans') }}" class="tabs-tab"><span>Bans ({{ banCount }})</span></a>
+                <a href="{{ link('vanta-loader/resets') }}" class="tabs-tab"><span>Resets ({{ resetCount }})</span></a>
+                <a href="{{ link('vanta-loader/status') }}" class="tabs-tab"><span>Status</span></a>
+            </nav>
+        </div>
+
+        <div class="block-container">
+            <div class="block-body">
+                <div class="block-row">
+                    <div class="block-rowSection">
+                        <h3 class="block-textHeader">Vanta Loader Administration</h3>
+                        <p class="block-rowDescription">
+                            Manage device bans, HWID resets, maintenance mode, and version policy for the Vanta Loader.
+                        </p>
+                    </div>
+                </div>
+                <div class="block-row">
+                    <dl class="labelVal-wrapped">
+                        <dt class="label">Active bans:</dt>
+                        <dd class="val">{{ banCount }}</dd>
+                    </dl>
+                    <dl class="labelVal-wrapped">
+                        <dt class="label">Registered devices:</dt>
+                        <dd class="val">{{ deviceCount }}</dd>
+                    </dl>
+                    <dl class="labelVal-wrapped">
+                        <dt class="label">Pending resets:</dt>
+                        <dd class="val">{{ resetCount }}</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="block-row">
+                <a href="{{ link('vanta-loader/ban') }}" class="button button--cta">Add ban</a>
+                <a href="{{ link('vanta-loader/reset') }}" class="button">Request HWID reset</a>
+            </div>
+        </div>
+    </div>
+</div>

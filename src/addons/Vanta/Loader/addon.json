@@ -1,0 +1,20 @@
+{
+    "title": "Vanta Loader Authentication",
+    "version_string": "1.0.0",
+    "version_id": 1000000,
+    "description": "Server-side authentication and entitlement service for the Vanta Loader desktop client.",
+    "author": [],
+    "require": {
+        "XF": [
+            2030000,
+            "XF 2.3+"
+        ],
+        "php": [
+            "8.0",
+            "PHP 8.0+"
+        ]
+    },
+    "enabled": true,
+    "api-stability": "stable",
+    "icon": "fa-gamepad"
+}
