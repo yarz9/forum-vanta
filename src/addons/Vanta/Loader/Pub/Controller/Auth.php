@@ -1,6 +1,6 @@
 <?php
 
-namespace Vanta\Loader\ControllerPublic;
+namespace Vanta\Loader\Pub\Controller;
 
 use XF\Mvc\Controller;
 use Vanta\Loader\Service\Authenticator;

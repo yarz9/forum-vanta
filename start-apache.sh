@@ -43,27 +43,33 @@ EOF
 # Test config
 apache2ctl configtest 2>&1
 
-# Run XenForo install if database is not yet set up
+# Run XenForo install only if the database has no existing installation
 echo "=== Checking if XenForo is installed ==="
-lockFile="/var/www/html/src/install-lock.php"
-if [ ! -f "$lockFile" ]; then
-    echo "=== Running XenForo install ==="
-    php /var/www/html/cmd.php xf:install \
+if php -r '
+require "/var/www/html/src/XF.php";
+\XF::start("/var/www/html");
+try {
+    \XF::app()->db()->fetchOne("SELECT COUNT(*) FROM xf_addon");
+    exit(0);
+} catch (\Throwable $e) {
+    exit(1);
+}
+' >/dev/null 2>&1; then
+    echo "=== XenForo is already installed ==="
+else
+    echo "=== No existing installation found, running fresh install ==="
+    if php /var/www/html/cmd.php xf:install \
         --user=admin \
         --password=VantaForum2026! \
         --email=admin@vanta-forum.com \
         --title="Vanta Forum" \
         --url="${APP_URL:-https://vantacodes.xyz}" \
         --skip-statistics \
-        --clear \
-        --no-interaction
-    if [ $? -eq 0 ]; then
+        --no-interaction; then
         echo "=== XenForo install completed successfully ==="
     else
         echo "=== XenForo install failed ==="
     fi
-else
-    echo "=== XenForo is already installed ==="
 fi
 
 # Start Apache

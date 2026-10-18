@@ -1,6 +1,6 @@
 <?php
 
-namespace Vanta\Loader\ControllerAdmin;
+namespace Vanta\Loader\Admin\Controller;
 
 use XF\Admin\Controller\AbstractController;
 use XF\Mvc\ParameterBag;

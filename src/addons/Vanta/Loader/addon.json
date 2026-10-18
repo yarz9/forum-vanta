@@ -16,11 +16,5 @@
     },
     "enabled": true,
     "api-stability": "stable",
-    "icon": "fa-gamepad",
-    "autoload": {
-        "Vanta\\Loader\\": "src/addons/Vanta/Loader",
-        "Vanta\\Loader\\ControllerPublic\\": "src/addons/Vanta/Loader/Pub/Controller",
-        "Vanta\\Loader\\Admin\\Controller\\": "src/addons/Vanta/Loader/Admin/Controller",
-        "Vanta\\Loader\\Service\\": "src/addons/Vanta/Loader/Service"
-    }
+    "icon": "fa-gamepad"
 }
