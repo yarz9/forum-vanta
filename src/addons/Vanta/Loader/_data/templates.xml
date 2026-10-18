@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+  <template type="admin" title="vanta_loader" version_id="1000000" version_string="1.0.0"><![CDATA[<xf:title>{{ phrase('vanta_loader') }}</xf:title>
+
+<div class="block-container">
+	<h2 class="block-header">{{ phrase('vanta_loader_overview') }}</h2>
+	<div class="block-body">
+		<div class="block-row">
+			<dl class="pairs pairs--justified">
+				<dt>{{ phrase('vanta_loader_active_bans') }}</dt>
+				<dd>{{ $banCount|number }}</dd>
+			</dl>
+		</div>
+		<div class="block-row">
+			<dl class="pairs pairs--justified">
+				<dt>{{ phrase('vanta_loader_registered_devices') }}</dt>
+				<dd>{{ $deviceCount|number }}</dd>
+			</dl>
+		</div>
+		<div class="block-row">
+			<dl class="pairs pairs--justified">
+				<dt>{{ phrase('vanta_loader_pending_resets') }}</dt>
+				<dd>{{ $resetCount|number }}</dd>
+			</dl>
+		</div>
+	</div>
+</div>]]></template>
+  <template type="admin" title="vanta_loader_bans" version_id="1000000" version_string="1.0.0"><![CDATA[<xf:title>{{ phrase('vanta_loader_bans') }}</xf:title>
+
+<div class="block-outer">
+	<div class="block-outer-main">
+		<h2 class="block-header">{{ phrase('vanta_loader_current_bans') }}</h2>
+	</div>
+	<div class="block-outer-opposite">
+		<a href="{{ link('vanta-loader/ban') }}" class="button button--cta">{{ phrase('vanta_loader_ban_device_or_user') }}</a>
+	</div>
+</div>
+
+<div class="block-container">
+	<div class="block-body">
+		<xf:if is="{{ $bans is empty }}">
+			<div class="block-row">{{ phrase('vanta_loader_no_bans') }}</div>
+		<xf:else />
+			<xf:foreach loop="$bans" value="$ban">
+				<div class="block-row">
+					<div class="contentRow">
+						<div class="contentRow-main">
+							<h3 class="contentRow-title">
+								#{{ $ban.ban_id }}
+								<xf:if is="{{ $ban.user_id }}">
+									&middot; <a href="{{ link('users/edit', {'user_id': $ban.user_id}) }}">{{ phrase('vanta_loader_user') }} #{{ $ban.user_id }}</a>
+								</xf:if>
+							</h3>
+							<div class="contentRow-minor">
+								{{ phrase('reason') }}: {{ $ban.reason }}
+								<xf:if is="{{ $ban.created_by_username }}">
+									&middot; {{ phrase('by') }}: {{ $ban.created_by_username }}
+								</xf:if>
+							</div>
+							<div class="contentRow-minor">
+								{{ phrase('vanta_loader_hwid') }}:
+								<xf:if is="{{ $ban.hwid_hash }}">{{ $ban.hwid_hash }}<xf:else />&mdash;</xf:if>
+								&middot; {{ phrase('vanta_loader_created') }}: {{ date_time($ban.created) }}
+								<xf:if is="{{ $ban.expires }}">
+									&middot; {{ phrase('vanta_loader_expires') }}: {{ date_time($ban.expires) }}
+								<xf:else />
+									&middot; {{ phrase('permanent') }}
+								</xf:if>
+							</div>
+						</div>
+						<div class="contentRow-extra">
+							<a href="{{ link('vanta-loader/unban', {'ban_id': $ban.ban_id}, {'t': csrf_token()}) }}" class="button button--link">{{ phrase('vanta_loader_unban') }}</a>
+						</div>
+					</div>
+				</div>
+			</xf:foreach>
+		</xf:if>
+	</div>
+</div>]]></template>
+  <template type="admin" title="vanta_loader_ban_edit" version_id="1000000" version_string="1.0.0"><![CDATA[<xf:title>{{ phrase('vanta_loader_ban_device_or_user') }}</xf:title>
+
+<xf:form action="{{ link('vanta-loader/ban') }}" class="block" ajax="true">
+	<div class="block-container">
+		<h2 class="block-header">{{ phrase('vanta_loader_ban_details') }}</h2>
+		<div class="block-body">
+			<xf:formrow label="{{ phrase('vanta_loader_user_id') }}" explain="{{ phrase('vanta_loader_ban_user_id_explain') }}">
+				<input type="text" name="user_id" value="{{ $userId ?: '' }}" class="input" />
+			</xf:formrow>
+			<xf:formrow label="{{ phrase('vanta_loader_hwid') }}" explain="{{ phrase('vanta_loader_ban_hwid_explain') }}">
+				<input type="text" name="hwid" value="" class="input" />
+			</xf:formrow>
+			<xf:formrow label="{{ phrase('reason') }}">
+				<input type="text" name="reason" value="" class="input" />
+			</xf:formrow>
+			<xf:formrow label="{{ phrase('vanta_loader_expires_days') }}" explain="{{ phrase('vanta_loader_expires_days_explain') }}">
+				<input type="text" name="expires_days" value="" class="input" />
+			</xf:formrow>
+		</div>
+		<xf:submitrow submit="{{ phrase('vanta_loader_ban') }}" />
+	</div>
+</xf:form>]]></template>
+  <template type="admin" title="vanta_loader_resets" version_id="1000000" version_string="1.0.0"><![CDATA[<xf:title>{{ phrase('vanta_loader_resets') }}</xf:title>
+
+<div class="block-outer">
+	<div class="block-outer-main">
+		<h2 class="block-header">{{ phrase('vanta_loader_reset_requests') }}</h2>
+	</div>
+	<div class="block-outer-opposite">
+		<a href="{{ link('vanta-loader/reset') }}" class="button button--cta">{{ phrase('vanta_loader_reset_device') }}</a>
+	</div>
+</div>
+
+<div class="block-container">
+	<div class="block-body">
+		<xf:if is="{{ $resets is empty }}">
+			<div class="block-row">{{ phrase('vanta_loader_no_resets') }}</div>
+		<xf:else />
+			<xf:foreach loop="$resets" value="$reset">
+				<div class="block-row">
+					<div class="contentRow">
+						<div class="contentRow-main">
+							<h3 class="contentRow-title">
+								#{{ $reset.reset_id }}
+								&middot; <a href="{{ link('users/edit', {'user_id': $reset.user_id}) }}">{{ phrase('vanta_loader_user') }} #{{ $reset.user_id }}</a>
+							</h3>
+							<div class="contentRow-minor">{{ phrase('reason') }}: {{ $reset.reason }}</div>
+							<div class="contentRow-minor">
+								{{ phrase('vanta_loader_hwid') }}: {{ $reset.hwid_hash }}
+								&middot; {{ phrase('status') }}: {{ $reset.status }}
+								&middot; {{ date_time($reset.created) }}
+							</div>
+						</div>
+						<div class="contentRow-extra">
+							<xf:if is="{{ $reset.status == 'pending' }}">
+								<a href="{{ link('vanta-loader/approve-reset', {'reset_id': $reset.reset_id}, {'t': csrf_token()}) }}" class="button button--link">{{ phrase('approve') }}</a>
+								<a href="{{ link('vanta-loader/reject-reset', {'reset_id': $reset.reset_id}, {'t': csrf_token()}) }}" class="button button--link">{{ phrase('reject') }}</a>
+							</xf:if>
+						</div>
+					</div>
+				</div>
+			</xf:foreach>
+		</xf:if>
+	</div>
+</div>]]></template>
+  <template type="admin" title="vanta_loader_reset_edit" version_id="1000000" version_string="1.0.0"><![CDATA[<xf:title>{{ phrase('vanta_loader_reset_device') }}</xf:title>
+
+<xf:form action="{{ link('vanta-loader/reset') }}" class="block" ajax="true">
+	<div class="block-container">
+		<h2 class="block-header">{{ phrase('vanta_loader_reset_details') }}</h2>
+		<div class="block-body">
+			<xf:formrow label="{{ phrase('vanta_loader_user_id') }}">
+				<input type="text" name="user_id" value="{{ $userId ?: '' }}" class="input" />
+			</xf:formrow>
+			<xf:formrow label="{{ phrase('vanta_loader_hwid') }}" explain="{{ phrase('vanta_loader_reset_hwid_explain') }}">
+				<input type="text" name="hwid" value="" class="input" />
+			</xf:formrow>
+			<xf:formrow label="{{ phrase('reason') }}">
+				<input type="text" name="reason" value="" class="input" />
+			</xf:formrow>
+		</div>
+		<xf:submitrow submit="{{ phrase('vanta_loader_reset_device') }}" />
+	</div>
+</xf:form>]]></template>
+  <template type="admin" title="vanta_loader_status" version_id="1000000" version_string="1.0.0"><![CDATA[<xf:title>{{ phrase('vanta_loader_status') }}</xf:title>
+
+<xf:form action="{{ link('vanta-loader/status') }}" class="block" ajax="true">
+	<div class="block-container">
+		<h2 class="block-header">{{ phrase('vanta_loader_status') }}</h2>
+		<div class="block-body">
+			<xf:formrow label="{{ phrase('vanta_loader_maintenance_mode') }}" explain="{{ phrase('vanta_loader_maintenance_mode_explain') }}">
+				<input type="checkbox" name="enabled" value="1" {{ $config.enabled ? 'checked' : '' }} />
+			</xf:formrow>
+			<xf:formrow label="{{ phrase('vanta_loader_min_version') }}" explain="{{ phrase('vanta_loader_min_version_explain') }}">
+				<input type="text" name="min_version" value="{{ $config.min_version }}" class="input" />
+			</xf:formrow>
+			<xf:formrow label="{{ phrase('vanta_loader_download_url') }}">
+				<input type="text" name="download_url" value="{{ $config.download_url }}" class="input" />
+			</xf:formrow>
+			<xf:formrow label="{{ phrase('vanta_loader_message') }}">
+				<textarea name="message" class="input" rows="3">{{ $config.message }}</textarea>
+			</xf:formrow>
+		</div>
+		<xf:submitrow submit="{{ phrase('save') }}" />
+	</div>
+</xf:form>]]></template>
+</templates>

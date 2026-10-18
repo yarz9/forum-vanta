@@ -3,34 +3,18 @@
 namespace Vanta\Loader\Admin\Controller;
 
 use XF\Admin\Controller\AbstractController;
-use XF\Mvc\ParameterBag;
 
 class Loader extends AbstractController
 {
-    protected function assertLoaderPermission(string $permission)
-    {
-        $visitor = \XF::visitor();
-
-        if ($visitor->is_admin) {
-            return;
-        }
-
-        if ($visitor->hasPermission('VantaLoader', $permission)) {
-            return;
-        }
-
-        $this->error(\XF::phrase('you_do_not_have_admin_permissions'));
-    }
-
     public function actionIndex()
     {
-        $this->assertLoaderPermission('vanta_loader_admin');
+        $this->assertAdminPermission('vantaLoaderAdmin');
 
         $db = \XF::db();
 
         $banCount = (int) $db->fetchOne("SELECT COUNT(*) FROM xf_vanta_ban WHERE (expires IS NULL OR expires > ?)", [time()]);
         $deviceCount = (int) $db->fetchOne("SELECT COUNT(*) FROM xf_vanta_device");
-        $resetCount = (int) $db->fetchone("SELECT COUNT(*) FROM xf_vanta_reset WHERE status = 'pending'");
+        $resetCount = (int) $db->fetchOne("SELECT COUNT(*) FROM xf_vanta_reset WHERE status = 'pending'");
 
         $viewParams = [
             'banCount' => $banCount,
@@ -43,14 +27,13 @@ class Loader extends AbstractController
 
     public function actionBans()
     {
-        $this->assertLoaderPermission('vanta_loader_ban');
+        $this->assertAdminPermission('vantaLoaderBan');
 
         $db = \XF::db();
 
         $bans = $db->fetchAll("
-            SELECT b.*, u.username AS creator_username
+            SELECT b.*
             FROM xf_vanta_ban b
-            LEFT JOIN xf_user u ON b.created_by = u.user_id
             ORDER BY b.created DESC
         ");
 
@@ -59,31 +42,33 @@ class Loader extends AbstractController
 
     public function actionBan()
     {
-        $this->assertLoaderPermission('vanta_loader_ban');
+        $this->assertAdminPermission('vantaLoaderBan');
 
-        if ($this->request->getMethod() === 'POST') {
+        if ($this->request->isPost())
+        {
             $input = $this->filter([
                 'user_id' => 'uint',
                 'hwid' => 'str',
                 'reason' => 'str',
-                'expires' => 'uint',
+                'expires_days' => 'uint',
                 'type' => 'str',
             ]);
 
-            if (empty($input['user_id']) && empty($input['hwid'])) {
-                return $this->error('A user ID or HWID is required.');
+            if (empty($input['user_id']) && empty($input['hwid']))
+            {
+                return $this->error(\XF::phrase('vanta_loader_ban_requires_user_or_hwid'));
             }
 
             $db = \XF::db();
             $visitor = \XF::visitor();
 
             $hwidHash = !empty($input['hwid']) ? hash('sha256', $input['hwid']) : null;
-            $expires = !empty($input['expires']) ? time() + $input['expires'] : null;
+            $expires = !empty($input['expires_days']) ? time() + ($input['expires_days'] * 86400) : null;
 
             $db->insert('xf_vanta_ban', [
                 'user_id' => $input['user_id'] ?: null,
                 'hwid_hash' => $hwidHash,
-                'reason' => $input['reason'],
+                'reason' => $input['reason'] ?: 'Manual ban',
                 'created_by' => $visitor->user_id,
                 'created_by_username' => $visitor->username,
                 'created' => time(),
@@ -104,34 +89,37 @@ class Loader extends AbstractController
         }
 
         $userId = $this->filter('user_id', 'uint');
-        $user = $userId ? $this->app->find('XF:User', $userId) : null;
 
         return $this->view('Vanta\Loader:Bans\Edit', 'vanta_loader_ban_edit', [
             'userId' => $userId,
-            'user' => $user,
         ]);
     }
 
-    public function actionUnban(\Vanta\Loader\Entity\Ban $ban)
+    public function actionUnban()
     {
-        $this->assertLoaderPermission('vanta_loader_ban');
+        $this->assertAdminPermission('vantaLoaderBan');
+
+        $banId = $this->filter('ban_id', 'uint');
+        if (!$banId)
+        {
+            return $this->error(\XF::phrase('vanta_loader_requested_ban_not_found'));
+        }
 
         $db = \XF::db();
-        $db->delete('xf_vanta_ban', 'ban_id = ?', $ban->get('ban_id'));
+        $db->delete('xf_vanta_ban', 'ban_id = ?', $banId);
+
         return $this->redirect($this->buildLink('vanta-loader/bans'));
     }
 
     public function actionResets()
     {
-        $this->assertLoaderPermission('vanta_loader_hwid_reset');
+        $this->assertAdminPermission('vantaLoaderResets');
 
         $db = \XF::db();
 
         $resets = $db->fetchAll("
-            SELECT r.*, u.username, a.username AS processed_by_username
+            SELECT r.*
             FROM xf_vanta_reset r
-            LEFT JOIN xf_user u ON r.user_id = u.user_id
-            LEFT JOIN xf_user a ON r.approved_by = a.user_id
             ORDER BY r.created DESC
         ");
 
@@ -140,34 +128,39 @@ class Loader extends AbstractController
 
     public function actionReset()
     {
-        $this->assertLoaderPermission('vanta_loader_hwid_reset');
+        $this->assertAdminPermission('vantaLoaderResets');
 
-        if ($this->request->getMethod() === 'POST') {
+        if ($this->request->isPost())
+        {
             $input = $this->filter([
                 'user_id' => 'uint',
                 'hwid' => 'str',
                 'reason' => 'str',
             ]);
 
-            if (empty($input['user_id']) || empty($input['hwid'])) {
-                return $this->error('User ID and HWID are required.');
+            if (empty($input['user_id']) || empty($input['hwid']))
+            {
+                return $this->error(\XF::phrase('vanta_loader_reset_requires_user_and_hwid'));
             }
 
             $visitor = \XF::visitor();
             $db = \XF::db();
             $hwidHash = hash('sha256', $input['hwid']);
 
-            $isAdmin = $visitor->is_admin;
-
             $db->insert('xf_vanta_reset', [
                 'user_id' => $input['user_id'],
                 'hwid_hash' => $hwidHash,
-                'reason' => $input['reason'],
+                'reason' => $input['reason'] ?: 'Manual reset',
                 'requested_by' => $visitor->user_id,
                 'requested_by_username' => $visitor->username,
                 'created' => time(),
-                'status' => $isAdmin ? 'approved' : 'pending',
+                'status' => 'approved',
+                'processed' => time(),
+                'approved_by' => $visitor->user_id,
+                'approved_by_username' => $visitor->username,
             ]);
+
+            $db->delete('xf_vanta_device', 'user_id = ? AND hwid_hash = ?', [$input['user_id'], $hwidHash]);
 
             $db->insert('xf_vanta_log', [
                 'user_id' => $input['user_id'],
@@ -178,52 +171,58 @@ class Loader extends AbstractController
                 'timestamp' => time(),
             ]);
 
-            if ($isAdmin) {
-                $db->delete('xf_vanta_device', 'user_id = ? AND hwid_hash = ?', [$input['user_id'], $hwidHash]);
-                $db->update('xf_vanta_reset',
-                    ['processed' => time(), 'approved_by' => $visitor->user_id, 'approved_by_username' => $visitor->username],
-                    'user_id = ? AND hwid_hash = ? AND status = ?',
-                    [$input['user_id'], $hwidHash, 'approved']
-                );
-            }
-
             return $this->redirect($this->buildLink('vanta-loader/resets'));
         }
 
         $userId = $this->filter('user_id', 'uint');
-        $user = $userId ? $this->app->find('XF:User', $userId) : null;
 
         return $this->view('Vanta\Loader:Resets\Edit', 'vanta_loader_reset_edit', [
             'userId' => $userId,
-            'user' => $user,
         ]);
     }
 
-    public function actionApproveReset(\Vanta\Loader\Entity\Reset $reset)
+    public function actionApproveReset()
     {
-        $this->assertLoaderPermission('vanta_loader_hwid_reset');
+        $this->assertAdminPermission('vantaLoaderResets');
 
-        $visitor = \XF::visitor();
+        $resetId = $this->filter('reset_id', 'uint');
+        if (!$resetId)
+        {
+            return $this->error(\XF::phrase('vanta_loader_requested_reset_not_found'));
+        }
+
         $db = \XF::db();
+        $reset = $db->fetchRow("SELECT * FROM xf_vanta_reset WHERE reset_id = ?", $resetId);
 
-        $db->delete('xf_vanta_device',
-            'user_id = ? AND hwid_hash = ?',
-            [$reset->get('user_id'), $reset->get('hwid_hash')]
-        );
+        if ($reset)
+        {
+            $visitor = \XF::visitor();
 
-        $db->update('xf_vanta_reset', [
-            'status' => 'approved',
-            'processed' => time(),
-            'approved_by' => $visitor->user_id,
-            'approved_by_username' => $visitor->username,
-        ], 'reset_id = ?', $reset->get('reset_id'));
+            $db->delete('xf_vanta_device',
+                'user_id = ? AND hwid_hash = ?',
+                [$reset['user_id'], $reset['hwid_hash']]
+            );
+
+            $db->update('xf_vanta_reset', [
+                'status' => 'approved',
+                'processed' => time(),
+                'approved_by' => $visitor->user_id,
+                'approved_by_username' => $visitor->username,
+            ], 'reset_id = ?', $resetId);
+        }
 
         return $this->redirect($this->buildLink('vanta-loader/resets'));
     }
 
-    public function actionRejectReset(\Vanta\Loader\Entity\Reset $reset)
+    public function actionRejectReset()
     {
-        $this->assertLoaderPermission('vanta_loader_hwid_reset');
+        $this->assertAdminPermission('vantaLoaderResets');
+
+        $resetId = $this->filter('reset_id', 'uint');
+        if (!$resetId)
+        {
+            return $this->error(\XF::phrase('vanta_loader_requested_reset_not_found'));
+        }
 
         $visitor = \XF::visitor();
         $db = \XF::db();
@@ -233,43 +232,43 @@ class Loader extends AbstractController
             'processed' => time(),
             'approved_by' => $visitor->user_id,
             'approved_by_username' => $visitor->username,
-        ], 'reset_id = ?', $reset->get('reset_id'));
+        ], 'reset_id = ?', $resetId);
 
         return $this->redirect($this->buildLink('vanta-loader/resets'));
     }
 
     public function actionStatus()
     {
-        $this->assertLoaderPermission('vanta_loader_admin');
+        $this->assertAdminPermission('vantaLoaderAdmin');
 
-        if ($this->request->getMethod() === 'POST') {
+        $db = \XF::db();
+
+        if ($this->request->isPost())
+        {
             $input = $this->filter([
                 'enabled' => 'bool',
                 'message' => 'str',
                 'min_version' => 'str',
                 'download_url' => 'str',
-                'support_url' => 'str',
             ]);
-
-            $db = \XF::db();
 
             $settings = [
                 'enabled' => $input['enabled'] ? '1' : '0',
                 'message' => $input['message'],
                 'min_version' => $input['min_version'],
                 'download_url' => $input['download_url'],
-                'support_url' => $input['support_url'],
             ];
 
-            $db->delete('xf_vanta_maint');
-            foreach ($settings as $key => $value) {
+            $db->delete('xf_vanta_maint', 'setting_key IN (?, ?, ?, ?)', ['enabled', 'message', 'min_version', 'download_url']);
+            foreach ($settings as $key => $value)
+            {
                 $db->insert('xf_vanta_maint', [
                     'setting_key' => $key,
                     'setting_value' => $value,
                 ]);
             }
 
-            return $this->redirect($this->buildLink('vanta-loader'));
+            return $this->redirect($this->buildLink('vanta-loader/status'));
         }
 
         $authenticator = new \Vanta\Loader\Service\Authenticator(\XF::app());

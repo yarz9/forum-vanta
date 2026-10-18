@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<admin_permission>
+  <admin_permission admin_permission_id="vantaLoaderAdmin" display_order="10000"/>
+  <admin_permission admin_permission_id="vantaLoaderBan" display_order="10100"/>
+  <admin_permission admin_permission_id="vantaLoaderResets" display_order="10200"/>
+</admin_permission>

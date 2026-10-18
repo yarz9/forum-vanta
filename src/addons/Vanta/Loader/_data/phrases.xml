@@ -7,4 +7,49 @@
   <phrase title="permission.VantaLoader_vanta_loader_admin" version_id="1000000" version_string="1.0.0">Manage loader configuration</phrase>
   <phrase title="option_group.VantaLoader" version_id="1000000" version_string="1.0.0">Vanta Loader</phrase>
   <phrase title="option_group_desc.VantaLoader" version_id="1000000" version_string="1.0.0">Settings for the Vanta loader authentication system.</phrase>
+  <phrase title="vanta_loader" version_id="1000000" version_string="1.0.0">Vanta Loader</phrase>
+  <phrase title="vanta_loader_overview" version_id="1000000" version_string="1.0.0">Overview</phrase>
+  <phrase title="vanta_loader_active_bans" version_id="1000000" version_string="1.0.0">Active bans</phrase>
+  <phrase title="vanta_loader_registered_devices" version_id="1000000" version_string="1.0.0">Registered devices</phrase>
+  <phrase title="vanta_loader_pending_resets" version_id="1000000" version_string="1.0.0">Pending HWID reset requests</phrase>
+  <phrase title="vanta_loader_bans" version_id="1000000" version_string="1.0.0">Loader bans</phrase>
+  <phrase title="vanta_loader_current_bans" version_id="1000000" version_string="1.0.0">Current bans</phrase>
+  <phrase title="vanta_loader_no_bans" version_id="1000000" version_string="1.0.0">There are no loader bans.</phrase>
+  <phrase title="vanta_loader_ban_device_or_user" version_id="1000000" version_string="1.0.0">Ban device or user</phrase>
+  <phrase title="vanta_loader_ban" version_id="1000000" version_string="1.0.0">Ban</phrase>
+  <phrase title="vanta_loader_ban_details" version_id="1000000" version_string="1.0.0">Ban details</phrase>
+  <phrase title="vanta_loader_user" version_id="1000000" version_string="1.0.0">User</phrase>
+  <phrase title="vanta_loader_user_id" version_id="1000000" version_string="1.0.0">User ID</phrase>
+  <phrase title="vanta_loader_hwid" version_id="1000000" version_string="1.0.0">HWID</phrase>
+  <phrase title="vanta_loader_created" version_id="1000000" version_string="1.0.0">Created</phrase>
+  <phrase title="vanta_loader_expires" version_id="1000000" version_string="1.0.0">Expires</phrase>
+  <phrase title="vanta_loader_expires_days" version_id="1000000" version_string="1.0.0">Expires after (days)</phrase>
+  <phrase title="vanta_loader_expires_days_explain" version_id="1000000" version_string="1.0.0">Leave empty for a permanent ban.</phrase>
+  <phrase title="vanta_loader_ban_user_id_explain" version_id="1000000" version_string="1.0.0">Ban a user by their XenForo user ID (applies to all of their devices).</phrase>
+  <phrase title="vanta_loader_ban_hwid_explain" version_id="1000000" version_string="1.0.0">Ban a single device by its hardware ID. The HWID is stored hashed.</phrase>
+  <phrase title="vanta_loader_unban" version_id="1000000" version_string="1.0.0">Unban</phrase>
+  <phrase title="vanta_loader_ban_requires_user_or_hwid" version_id="1000000" version_string="1.0.0">A user ID or HWID is required.</phrase>
+  <phrase title="vanta_loader_requested_ban_not_found" version_id="1000000" version_string="1.0.0">The requested ban could not be found.</phrase>
+  <phrase title="vanta_loader_resets" version_id="1000000" version_string="1.0.0">HWID resets</phrase>
+  <phrase title="vanta_loader_reset_requests" version_id="1000000" version_string="1.0.0">HWID reset requests</phrase>
+  <phrase title="vanta_loader_no_resets" version_id="1000000" version_string="1.0.0">There are no HWID reset requests.</phrase>
+  <phrase title="vanta_loader_reset_device" version_id="1000000" version_string="1.0.0">Reset device binding</phrase>
+  <phrase title="vanta_loader_reset_details" version_id="1000000" version_string="1.0.0">Reset details</phrase>
+  <phrase title="vanta_loader_reset_hwid_explain" version_id="1000000" version_string="1.0.0">The registered device with this HWID will be unbound so the user can log in on a new device.</phrase>
+  <phrase title="vanta_loader_reset_requires_user_and_hwid" version_id="1000000" version_string="1.0.0">A user ID and HWID are required.</phrase>
+  <phrase title="vanta_loader_requested_reset_not_found" version_id="1000000" version_string="1.0.0">The requested reset request could not be found.</phrase>
+  <phrase title="vanta_loader_status" version_id="1000000" version_string="1.0.0">Loader status</phrase>
+  <phrase title="vanta_loader_maintenance_mode" version_id="1000000" version_string="1.0.0">Maintenance mode</phrase>
+  <phrase title="vanta_loader_maintenance_mode_explain" version_id="1000000" version_string="1.0.0">When enabled, the loader login endpoint returns a maintenance error.</phrase>
+  <phrase title="vanta_loader_min_version" version_id="1000000" version_string="1.0.0">Minimum client version</phrase>
+  <phrase title="vanta_loader_min_version_explain" version_id="1000000" version_string="1.0.0">Clients older than this version must update before logging in. Leave empty to disable.</phrase>
+  <phrase title="vanta_loader_download_url" version_id="1000000" version_string="1.0.0">Update download URL</phrase>
+  <phrase title="vanta_loader_message" version_id="1000000" version_string="1.0.0">Maintenance message</phrase>
+  <phrase title="admin_navigation.vantaLoader" version_id="1000000" version_string="1.0.0">Vanta Loader</phrase>
+  <phrase title="admin_navigation.vantaLoaderBans" version_id="1000000" version_string="1.0.0">Loader bans</phrase>
+  <phrase title="admin_navigation.vantaLoaderResets" version_id="1000000" version_string="1.0.0">HWID resets</phrase>
+  <phrase title="admin_navigation.vantaLoaderStatus" version_id="1000000" version_string="1.0.0">Loader status</phrase>
+  <phrase title="admin_permission.vantaLoaderAdmin" version_id="1000000" version_string="1.0.0">Manage loader configuration</phrase>
+  <phrase title="admin_permission.vantaLoaderBan" version_id="1000000" version_string="1.0.0">Manage loader bans</phrase>
+  <phrase title="admin_permission.vantaLoaderResets" version_id="1000000" version_string="1.0.0">Manage loader HWID resets</phrase>
 </phrases>
