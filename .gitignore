@@ -1,6 +1,7 @@
 # XenForo runtime data (ignored for git, created at runtime)
-internal_data/
-data/
+# Root-anchored so nested dirs like src/XF/Search/Data are NOT ignored
+/internal_data/
+/data/
 
 # IDE
 .idea/
