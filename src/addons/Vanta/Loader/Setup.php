@@ -3,14 +3,14 @@
 namespace Vanta\Loader;
 
 use XF\AddOn\AbstractSetup;
-use XF\AddOn\StepRunnerInstallDbDrop;
-use XF\AddOn\StepRunnerUpgradeDbDrop;
+use XF\AddOn\StepRunnerInstallTrait;
+use XF\AddOn\StepRunnerUpgradeTrait;
 use XF\AddOn\StepRunnerUninstall;
 
 class Setup extends AbstractSetup
 {
-    use StepRunnerInstallDbDrop;
-    use StepRunnerUpgradeDbDrop;
+    use StepRunnerInstallTrait;
+    use StepRunnerUpgradeTrait;
     use StepRunnerUninstall;
 
     public function install(array $stepParams = [])
