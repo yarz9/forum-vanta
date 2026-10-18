@@ -169,11 +169,6 @@ class Authenticator
 
     public function isAccountRestricted(User $user): bool
     {
-        return $this->isAccountRestrictedByUserId((int) $user->user_id);
-    }
-
-    public function isAccountRestrictedByUserId(int $userId): bool
-    {
         $db = $this->app->db();
 
         $ban = $db->fetchRow("
@@ -181,25 +176,26 @@ class Authenticator
             WHERE user_id = ? AND (expires IS NULL OR expires > ?)
             ORDER BY created DESC
             LIMIT 1
-        ", [$userId, time()]);
+        ", [$user->user_id, time()]);
 
-        if ($ban)
-        {
+        if ($ban) {
             return true;
         }
 
-        $isBanned = (int) $db->fetchOne("SELECT is_banned FROM xf_user WHERE user_id = ?", [$userId]);
-        if (!$isBanned)
+        if ($user->is_banned)
         {
-            return false;
+            $nativeBan = $db->fetchRow("
+                SELECT * FROM xf_user_ban
+                WHERE user_id = ? AND (end_date = 0 OR end_date > ?)
+            ", [$user->user_id, time()]);
+
+            if ($nativeBan)
+            {
+                return true;
+            }
         }
 
-        $nativeBan = $db->fetchRow("
-            SELECT * FROM xf_user_ban
-            WHERE user_id = ? AND (end_date = 0 OR end_date > ?)
-        ", [$userId, time()]);
-
-        return !empty($nativeBan);
+        return false;
     }
 
     public function issueSession(User $user, ?string $hwid = null): array
@@ -311,136 +307,6 @@ class Authenticator
             'username' => $session['username'],
             'entitlement' => $entitlement,
             'device_bound' => $hwid !== null,
-        ];
-    }
-
-    public function connect(string $sessionToken, string $hwid, string $clientVersion): array
-    {
-        $db = $this->app->db();
-        $config = $this->getMaintConfig();
-
-        if ($config['enabled'] === '1')
-        {
-            return [
-                'success' => false,
-                'error' => $config['message'] ?: 'The service is temporarily unavailable.',
-                'error_key' => 'maintenance',
-                'maintenance' => [
-                    'enabled' => true,
-                    'message' => $config['message'],
-                ],
-            ];
-        }
-
-        $session = $db->fetchRow("
-            SELECT s.*, u.username
-            FROM xf_vanta_session s
-            LEFT JOIN xf_user u ON s.user_id = u.user_id
-            WHERE s.session_token = ? AND s.expires > ?
-            LIMIT 1
-        ", [$sessionToken, time()]);
-
-        if (!$session || !$session['username'])
-        {
-            return [
-                'success' => false,
-                'error' => 'Your session has expired. Please sign in again.',
-                'error_key' => 'session_expired',
-            ];
-        }
-
-        $userId = (int) $session['user_id'];
-
-        $db->update('xf_vanta_session', [
-            'last_activity' => time(),
-        ], 'session_token = ?', $sessionToken);
-
-        if ($this->isAccountRestrictedByUserId($userId))
-        {
-            return [
-                'success' => false,
-                'error' => 'This account is restricted from loader access.',
-                'error_key' => 'account_restricted',
-            ];
-        }
-
-        if ($hwid && $this->isDeviceBanned($hwid))
-        {
-            return [
-                'success' => false,
-                'error' => 'This device has been blocked.',
-                'error_key' => 'loader_banned',
-            ];
-        }
-
-        $versionCheck = $this->checkVersion($clientVersion);
-        if (!$versionCheck['supported'])
-        {
-            return [
-                'success' => false,
-                'error' => $versionCheck['message'] ?? 'An update is required.',
-                'error_key' => 'unsupported_version',
-                'min_version' => $versionCheck['min_version'],
-                'download_url' => $versionCheck['download_url'],
-            ];
-        }
-
-        $entitlement = $this->checkEntitlementFromUserId($userId);
-        if (!$entitlement['has'])
-        {
-            return [
-                'success' => false,
-                'error' => 'No active qualifying subscription.',
-                'error_key' => $entitlement['error_key'] ?? 'no_active_subscription',
-                'entitlement' => $entitlement,
-            ];
-        }
-
-        $deviceBound = false;
-        if ($hwid)
-        {
-            $hwidHash = hash('sha256', $hwid);
-            $device = $db->fetchRow("
-                SELECT * FROM xf_vanta_device
-                WHERE user_id = ? AND hwid_hash = ?
-            ", [$userId, $hwidHash]);
-
-            if (!$device)
-            {
-                return [
-                    'success' => false,
-                    'error' => 'This device is not recognized.',
-                    'error_key' => 'device_mismatch',
-                ];
-            }
-
-            $deviceBound = true;
-
-            $db->update('xf_vanta_device', [
-                'last_seen' => time(),
-            ], 'device_id = ?', $device['device_id']);
-        }
-
-        return [
-            'success' => true,
-            'user_id' => $userId,
-            'username' => $session['username'],
-            'entitlement' => [
-                'has_qualifying_upgrade' => true,
-                'is_permanent' => $entitlement['is_permanent'],
-                'upgrade_name' => $entitlement['upgrade_name'],
-                'expiry_timestamp' => $entitlement['expiry_timestamp'],
-            ],
-            'device_bound' => $deviceBound,
-            'session' => [
-                'expires' => (int) $session['expires'],
-                'remaining' => max(0, (int) $session['expires'] - time()),
-            ],
-            'server_time' => time(),
-            'links' => [
-                'purchase_url' => $config['purchase_url'],
-                'support_url' => $config['support_url'],
-            ],
         ];
     }
 

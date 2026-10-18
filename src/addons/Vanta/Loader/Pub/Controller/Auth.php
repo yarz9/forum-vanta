@@ -26,32 +26,6 @@ class Auth extends Controller
         return $this->responseJson($result);
     }
 
-    public function actionConnect()
-    {
-        $input = $this->filter([
-            'session_token' => 'str',
-            'hwid' => 'str',
-            'client_version' => 'str',
-        ]);
-
-        if (trim($input['session_token']) === '') {
-            return $this->responseJson([
-                'success' => false,
-                'error' => 'A session token is required.',
-                'error_key' => 'invalid_request',
-            ]);
-        }
-
-        $authenticator = new Authenticator(\XF::app());
-        $result = $authenticator->connect(
-            trim($input['session_token']),
-            trim($input['hwid']),
-            $input['client_version']
-        );
-
-        return $this->responseJson($result);
-    }
-
     protected function authenticate(array $input): array
     {
         $app = \XF::app();
@@ -279,7 +253,6 @@ class Auth extends Controller
             'session_expired' => 'Your session has expired. Please sign in again.',
             'maintenance' => 'The service is temporarily unavailable.',
             'unsupported_version' => 'An update is required.',
-            'invalid_request' => 'The request was invalid.',
         ];
 
         return $messages[$key] ?? 'Authentication failed.';
