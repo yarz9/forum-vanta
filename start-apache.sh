@@ -53,7 +53,7 @@ if [ ! -f "$lockFile" ]; then
         --password=VantaForum2026! \
         --email=admin@vanta-forum.com \
         --title="Vanta Forum" \
-        --url="${APP_URL:-https://forum-vanta-production.up.railway.app}" \
+        --url="${APP_URL:-https://vantacodes.xyz}" \
         --skip-statistics \
         --clear \
         --no-interaction
