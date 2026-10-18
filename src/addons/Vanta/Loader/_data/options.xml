@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <options>
-  <option option_id="vanta_loader_qualifying_upgrade_id" option_group_id="VantaLoader" display_order="10" edit_format="number" data_type="array">
+  <option option_id="vanta_loader_qualifying_upgrade_id" option_group_id="VantaLoader" display_order="10" edit_format="number" data_type="integer">
     <title>Qualifying upgrade ID</title>
     <explanation>The account upgrade ID that grants loader access (e.g., Premium = 1).</explanation>
-    <serialized>1</serialized>
+    <default_value>1</default_value>
   </option>
-  <option option_id="vanta_loader_purchase_url" option_group_id="VantaLoader" display_order="20" edit_format="text" data_type="array">
+  <option option_id="vanta_loader_purchase_url" option_group_id="VantaLoader" display_order="20" edit_format="text" data_type="string">
     <title>Purchase URL</title>
     <explanation>Where users can purchase qualifying upgrades.</explanation>
     <default_value>https://vantacodes.xyz/account/upgrades/</default_value>
   </option>
-  <option option_id="vanta_loader_support_url" option_group_id="VantaLoader" display_order="30" edit_format="text" data_type="array">
+  <option option_id="vanta_loader_support_url" option_group_id="VantaLoader" display_order="30" edit_format="text" data_type="string">
     <title>Support URL</title>
     <explanation>Link to support/forum for loader issues.</explanation>
     <default_value>https://vantacodes.xyz/</default_value>
