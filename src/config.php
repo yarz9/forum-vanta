@@ -28,6 +28,8 @@ if (getenv('MYSQL_URL')) {
 
 $config['fullUnicode'] = true;
 
+$config['development']['enabled'] = true;
+
 if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
     $_SERVER['HTTPS'] = 'on';
 }
