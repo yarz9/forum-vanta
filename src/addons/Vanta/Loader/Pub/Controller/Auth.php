@@ -3,10 +3,15 @@
 namespace Vanta\Loader\Pub\Controller;
 
 use XF\Mvc\Controller;
+use XF\Mvc\ParameterBag;
 use Vanta\Loader\Service\Authenticator;
 
 class Auth extends Controller
 {
+    public function checkCsrfIfNeeded($action, ParameterBag $params)
+    {
+    }
+
     public function actionLogin()
     {
         $input = $this->filter([
