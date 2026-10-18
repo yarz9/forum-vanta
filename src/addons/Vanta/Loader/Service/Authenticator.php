@@ -13,7 +13,7 @@ class Authenticator
     public function __construct(App $app)
     {
         $this->app = $app;
-        $optionId = (int) $app->options()->VantaLoader->qualifying_upgrade_id;
+        $optionId = (int) $app->options()->vanta_loader_qualifying_upgrade_id;
         if ($optionId > 0) {
             $this->qualifyingUpgradeId = $optionId;
         }
@@ -61,7 +61,7 @@ class Authenticator
             return $result;
         }
 
-        $user = $this->app->findByAlias('XF:User', $loginResult->getUser()->getUserId());
+        $user = $loginResult->getUser();
         if (!$user) {
             $result['error'] = 'Invalid username or password.';
             $result['error_key'] = 'invalid_credentials';
@@ -127,7 +127,7 @@ class Authenticator
             WHERE ua.user_id = ? AND (ua.end_date = 0 OR ua.end_date > ?)
             ORDER BY ua.start_date DESC
             LIMIT 1
-        ", [$user->getUser_id(), time()]);
+        ", [$user->user_id, time()]);
 
         if (empty($activeUpgrades)) {
             $entitlement['reason'] = 'No active qualifying subscription.';
@@ -178,14 +178,23 @@ class Authenticator
             WHERE user_id = ? AND (expires IS NULL OR expires > ?)
             ORDER BY created DESC
             LIMIT 1
-        ", [$user->getUser_id(), time()]);
+        ", [$user->user_id, time()]);
 
         if ($ban) {
             return true;
         }
 
-        if ($user->is_banned() && $user->get('ban_end_date') > time()) {
-            return true;
+        if ($user->is_banned)
+        {
+            $nativeBan = $db->fetchRow("
+                SELECT * FROM xf_user_ban
+                WHERE user_id = ? AND (end_date = 0 OR end_date > ?)
+            ", [$user->user_id, time()]);
+
+            if ($nativeBan)
+            {
+                return true;
+            }
         }
 
         return false;
@@ -204,7 +213,7 @@ class Authenticator
             $existingDevice = $db->fetchRow("
                 SELECT * FROM xf_vanta_device
                 WHERE user_id = ? AND hwid_hash = ?
-            ", [$user->getUser_id(), $hwidHash]);
+            ", [$user->user_id, $hwidHash]);
 
             if ($existingDevice) {
                 $db->update('xf_vanta_device', [
@@ -213,7 +222,7 @@ class Authenticator
                 $deviceToken = $existingDevice['hwid_hash'];
             } else {
                 $db->insert('xf_vanta_device', [
-                    'user_id' => $user->getUser_id(),
+                    'user_id' => $user->user_id,
                     'hwid_hash' => $hwidHash,
                     'device_name' => 'Device ' . substr($hwidHash, 0, 8),
                     'created' => time(),
@@ -226,7 +235,7 @@ class Authenticator
 
         $db->insert('xf_vanta_session', [
             'session_token' => $sessionToken,
-            'user_id' => $user->getUser_id(),
+            'user_id' => $user->user_id,
             'token_hash' => $tokenHash,
             'created' => time(),
             'expires' => time() + 86400 * 30,
@@ -237,7 +246,7 @@ class Authenticator
         ]);
 
         $db->insert('xf_vanta_log', [
-            'user_id' => $user->getUser_id(),
+            'user_id' => $user->user_id,
             'hwid_hash' => $deviceToken,
             'ip_address' => $this->getClientIp(),
             'event_type' => 'login',
@@ -345,15 +354,15 @@ class Authenticator
         $db = $this->app->db();
         $rows = $db->fetchPairs("SELECT setting_key, setting_value FROM xf_vanta_maint");
 
-        $options = $this->app->options()->VantaLoader ?? null;
+        $options = $this->app->options();
 
         return [
             'enabled' => $rows['enabled'] ?? '0',
             'message' => $rows['message'] ?? '',
             'min_version' => $rows['min_version'] ?? '',
             'download_url' => $rows['download_url'] ?? '',
-            'support_url' => $options->support_url ?? 'https://vantacodes.xyz/',
-            'purchase_url' => $options->purchase_url ?? 'https://vantacodes.xyz/account/upgrades/',
+            'support_url' => $options->vanta_loader_support_url ?: 'https://vantacodes.xyz/',
+            'purchase_url' => $options->vanta_loader_purchase_url ?: 'https://vantacodes.xyz/account/upgrades/',
         ];
     }
 
