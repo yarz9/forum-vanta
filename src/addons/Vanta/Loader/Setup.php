@@ -30,62 +30,62 @@ class Setup extends AbstractSetup
 
     protected function schemaCreate()
     {
-        $schema = $this->app->db()->schema();
+        $sm = $this->app->db()->getSchemaManager();
 
-        if (!$schema->tableExists('xf_vanta_session')) {
-            $schema->createTable('xf_vanta_session', function (\XF\Db\Schema\Create $table) {
-                $table->binaryUniq('session_token', 32);
-                $table->int('user_id');
-                $table->binary('token_hash', 64);
-                $table->int('created');
-                $table->int('expires');
-                $table->binary('device_token', 32)->nullable();
-                $table->int('login_ip')->nullable();
-                $table->string('login_user_agent', 255)->nullable();
-                $table->int('last_activity');
-                $table->primaryKey('session_token');
-                $table->index('token_hash');
+        if (!$sm->tableExists('xf_vanta_session')) {
+            $sm->createTable('xf_vanta_session', function (\XF\Db\Schema\Create $table) {
+                $table->addColumn('session_token', 'varbinary', 32);
+                $table->addColumn('user_id', 'int');
+                $table->addColumn('token_hash', 'varbinary', 64);
+                $table->addColumn('created', 'int');
+                $table->addColumn('expires', 'int');
+                $table->addColumn('device_token', 'varbinary', 32)->nullable();
+                $table->addColumn('login_ip', 'varbinary', 16)->nullable();
+                $table->addColumn('login_user_agent', 'varchar', 255)->nullable();
+                $table->addColumn('last_activity', 'int');
+                $table->addPrimaryKey('session_token');
+                $table->addKey('token_hash');
             });
         }
 
-        if (!$schema->tableExists('xf_vanta_device')) {
-            $schema->createTable('xf_vanta_device', function (\XF\Db\Schema\Create $table) {
-                $table->int('device_id', 10)->autoIncrement();
-                $table->int('user_id');
-                $table->binary('hwid_hash', 64);
-                $table->string('device_name', 255);
-                $table->int('created');
-                $table->int('last_seen');
-                $table->string('create_ip', 45)->nullable();
-                $table->primaryKey('device_id');
-                $table->index('user_id');
-                $table->index('hwid_hash');
-                $table->unique(['user_id', 'hwid_hash']);
+        if (!$sm->tableExists('xf_vanta_device')) {
+            $sm->createTable('xf_vanta_device', function (\XF\Db\Schema\Create $table) {
+                $table->addColumn('device_id', 'int')->autoIncrement();
+                $table->addColumn('user_id', 'int');
+                $table->addColumn('hwid_hash', 'varbinary', 64);
+                $table->addColumn('device_name', 'varchar', 255);
+                $table->addColumn('created', 'int');
+                $table->addColumn('last_seen', 'int');
+                $table->addColumn('create_ip', 'varbinary', 16)->nullable();
+                $table->addPrimaryKey('device_id');
+                $table->addKey('user_id');
+                $table->addKey('hwid_hash');
+                $table->addUniqueKey(['user_id', 'hwid_hash']);
             });
         }
 
-        if (!$schema->tableExists('xf_vanta_ban')) {
-            $schema->createTable('xf_vanta_ban', function (\XF\Db\Schema\Create $table) {
-                $table->int('ban_id', 10)->autoIncrement();
-                $table->int('user_id')->nullable();
-                $table->binary('hwid_hash', 64)->nullable();
-                $table->string('reason', 255);
-                $table->int('created_by');
-                $table->string('created_by_username', 50);
-                $table->int('created');
-                $table->int('expires')->nullable();
-                $table->string('type', 20);
-                $table->primaryKey('ban_id');
-                $table->index('user_id');
-                $table->index('hwid_hash');
+        if (!$sm->tableExists('xf_vanta_ban')) {
+            $sm->createTable('xf_vanta_ban', function (\XF\Db\Schema\Create $table) {
+                $table->addColumn('ban_id', 'int')->autoIncrement();
+                $table->addColumn('user_id', 'int')->nullable();
+                $table->addColumn('hwid_hash', 'varbinary', 64)->nullable();
+                $table->addColumn('reason', 'varchar', 255);
+                $table->addColumn('created_by', 'int');
+                $table->addColumn('created_by_username', 'varchar', 50);
+                $table->addColumn('created', 'int');
+                $table->addColumn('expires', 'int')->nullable();
+                $table->addColumn('type', 'varchar', 20);
+                $table->addPrimaryKey('ban_id');
+                $table->addKey('user_id');
+                $table->addKey('hwid_hash');
             });
         }
 
-        if (!$schema->tableExists('xf_vanta_maint')) {
-            $schema->createTable('xf_vanta_maint', function (\XF\Db\Schema\Create $table) {
-                $table->string('setting_key', 50);
-                $table->string('setting_value', 255);
-                $table->primaryKey('setting_key');
+        if (!$sm->tableExists('xf_vanta_maint')) {
+            $sm->createTable('xf_vanta_maint', function (\XF\Db\Schema\Create $table) {
+                $table->addColumn('setting_key', 'varchar', 50);
+                $table->addColumn('setting_value', 'varchar', 255);
+                $table->addPrimaryKey('setting_key');
             });
         }
 
@@ -98,49 +98,49 @@ class Setup extends AbstractSetup
             ('support_url', '')
         ");
 
-        if (!$schema->tableExists('xf_vanta_log')) {
-            $schema->createTable('xf_vanta_log', function (\XF\Db\Schema\Create $table) {
-                $table->int('log_id', 10)->autoIncrement();
-                $table->int('user_id')->nullable();
-                $table->binary('hwid_hash', 64)->nullable();
-                $table->string('ip_address', 45)->nullable();
-                $table->string('event_type', 50);
-                $table->string('detail', 255)->nullable();
-                $table->int('timestamp');
-                $table->primaryKey('log_id');
-                $table->index('user_id');
-                $table->index('event_type');
+        if (!$sm->tableExists('xf_vanta_log')) {
+            $sm->createTable('xf_vanta_log', function (\XF\Db\Schema\Create $table) {
+                $table->addColumn('log_id', 'int')->autoIncrement();
+                $table->addColumn('user_id', 'int')->nullable();
+                $table->addColumn('hwid_hash', 'varbinary', 64)->nullable();
+                $table->addColumn('ip_address', 'varbinary', 16)->nullable();
+                $table->addColumn('event_type', 'varchar', 50);
+                $table->addColumn('detail', 'varchar', 255)->nullable();
+                $table->addColumn('timestamp', 'int');
+                $table->addPrimaryKey('log_id');
+                $table->addKey('user_id');
+                $table->addKey('event_type');
             });
         }
 
-        if (!$schema->tableExists('xf_vanta_reset')) {
-            $schema->createTable('xf_vanta_reset', function (\XF\Db\Schema\Create $table) {
-                $table->int('reset_id', 10)->autoIncrement();
-                $table->int('user_id');
-                $table->binary('hwid_hash', 64);
-                $table->string('reason', 255);
-                $table->int('requested_by');
-                $table->string('requested_by_username', 50);
-                $table->int('approved_by')->nullable();
-                $table->string('approved_by_username', 50)->nullable();
-                $table->int('created');
-                $table->int('processed')->nullable();
-                $table->string('status', 20)->default('pending');
-                $table->primaryKey('reset_id');
-                $table->index('user_id');
-                $table->index('status');
+        if (!$sm->tableExists('xf_vanta_reset')) {
+            $sm->createTable('xf_vanta_reset', function (\XF\Db\Schema\Create $table) {
+                $table->addColumn('reset_id', 'int')->autoIncrement();
+                $table->addColumn('user_id', 'int');
+                $table->addColumn('hwid_hash', 'varbinary', 64);
+                $table->addColumn('reason', 'varchar', 255);
+                $table->addColumn('requested_by', 'int');
+                $table->addColumn('requested_by_username', 'varchar', 50);
+                $table->addColumn('approved_by', 'int')->nullable();
+                $table->addColumn('approved_by_username', 'varchar', 50)->nullable();
+                $table->addColumn('created', 'int');
+                $table->addColumn('processed', 'int')->nullable();
+                $table->addColumn('status', 'varchar', 20)->setDefault('pending');
+                $table->addPrimaryKey('reset_id');
+                $table->addKey('user_id');
+                $table->addKey('status');
             });
         }
     }
 
     protected function schemaDrop()
     {
-        $schema = $this->app->db()->schema();
-        $schema->dropTable('xf_vanta_session');
-        $schema->dropTable('xf_vanta_device');
-        $schema->dropTable('xf_vanta_ban');
-        $schema->dropTable('xf_vanta_maint');
-        $schema->dropTable('xf_vanta_log');
-        $schema->dropTable('xf_vanta_reset');
+        $sm = $this->app->db()->getSchemaManager();
+        $sm->dropTable('xf_vanta_session');
+        $sm->dropTable('xf_vanta_device');
+        $sm->dropTable('xf_vanta_ban');
+        $sm->dropTable('xf_vanta_maint');
+        $sm->dropTable('xf_vanta_log');
+        $sm->dropTable('xf_vanta_reset');
     }
 }
