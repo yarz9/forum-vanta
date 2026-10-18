@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <options>
-  <option option_id="vanta_loader_qualifying_upgrade_id" option_group_id="VantaLoader" display_order="10" edit_format="number" data_type="integer">
+  <option option_id="vanta_loader_qualifying_upgrade_id" option_group_id="VantaLoader" display_order="10" edit_format="spinbox" data_type="integer">
     <title>Qualifying upgrade ID</title>
     <explanation>The account upgrade ID that grants loader access (e.g., Premium = 1).</explanation>
     <default_value>1</default_value>
