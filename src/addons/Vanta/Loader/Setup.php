@@ -5,13 +5,13 @@ namespace Vanta\Loader;
 use XF\AddOn\AbstractSetup;
 use XF\AddOn\StepRunnerInstallTrait;
 use XF\AddOn\StepRunnerUpgradeTrait;
-use XF\AddOn\StepRunnerUninstall;
+use XF\AddOn\StepRunnerUninstallTrait;
 
 class Setup extends AbstractSetup
 {
     use StepRunnerInstallTrait;
     use StepRunnerUpgradeTrait;
-    use StepRunnerUninstall;
+    use StepRunnerUninstallTrait;
 
     public function install(array $stepParams = [])
     {
