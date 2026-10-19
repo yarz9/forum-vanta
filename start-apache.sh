@@ -145,6 +145,20 @@ try {
 }
 ' || echo "=== Icon sprite rebuild failed ==="
 
+# Run queued jobs (permission rebuilds, template partial compiles, ...) before
+# Apache starts so freshly imported permissions take effect immediately.
+echo "=== Running pending jobs ==="
+php -r '
+require "/var/www/html/src/XF.php";
+\XF::start("/var/www/html");
+try {
+    \XF::app()->jobManager()->runQueue(false, 60);
+    echo "Pending jobs processed.\n";
+} catch (\Throwable $e) {
+    fwrite(STDERR, "Job queue failed: " . $e->getMessage() . "\n");
+}
+' || echo "=== Job queue processing failed ==="
+
 # Hand the persistent storage back to the web user (boot tasks run as root)
 chown -R www-data:www-data /var/www/html/storage 2>/dev/null || true
 

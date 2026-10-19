@@ -103,6 +103,11 @@ class Setup extends AbstractSetup
         {
             $this->ensurePermission($groupId, $permissionId);
         }
+
+        // Writing xf_permission_entry directly bypasses the permission
+        // combination cache, so queue a rebuild or the permissions will
+        // not take effect until the group is saved in the ACP.
+        $this->app->jobManager()->enqueueUnique('permissionRebuild', \XF\Job\PermissionRebuild::class);
     }
 
     protected function ensurePermission(int $groupId, string $permissionId)
