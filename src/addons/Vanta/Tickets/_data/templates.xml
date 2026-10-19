@@ -12,15 +12,11 @@
 </div>
 
 <xf:if is="{{ $isStaff }}">
-	<div class="block-filterBar">
-		<div class="filterBar">
-			<ul class="filterBar-filters">
-				<li><a href="{{ link('tickets/') }}" class="{{ !$status ? 'is-selected' : '' }}">{{ phrase('all') }}</a></li>
-				<xf:foreach loop="$statuses" key="$statusValue" value="$statusLabel">
-					<li><a href="{{ link('tickets/', null, {'status': $statusValue}) }}" class="{{ $status == $statusValue ? 'is-selected' : '' }}">{{ $statusLabel }}</a></li>
-				</xf:foreach>
-			</ul>
-		</div>
+	<div class="block-tabHeader tabs hScroller">
+		<a class="tabs-tab {{ !$status ? 'is-active' : '' }}" href="{{ link('tickets/') }}">{{ phrase('all') }}</a>
+		<xf:foreach loop="$statuses" key="$statusValue" value="$statusLabel">
+			<a class="tabs-tab {{ $status == $statusValue ? 'is-active' : '' }}" href="{{ link('tickets/', null, {'status': $statusValue}) }}">{{ $statusLabel }}</a>
+		</xf:foreach>
 	</div>
 </xf:if>
 
