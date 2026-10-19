@@ -27,7 +27,7 @@ class Setup extends AbstractSetup
 
         if ($sm->tableExists('xf_vanta_ticket') && !$sm->columnExists('xf_vanta_ticket', 'assigned_user_id')) {
             $sm->alterTable('xf_vanta_ticket', function (\XF\Db\Schema\Alter $table) {
-                $table->addColumn('assigned_user_id', 'uint')->setDefault(0);
+                $table->addColumn('assigned_user_id', 'int')->setDefault(0);
             });
         }
 
@@ -57,7 +57,7 @@ class Setup extends AbstractSetup
                 $table->addColumn('ticket_type', 'varchar', 20)->setDefault('general');
                 $table->addColumn('title', 'varchar', 255);
                 $table->addColumn('status', 'varchar', 20)->setDefault('open');
-                $table->addColumn('assigned_user_id', 'uint')->setDefault(0);
+                $table->addColumn('assigned_user_id', 'int')->setDefault(0);
                 $table->addColumn('assigned_username', 'varchar', 50)->setDefault('');
                 $table->addColumn('hwid', 'varchar', 64)->nullable();
                 $table->addColumn('hwid_hash', 'varbinary', 64)->nullable();
