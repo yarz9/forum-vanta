@@ -25,7 +25,7 @@
 		</div>
 	</div>
 </div>]]></template>
-  <template type="admin" title="vanta_loader_bans" version_id="1000000" version_string="1.0.0"><![CDATA[<xf:title>{{ phrase('vanta_loader_bans') }}</xf:title>
+  <template type="admin" title="vanta_loader_bans" version_id="1000200" version_string="1.0.2"><![CDATA[<xf:title>{{ phrase('vanta_loader_bans') }}</xf:title>
 
 <div class="block-outer">
 	<div class="block-outer-main">
@@ -69,7 +69,7 @@
 							</div>
 						</div>
 						<div class="contentRow-extra">
-							<a href="{{ link('vanta-loader/unban', {'ban_id': $ban.ban_id}, {'t': csrf_token()}) }}" class="button button--link">{{ phrase('vanta_loader_unban') }}</a>
+							<a href="{{ link('vanta-loader/unban', null, {'ban_id': $ban.ban_id, 't': csrf_token()}) }}" class="button button--link">{{ phrase('vanta_loader_unban') }}</a>
 						</div>
 					</div>
 				</div>
@@ -77,7 +77,7 @@
 		</xf:if>
 	</div>
 </div>]]></template>
-  <template type="admin" title="vanta_loader_users" version_id="1000100" version_string="1.0.1"><![CDATA[<xf:title>{{ phrase('vanta_loader_users') }}</xf:title>
+  <template type="admin" title="vanta_loader_users" version_id="1000200" version_string="1.0.2"><![CDATA[<xf:title>{{ phrase('vanta_loader_users') }}</xf:title>
 
 <div class="block-outer">
 	<div class="block-outer-main">
@@ -114,7 +114,7 @@
 						</div>
 						<xf:if is="{{ $device.user_id }}">
 							<div class="contentRow-extra">
-								<a href="{{ link('vanta-loader/ban', {'user_id': $device.user_id}) }}" class="button button--link">{{ phrase('vanta_loader_ban') }}</a>
+								<a href="{{ link('vanta-loader/ban', null, {'user_id': $device.user_id}) }}" class="button button--link">{{ phrase('vanta_loader_ban') }}</a>
 							</div>
 						</xf:if>
 					</div>
@@ -146,7 +146,7 @@
 		<xf:submitrow submit="{{ phrase('vanta_loader_ban') }}" />
 	</div>
 </xf:form>]]></template>
-  <template type="admin" title="vanta_loader_resets" version_id="1000000" version_string="1.0.0"><![CDATA[<xf:title>{{ phrase('vanta_loader_resets') }}</xf:title>
+  <template type="admin" title="vanta_loader_resets" version_id="1000200" version_string="1.0.2"><![CDATA[<xf:title>{{ phrase('vanta_loader_resets') }}</xf:title>
 
 <div class="block-outer">
 	<div class="block-outer-main">
@@ -179,8 +179,8 @@
 						</div>
 						<div class="contentRow-extra">
 							<xf:if is="{{ $reset.status == 'pending' }}">
-								<a href="{{ link('vanta-loader/approve-reset', {'reset_id': $reset.reset_id}, {'t': csrf_token()}) }}" class="button button--link">{{ phrase('approve') }}</a>
-								<a href="{{ link('vanta-loader/reject-reset', {'reset_id': $reset.reset_id}, {'t': csrf_token()}) }}" class="button button--link">{{ phrase('reject') }}</a>
+								<a href="{{ link('vanta-loader/approve-reset', null, {'reset_id': $reset.reset_id, 't': csrf_token()}) }}" class="button button--link">{{ phrase('approve') }}</a>
+								<a href="{{ link('vanta-loader/reject-reset', null, {'reset_id': $reset.reset_id, 't': csrf_token()}) }}" class="button button--link">{{ phrase('reject') }}</a>
 							</xf:if>
 						</div>
 					</div>
