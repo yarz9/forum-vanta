@@ -1,6 +1,24 @@
 #!/bin/bash
 set -e
 
+# Persist uploaded files (avatars, profile banners, attachments) across deploys.
+# Mount a Railway volume at /var/www/html/storage so this survives redeploys.
+echo "=== Preparing persistent storage ==="
+mkdir -p /var/www/html/storage/data /var/www/html/storage/internal_data
+
+if [ ! -L /var/www/html/data ]; then
+    rm -rf /var/www/html/data
+    ln -s /var/www/html/storage/data /var/www/html/data
+fi
+
+if [ ! -L /var/www/html/internal_data ]; then
+    rm -rf /var/www/html/internal_data
+    ln -s /var/www/html/storage/internal_data /var/www/html/internal_data
+fi
+
+mkdir -p /var/www/html/internal_data/code_cache/templates
+chown www-data:www-data /var/www/html/storage /var/www/html/storage/data /var/www/html/storage/internal_data 2>/dev/null || true
+
 echo "=== Configuring Apache ==="
 
 # Remove ALL mpm symlinks from mods-enabled
@@ -111,6 +129,9 @@ try {
     exit(1);
 }
 ' || echo "=== Core cache rebuild failed ==="
+
+# Hand the persistent storage back to the web user (boot tasks run as root)
+chown -R www-data:www-data /var/www/html/storage 2>/dev/null || true
 
 # Start Apache
 echo "=== Starting Apache ==="
