@@ -495,6 +495,8 @@ class Authenticator
             'message' => $rows['message'] ?? '',
             'min_version' => $rows['min_version'] ?? '',
             'download_url' => $rows['download_url'] ?? '',
+            'download_url_beta' => $rows['download_url_beta'] ?? '',
+            'download_url_alpha' => $rows['download_url_alpha'] ?? '',
             'support_url' => $options->vanta_loader_support_url ?: 'https://vantacodes.xyz/',
             'purchase_url' => $options->vanta_loader_purchase_url ?: 'https://vantacodes.xyz/account/upgrades/',
         ];
@@ -533,6 +535,52 @@ class Authenticator
         $options = $this->app->options();
 
         return trim((string) ($options->vanta_loader_payload_url ?? ''));
+    }
+
+    /**
+     * Builds the loader can download for this user. "live" is always
+     * available (when configured); "beta" and "laff" are only offered to
+     * members of the matching user groups and when their URL is set.
+     */
+    public function getBuildOptions(User $user): array
+    {
+        $config = $this->getMaintConfig();
+
+        $groupIds = [(int) $user->user_group_id];
+        foreach ((array) $user->secondary_group_ids AS $groupId)
+        {
+            $groupIds[] = (int) $groupId;
+        }
+        $groupIds = array_values(array_unique(array_filter($groupIds)));
+
+        $titles = [];
+        if ($groupIds)
+        {
+            $rows = $this->app->db()->fetchPairs("
+                SELECT user_group_id, title
+                FROM xf_user_group
+                WHERE user_group_id IN (" . implode(',', $groupIds) . ")
+            ");
+            $titles = array_map('mb_strtolower', array_values($rows));
+        }
+
+        $builds = [
+            'live' => trim((string) ($config['download_url'] ?? '')),
+        ];
+
+        $betaUrl = trim((string) ($config['download_url_beta'] ?? ''));
+        if ($betaUrl !== '' && in_array('beta', $titles, true))
+        {
+            $builds['beta'] = $betaUrl;
+        }
+
+        $alphaUrl = trim((string) ($config['download_url_alpha'] ?? ''));
+        if ($alphaUrl !== '' && in_array('laff', $titles, true))
+        {
+            $builds['laff'] = $alphaUrl;
+        }
+
+        return $builds;
     }
 
     public function getPayloadInfo(): ?array

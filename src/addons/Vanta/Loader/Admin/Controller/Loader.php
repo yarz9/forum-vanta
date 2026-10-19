@@ -292,6 +292,8 @@ class Loader extends AbstractController
                 'message' => 'str',
                 'min_version' => 'str',
                 'download_url' => 'str',
+                'download_url_beta' => 'str',
+                'download_url_alpha' => 'str',
             ]);
 
             $settings = [
@@ -299,9 +301,12 @@ class Loader extends AbstractController
                 'message' => $input['message'],
                 'min_version' => $input['min_version'],
                 'download_url' => $input['download_url'],
+                'download_url_beta' => $input['download_url_beta'],
+                'download_url_alpha' => $input['download_url_alpha'],
             ];
 
-            $db->delete('xf_vanta_maint', 'setting_key IN (?, ?, ?, ?)', ['enabled', 'message', 'min_version', 'download_url']);
+            $keys = ['enabled', 'message', 'min_version', 'download_url', 'download_url_beta', 'download_url_alpha'];
+            $db->delete('xf_vanta_maint', 'setting_key IN (?, ?, ?, ?, ?, ?)', $keys);
             foreach ($settings as $key => $value)
             {
                 $db->insert('xf_vanta_maint', [

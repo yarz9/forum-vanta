@@ -227,6 +227,12 @@
 			<xf:formrow label="{{ phrase('vanta_loader_download_url') }}">
 				<input type="text" name="download_url" value="{{ $config.download_url }}" class="input" />
 			</xf:formrow>
+			<xf:formrow label="{{ phrase('vanta_loader_download_url_beta') }}">
+				<input type="text" name="download_url_beta" value="{{ $config.download_url_beta }}" class="input" />
+			</xf:formrow>
+			<xf:formrow label="{{ phrase('vanta_loader_download_url_alpha') }}">
+				<input type="text" name="download_url_alpha" value="{{ $config.download_url_alpha }}" class="input" />
+			</xf:formrow>
 			<xf:formrow label="{{ phrase('vanta_loader_message') }}">
 				<textarea name="message" class="input" rows="3">{{ $config.message }}</textarea>
 			</xf:formrow>

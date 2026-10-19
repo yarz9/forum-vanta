@@ -267,6 +267,24 @@ class Auth extends Controller
             }
         }
 
+        $user = \XF::em()->find('XF:User', (int) $result['user_id']);
+        if ($user)
+        {
+            $builds = $authenticator->getBuildOptions($user);
+            $response['allowed_builds'] = implode(',', array_keys($builds));
+            $response['build_live_url'] = (string) ($builds['live'] ?? '');
+
+            if (!empty($builds['beta']))
+            {
+                $response['build_beta_url'] = $builds['beta'];
+            }
+
+            if (!empty($builds['laff']))
+            {
+                $response['build_laff_url'] = $builds['laff'];
+            }
+        }
+
         return $this->responseJson($response);
     }
 

@@ -131,6 +131,8 @@ class Setup extends AbstractSetup
             ('message', ''),
             ('min_version', ''),
             ('download_url', ''),
+            ('download_url_beta', ''),
+            ('download_url_alpha', ''),
             ('support_url', '')
         ");
 
