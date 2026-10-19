@@ -2,7 +2,7 @@
 <template_modifications>
   <modification type="public" template="PAGE_CONTAINER" modification_key="vanta_footer_branding" description="Replace the XenForo footer copyright with Vanta branding and load Vanta footer CSS" execution_order="10" enabled="1" action="str_replace">
     <find><![CDATA[<xf:copyright />]]></find>
-    <replace><![CDATA[&copy; {{ fn('date', 'Y') }} Vanta. All rights reserved.
+    <replace><![CDATA[&copy; 2026 Vanta. All rights reserved.
 						<xf:css src="vanta_forum.less" />]]></replace>
   </modification>
 </template_modifications>
