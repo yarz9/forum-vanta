@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+  <template type="admin" title="payment_profile_Plisio" version_id="1000070" version_string="1.0.0"><![CDATA[<xf:passwordboxrow name="options[secret_key]" value="{$profile.options.secret_key}" type="password"
+				   autocomplete="new-password"
+				   label="{{ phrase('plisio_secret_key') }}"
+				   hint="{{ phrase('required') }}">
+</xf:passwordboxrow>]]></template>
+</templates>

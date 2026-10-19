@@ -1,0 +1,16 @@
+{
+    "legacy_addon_id": "",
+    "title": "[Payment Gateway] Plisio.net",
+    "description": "Plisio.net Payment Profile for XenForo 2.x.",
+    "version_id": 1000070,
+    "version_string": "1.0.0",
+    "dev": "Plisio",
+    "dev_url": "https://plisio.net",
+    "faq_url": "",
+    "support_url": "",
+    "extra_urls": {
+        "Plisio Integrations": "https://plisio.net/en/integrations"
+    },
+    "require": [],
+    "icon": "plisio.png"
+}
