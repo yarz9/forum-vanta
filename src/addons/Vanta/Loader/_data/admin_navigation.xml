@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <admin_navigation>
   <admin_navigation_entry navigation_id="vantaLoader" display_order="6000" link="vanta-loader" icon="fa-key" admin_permission_id="vantaLoaderAdmin" debug_only="0" development_only="0" hide_no_children="1"/>
+  <admin_navigation_entry navigation_id="vantaLoaderUsers" parent_navigation_id="vantaLoader" display_order="50" link="vanta-loader/users" admin_permission_id="vantaLoaderAdmin" debug_only="0" development_only="0" hide_no_children="0"/>
   <admin_navigation_entry navigation_id="vantaLoaderBans" parent_navigation_id="vantaLoader" display_order="100" link="vanta-loader/bans" admin_permission_id="vantaLoaderBan" debug_only="0" development_only="0" hide_no_children="0"/>
   <admin_navigation_entry navigation_id="vantaLoaderResets" parent_navigation_id="vantaLoader" display_order="200" link="vanta-loader/resets" admin_permission_id="vantaLoaderResets" debug_only="0" development_only="0" hide_no_children="0"/>
   <admin_navigation_entry navigation_id="vantaLoaderStatus" parent_navigation_id="vantaLoader" display_order="300" link="vanta-loader/status" admin_permission_id="vantaLoaderAdmin" debug_only="0" development_only="0" hide_no_children="0"/>

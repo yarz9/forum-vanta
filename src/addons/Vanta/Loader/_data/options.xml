@@ -15,4 +15,9 @@
     <explanation>Link to support/forum for loader issues.</explanation>
     <default_value>https://vantacodes.xyz/</default_value>
   </option>
+  <option option_id="vanta_loader_payload_url" option_group_id="VantaLoader" display_order="40" edit_format="textbox" data_type="string">
+    <title>Payload URL</title>
+    <explanation>Optional direct URL (https recommended) to the cheat DLL. When set, the loader fetches the DLL from this link at sign-in instead of the payload bundled with the addon. Leave empty to serve the bundled payload.</explanation>
+    <default_value></default_value>
+  </option>
 </options>

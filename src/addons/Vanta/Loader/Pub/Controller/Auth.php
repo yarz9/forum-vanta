@@ -187,36 +187,46 @@ class Auth extends Controller
             'device_bound' => $result['device_bound'],
         ];
 
-        $payload = $authenticator->getPayloadInfo();
-        if ($payload)
+        // An admin-configured direct link takes priority over the bundled
+        // payload. The loader fetches it at sign-in and keeps it in memory.
+        $payloadUrl = $authenticator->getPayloadUrl();
+        if ($payloadUrl !== '')
         {
-            $response['payload_hash'] = $payload['hash'];
-            $response['payload_size'] = $payload['size'];
-
-            // The loader already has these exact bytes - no transfer.
-            if ($input['payload_hash'] !== '' && hash_equals($payload['hash'], $input['payload_hash']))
+            $response['payload_url'] = $payloadUrl;
+        }
+        else
+        {
+            $payload = $authenticator->getPayloadInfo();
+            if ($payload)
             {
-                $response['payload_current'] = true;
-            }
-            else
-            {
-                $envelope = $authenticator->encryptPayload(
-                    $payload['data'],
-                    $input['session_token'],
-                    $input['hwid']
-                );
+                $response['payload_hash'] = $payload['hash'];
+                $response['payload_size'] = $payload['size'];
 
-                if ($envelope === null)
+                // The loader already has these exact bytes - no transfer.
+                if ($input['payload_hash'] !== '' && hash_equals($payload['hash'], $input['payload_hash']))
                 {
-                    // No cryptography extension is available. The payload is
-                    // still served over HTTPS; this is a safe fallback only
-                    // on servers that truly have no crypto extension.
-                    $response['payload_b64'] = base64_encode($payload['data']);
+                    $response['payload_current'] = true;
                 }
                 else
                 {
-                    $response['payload_cipher'] = $envelope['cipher'];
-                    $response['payload_b64'] = base64_encode($envelope['blob']);
+                    $envelope = $authenticator->encryptPayload(
+                        $payload['data'],
+                        $input['session_token'],
+                        $input['hwid']
+                    );
+
+                    if ($envelope === null)
+                    {
+                        // No cryptography extension is available. The payload is
+                        // still served over HTTPS; this is a safe fallback only
+                        // on servers that truly have no crypto extension.
+                        $response['payload_b64'] = base64_encode($payload['data']);
+                    }
+                    else
+                    {
+                        $response['payload_cipher'] = $envelope['cipher'];
+                        $response['payload_b64'] = base64_encode($envelope['blob']);
+                    }
                 }
             }
         }
@@ -274,14 +284,20 @@ class Auth extends Controller
         // Only a few known events are recorded; unknown events are ignored
         // so the endpoint stays forward-compatible with loader updates.
         if ($input['event'] === 'injection') {
-            \XF::db()->insert('xf_vanta_log', [
+            $logData = [
                 'user_id' => $result['user_id'],
                 'hwid_hash' => $input['hwid'] ? hash('sha256', $input['hwid']) : null,
                 'ip_address' => null,
                 'event_type' => 'injection',
                 'detail' => trim($input['detail']) ?: 'Injected',
                 'timestamp' => time(),
-            ]);
+            ];
+
+            if ($input['hwid'] && \XF::db()->getSchemaManager()->columnExists('xf_vanta_log', 'hwid')) {
+                $logData['hwid'] = substr($input['hwid'], 0, 64);
+            }
+
+            \XF::db()->insert('xf_vanta_log', $logData);
         }
 
         return $this->responseJson(['success' => true]);

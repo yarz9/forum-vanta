@@ -45,7 +45,12 @@
   <phrase title="vanta_loader_min_version_explain" version_id="1000000" version_string="1.0.0">Clients older than this version must update before logging in. Leave empty to disable.</phrase>
   <phrase title="vanta_loader_download_url" version_id="1000000" version_string="1.0.0">Update download URL</phrase>
   <phrase title="vanta_loader_message" version_id="1000000" version_string="1.0.0">Maintenance message</phrase>
+  <phrase title="vanta_loader_users" version_id="1000100" version_string="1.0.1">Loader users</phrase>
+  <phrase title="vanta_loader_no_devices" version_id="1000100" version_string="1.0.1">No loader devices have registered yet.</phrase>
+  <phrase title="vanta_loader_last_seen" version_id="1000100" version_string="1.0.1">Last seen</phrase>
+  <phrase title="vanta_loader_last_injection" version_id="1000100" version_string="1.0.1">Last injection</phrase>
   <phrase title="admin_navigation.vantaLoader" version_id="1000000" version_string="1.0.0">Vanta Loader</phrase>
+  <phrase title="admin_navigation.vantaLoaderUsers" version_id="1000100" version_string="1.0.1">Loader users</phrase>
   <phrase title="admin_navigation.vantaLoaderBans" version_id="1000000" version_string="1.0.0">Loader bans</phrase>
   <phrase title="admin_navigation.vantaLoaderResets" version_id="1000000" version_string="1.0.0">HWID resets</phrase>
   <phrase title="admin_navigation.vantaLoaderStatus" version_id="1000000" version_string="1.0.0">Loader status</phrase>

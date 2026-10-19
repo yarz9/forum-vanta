@@ -77,6 +77,53 @@
 		</xf:if>
 	</div>
 </div>]]></template>
+  <template type="admin" title="vanta_loader_users" version_id="1000100" version_string="1.0.1"><![CDATA[<xf:title>{{ phrase('vanta_loader_users') }}</xf:title>
+
+<div class="block-outer">
+	<div class="block-outer-main">
+		<h2 class="block-header">{{ phrase('vanta_loader_registered_devices') }}</h2>
+	</div>
+</div>
+
+<div class="block-container">
+	<div class="block-body">
+		<xf:if is="{{ $devices is empty }}">
+			<div class="block-row">{{ phrase('vanta_loader_no_devices') }}</div>
+		<xf:else />
+			<xf:foreach loop="$devices" value="$device">
+				<div class="block-row">
+					<div class="contentRow">
+						<div class="contentRow-main">
+							<h3 class="contentRow-title">
+								<xf:if is="{{ $device.user_id }}">
+									<a href="{{ link('users/edit', {'user_id': $device.user_id}) }}">{{ $device.username ?: phrase('vanta_loader_user') }}</a>
+								<xf:else />
+									&mdash;
+								</xf:if>
+							</h3>
+							<div class="contentRow-minor">
+								{{ phrase('vanta_loader_hwid') }}:
+								<xf:if is="{{ $device.hwid }}"><code dir="ltr">{{ $device.hwid }}</code><xf:else />&mdash;</xf:if>
+							</div>
+							<div class="contentRow-minor">
+								{{ phrase('vanta_loader_last_seen') }}: {{ date_time($device.last_seen) }}
+								&middot; {{ phrase('vanta_loader_created') }}: {{ date_time($device.created) }}
+								&middot; {{ phrase('vanta_loader_last_injection') }}:
+								<xf:if is="{{ $device.last_injection }}">{{ date_time($device.last_injection) }}<xf:else />&mdash;</xf:if>
+							</div>
+						</div>
+						<xf:if is="{{ $device.user_id }}">
+							<div class="contentRow-extra">
+								<a href="{{ link('vanta-loader/ban', {'user_id': $device.user_id}) }}" class="button button--link">{{ phrase('vanta_loader_ban') }}</a>
+							</div>
+						</xf:if>
+					</div>
+				</div>
+			</xf:foreach>
+		</xf:if>
+	</div>
+	<xf:pagenav page="{$page}" perpage="{$perPage}" total="{$total}" link="vanta-loader/users" wrapperclass="block-outer-footer" />
+</div>]]></template>
   <template type="admin" title="vanta_loader_ban_edit" version_id="1000000" version_string="1.0.0"><![CDATA[<xf:title>{{ phrase('vanta_loader_ban_device_or_user') }}</xf:title>
 
 <xf:form action="{{ link('vanta-loader/ban') }}" class="block" ajax="true">

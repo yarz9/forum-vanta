@@ -214,19 +214,27 @@ class Authenticator
             ", [$user->user_id, $hwidHash]);
 
             if ($existingDevice) {
-                $db->update('xf_vanta_device', [
+                $deviceUpdate = [
                     'last_seen' => time(),
-                ], 'device_id = ?', $existingDevice['device_id']);
+                ];
+                if ($this->supportsHwidColumn('xf_vanta_device')) {
+                    $deviceUpdate['hwid'] = substr($hwid, 0, 64);
+                }
+                $db->update('xf_vanta_device', $deviceUpdate, 'device_id = ?', $existingDevice['device_id']);
                 $deviceToken = $existingDevice['hwid_hash'];
             } else {
-                $db->insert('xf_vanta_device', [
+                $deviceData = [
                     'user_id' => $user->user_id,
                     'hwid_hash' => $hwidHash,
                     'device_name' => 'Device ' . substr($hwidHash, 0, 8),
                     'created' => time(),
                     'last_seen' => time(),
                     'create_ip' => $this->getClientIp(),
-                ]);
+                ];
+                if ($this->supportsHwidColumn('xf_vanta_device')) {
+                    $deviceData['hwid'] = substr($hwid, 0, 64);
+                }
+                $db->insert('xf_vanta_device', $deviceData);
                 $deviceToken = $hwidHash;
             }
         }
@@ -243,20 +251,37 @@ class Authenticator
             'last_activity' => time(),
         ]);
 
-        $db->insert('xf_vanta_log', [
+        $loginLog = [
             'user_id' => $user->user_id,
             'hwid_hash' => $deviceToken,
             'ip_address' => $this->getClientIp(),
             'event_type' => 'login',
             'detail' => 'Session issued',
             'timestamp' => time(),
-        ]);
+        ];
+        if ($hwid && $this->supportsHwidColumn('xf_vanta_log')) {
+            $loginLog['hwid'] = substr($hwid, 0, 64);
+        }
+        $db->insert('xf_vanta_log', $loginLog);
 
         return [
             'token' => $sessionToken,
             'expires' => time() + 86400 * 30,
             'device_bound' => $deviceToken !== null,
         ];
+    }
+
+    // The raw HWID is only stored once the 1.0.1 upgrade has added the
+    // column; this keeps logins working during the deployment window.
+    protected function supportsHwidColumn(string $table): bool
+    {
+        static $cache = [];
+
+        if (!isset($cache[$table])) {
+            $cache[$table] = $this->app->db()->getSchemaManager()->columnExists($table, 'hwid');
+        }
+
+        return $cache[$table];
     }
 
     public function verifySession(string $sessionToken, ?string $hwid = null): array
@@ -382,6 +407,13 @@ class Authenticator
         }
 
         return ['supported' => true];
+    }
+
+    public function getPayloadUrl(): string
+    {
+        $options = $this->app->options();
+
+        return trim((string)($options->vanta_loader_payload_url ?? ''));
     }
 
     public function getPayloadInfo(): ?array

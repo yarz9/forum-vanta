@@ -21,6 +21,20 @@ class Setup extends AbstractSetup
     public function upgrade(array $stepParams = [], &$previousVersion = false)
     {
         $this->schemaCreate();
+
+        $sm = $this->app->db()->getSchemaManager();
+
+        if ($sm->tableExists('xf_vanta_device') && !$sm->columnExists('xf_vanta_device', 'hwid')) {
+            $sm->alterTable('xf_vanta_device', function (\XF\Db\Schema\Alter $table) {
+                $table->addColumn('hwid', 'varchar', 64)->nullable();
+            });
+        }
+
+        if ($sm->tableExists('xf_vanta_log') && !$sm->columnExists('xf_vanta_log', 'hwid')) {
+            $sm->alterTable('xf_vanta_log', function (\XF\Db\Schema\Alter $table) {
+                $table->addColumn('hwid', 'varchar', 64)->nullable();
+            });
+        }
     }
 
     public function uninstall(array $stepParams = [])
@@ -53,6 +67,7 @@ class Setup extends AbstractSetup
                 $table->addColumn('device_id', 'int')->autoIncrement();
                 $table->addColumn('user_id', 'int');
                 $table->addColumn('hwid_hash', 'varbinary', 64);
+                $table->addColumn('hwid', 'varchar', 64)->nullable();
                 $table->addColumn('device_name', 'varchar', 255);
                 $table->addColumn('created', 'int');
                 $table->addColumn('last_seen', 'int');
@@ -103,6 +118,7 @@ class Setup extends AbstractSetup
                 $table->addColumn('log_id', 'int')->autoIncrement();
                 $table->addColumn('user_id', 'int')->nullable();
                 $table->addColumn('hwid_hash', 'varbinary', 64)->nullable();
+                $table->addColumn('hwid', 'varchar', 64)->nullable();
                 $table->addColumn('ip_address', 'varbinary', 16)->nullable();
                 $table->addColumn('event_type', 'varchar', 50);
                 $table->addColumn('detail', 'varchar', 255)->nullable();

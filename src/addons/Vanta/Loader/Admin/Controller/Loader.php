@@ -25,6 +25,40 @@ class Loader extends AbstractController
         return $this->view('Vanta\Loader:Loader', 'vanta_loader', $viewParams);
     }
 
+    public function actionUsers()
+    {
+        $this->assertAdminPermission('vantaLoaderAdmin');
+
+        $db = \XF::db();
+
+        $page = $this->filterPage();
+        $perPage = 50;
+
+        $total = (int) $db->fetchOne("SELECT COUNT(*) FROM xf_vanta_device");
+
+        $hwidSelect = $db->getSchemaManager()->columnExists('xf_vanta_device', 'hwid')
+            ? 'd.hwid'
+            : "'' AS hwid";
+
+        $devices = $db->fetchAll($db->limit("
+            SELECT d.device_id, d.user_id, d.hwid_hash, d.device_name, d.created, d.last_seen,
+                {$hwidSelect}, u.username,
+                (SELECT MAX(l.timestamp)
+                 FROM xf_vanta_log l
+                 WHERE l.user_id = d.user_id AND l.event_type = 'injection') AS last_injection
+            FROM xf_vanta_device d
+            LEFT JOIN xf_user u ON u.user_id = d.user_id
+            ORDER BY d.last_seen DESC
+        ", $perPage, ($page - 1) * $perPage));
+
+        return $this->view('Vanta\Loader:Users', 'vanta_loader_users', [
+            'devices' => $devices,
+            'page' => $page,
+            'perPage' => $perPage,
+            'total' => $total,
+        ]);
+    }
+
     public function actionBans()
     {
         $this->assertAdminPermission('vantaLoaderBan');
