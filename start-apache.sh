@@ -72,6 +72,25 @@ else
     fi
 fi
 
+# Ensure Vanta add-ons are installed and up to date
+echo "=== Ensuring Vanta add-ons ==="
+for VA_ADDON in "Vanta/Loader" "Vanta/Tickets"; do
+    VA_INSTALLED=$(php -r '
+require "/var/www/html/src/XF.php";
+\XF::start("/var/www/html");
+try {
+    echo (int) \XF::app()->db()->fetchOne("SELECT COUNT(*) FROM xf_addon WHERE addon_id = ?", ["'"$VA_ADDON"'"]);
+} catch (\Throwable $e) {
+    echo "0";
+}
+' 2>/dev/null || echo "0")
+    if [ "$VA_INSTALLED" = "1" ]; then
+        php /var/www/html/cmd.php xf:addon-upgrade "$VA_ADDON" --force --skip-unavailable --no-interaction || echo "=== Could not upgrade $VA_ADDON ==="
+    else
+        php /var/www/html/cmd.php xf:addon-install "$VA_ADDON" --force --no-interaction || echo "=== Could not install $VA_ADDON ==="
+    fi
+done
+
 # Recompile templates if the compiled template cache is empty (fresh install or wiped cache)
 echo "=== Checking compiled template cache ==="
 if [ -z "$(ls -A /var/www/html/internal_data/code_cache/templates 2>/dev/null)" ]; then

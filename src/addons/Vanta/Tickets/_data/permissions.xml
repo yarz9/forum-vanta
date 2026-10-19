@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<permissions>
+  <permission_group permission_group_id="VantaTickets" is_moderator="0" display_order="110" />
+  <permission permission_group_id="VantaTickets" permission_id="vanta_tickets_view" permission_type="flag" interface_group_id="VantaTickets" display_order="10" />
+  <permission permission_group_id="VantaTickets" permission_id="vanta_tickets_create" permission_type="flag" interface_group_id="VantaTickets" display_order="20" />
+  <permission permission_group_id="VantaTickets" permission_id="vanta_tickets_staff" permission_type="flag" interface_group_id="VantaTickets" display_order="30" />
+</permissions>

@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+  <template type="public" title="vanta_ticket_list" version_id="1000000" version_string="1.0.0"><![CDATA[<xf:title>{{ phrase('vanta_tickets') }}</xf:title>
+
+<div class="block-outer">
+	<div class="block-outer-main">
+		<h2 class="block-header">{{ $isStaff ? phrase('vanta_ticket_all_tickets') : phrase('vanta_ticket_your_tickets') }}</h2>
+	</div>
+	<div class="block-outer-opposite">
+		<a href="{{ link('tickets/create') }}" class="button button--cta">{{ phrase('vanta_ticket_create') }}</a>
+	</div>
+</div>
+
+<xf:if is="{{ $isStaff }}">
+	<div class="block-filterBar">
+		<div class="filterBar">
+			<ul class="filterBar-filters">
+				<li><a href="{{ link('tickets/') }}" class="{{ !$status ? 'is-selected' : '' }}">{{ phrase('all') }}</a></li>
+				<li><a href="{{ link('tickets/', null, {'status': 'open'}) }}" class="{{ $status == 'open' ? 'is-selected' : '' }}">{{ phrase('vanta_ticket_status_open') }}</a></li>
+				<li><a href="{{ link('tickets/', null, {'status': 'pending'}) }}" class="{{ $status == 'pending' ? 'is-selected' : '' }}">{{ phrase('vanta_ticket_status_pending') }}</a></li>
+				<li><a href="{{ link('tickets/', null, {'status': 'resolved'}) }}" class="{{ $status == 'resolved' ? 'is-selected' : '' }}">{{ phrase('vanta_ticket_status_resolved') }}</a></li>
+				<li><a href="{{ link('tickets/', null, {'status': 'closed'}) }}" class="{{ $status == 'closed' ? 'is-selected' : '' }}">{{ phrase('vanta_ticket_status_closed') }}</a></li>
+			</ul>
+		</div>
+	</div>
+</xf:if>
+
+<div class="block-container">
+	<div class="block-body">
+		<xf:if is="{{ $tickets is empty }}">
+			<div class="block-row">{{ phrase('vanta_ticket_no_tickets') }}</div>
+		<xf:else />
+			<xf:foreach loop="$tickets" value="$ticket">
+				<div class="block-row">
+					<div class="contentRow">
+						<div class="contentRow-main">
+							<h3 class="contentRow-title">
+								<a href="{{ link('tickets/view', null, {'ticket_id': $ticket.ticket_id}) }}">#{{ $ticket.ticket_id }} &middot; {{ $ticket.title_html }}</a>
+							</h3>
+							<div class="contentRow-minor">
+								{{ $ticket.type_label }}
+								&middot; {{ phrase('vanta_ticket_messages_count') }}: {{ $ticket.message_count|number }}
+								<xf:if is="{{ $isStaff }}">
+									&middot; {{ phrase('vanta_ticket_opened_by') }}: {{ $ticket.username }}
+								</xf:if>
+								&middot; {{ phrase('vanta_ticket_last_activity') }}: {{ date_time($ticket.last_activity) }}
+							</div>
+						</div>
+						<div class="contentRow-extra">
+							<span class="label label--primary">{{ $ticket.status_label }}</span>
+						</div>
+					</div>
+				</div>
+			</xf:foreach>
+		</xf:if>
+	</div>
+</div>]]></template>
+  <template type="public" title="vanta_ticket_create" version_id="1000000" version_string="1.0.0"><![CDATA[<xf:title>{{ phrase('vanta_ticket_create') }}</xf:title>
+
+<xf:form action="{{ link('tickets/create') }}" class="block">
+	<div class="block-container">
+		<h2 class="block-header">{{ phrase('vanta_ticket_create') }}</h2>
+		<div class="block-body">
+			<div class="block-row">{{ phrase('vanta_ticket_create_explain') }}</div>
+			<xf:formrow label="{{ phrase('vanta_ticket_type') }}">
+				<xf:select name="ticket_type" value="{$ticketType}">
+					<xf:option value="general">{{ phrase('vanta_ticket_type_general') }}</xf:option>
+					<xf:option value="hwid_reset">{{ phrase('vanta_ticket_type_hwid_reset') }}</xf:option>
+					<xf:option value="other">{{ phrase('vanta_ticket_type_other') }}</xf:option>
+				</xf:select>
+			</xf:formrow>
+			<xf:formrow label="{{ phrase('vanta_ticket_title') }}">
+				<input type="text" name="title" value="" class="input" maxlength="255" />
+			</xf:formrow>
+			<xf:formrow label="{{ phrase('vanta_ticket_message') }}">
+				<textarea name="message" class="input" rows="6"></textarea>
+			</xf:formrow>
+		</div>
+		<xf:submitrow submit="{{ phrase('vanta_ticket_submit') }}" />
+	</div>
+</xf:form>]]></template>
+  <template type="public" title="vanta_ticket_view" version_id="1000000" version_string="1.0.0"><![CDATA[<xf:title>{{ $ticket.title_html }}</xf:title>
+
+<div class="block-container">
+	<h2 class="block-header">{{ phrase('vanta_ticket_details') }}</h2>
+	<div class="block-body">
+		<div class="block-row">
+			<dl class="pairs pairs--justified">
+				<dt>{{ phrase('vanta_ticket_type') }}</dt>
+				<dd>{{ $ticket.type_label }}</dd>
+			</dl>
+		</div>
+		<div class="block-row">
+			<dl class="pairs pairs--justified">
+				<dt>{{ phrase('status') }}</dt>
+				<dd>{{ $ticket.status_label }}</dd>
+			</dl>
+		</div>
+		<div class="block-row">
+			<dl class="pairs pairs--justified">
+				<dt>{{ phrase('vanta_ticket_created') }}</dt>
+				<dd>{{ date_time($ticket.created) }}</dd>
+			</dl>
+		</div>
+		<xf:if is="{{ $ticket.ticket_type == 'hwid_reset' }}">
+			<div class="block-row">
+				{{ phrase('vanta_ticket_hwid') }}: <code dir="ltr">{{ $ticket.hwid_html ?: '-' }}</code>
+				<div class="formRow-explain">{{ phrase('vanta_ticket_hwid_explain') }}</div>
+			</div>
+		</xf:if>
+	</div>
+</div>
+
+<div class="block-outer">
+	<div class="block-outer-main">
+		<h2 class="block-header">{{ phrase('vanta_ticket_conversation') }}</h2>
+	</div>
+	<div class="block-outer-opposite">
+		<a href="{{ link('tickets/') }}" class="button button--link">{{ phrase('vanta_ticket_back') }}</a>
+		<xf:if is="{{ $canReply }}">
+			<xf:form action="{{ link('tickets/close') }}" class="inline">
+				<input type="hidden" name="ticket_id" value="{{ $ticket.ticket_id }}" />
+				<button type="submit" class="button button--link">{{ phrase('vanta_ticket_close') }}</button>
+			</xf:form>
+		</xf:if>
+	</div>
+</div>
+
+<div class="block-container">
+	<div class="block-body">
+		<xf:foreach loop="$messages" value="$message">
+			<div class="block-row">
+				<div class="contentRow">
+					<div class="contentRow-main">
+						<h3 class="contentRow-title">
+							{{ $message.username }}
+							<xf:if is="{{ $message.is_staff }}">
+								<span class="label label--primary">{{ phrase('staff') }}</span>
+							</xf:if>
+						</h3>
+						<div class="contentRow-minor">{{ date_time($message.created) }}</div>
+						<div class="contentRow-snippet">{{ $message.message_html }}</div>
+					</div>
+				</div>
+			</div>
+		</xf:foreach>
+	</div>
+</div>
+
+<xf:if is="{{ $canReply }}">
+	<xf:form action="{{ link('tickets/reply') }}" class="block">
+		<div class="block-container">
+			<h2 class="block-header">{{ phrase('vanta_ticket_reply') }}</h2>
+			<div class="block-body">
+				<input type="hidden" name="ticket_id" value="{{ $ticket.ticket_id }}" />
+				<xf:formrow label="{{ phrase('vanta_ticket_message') }}">
+					<textarea name="message" class="input" rows="5"></textarea>
+				</xf:formrow>
+			</div>
+			<xf:submitrow submit="{{ phrase('vanta_ticket_send_reply') }}" />
+		</div>
+	</xf:form>
+</xf:if>]]></template>
+  <template type="admin" title="vanta_ticket_admin_list" version_id="1000000" version_string="1.0.0"><![CDATA[<xf:title>{{ phrase('vanta_ticket_admin') }}</xf:title>
+
+<div class="block-outer">
+	<div class="block-outer-main">
+		<h2 class="block-header">{{ phrase('vanta_ticket_all_tickets') }}</h2>
+	</div>
+</div>
+
+<div class="block-filterBar">
+	<div class="filterBar">
+		<ul class="filterBar-filters">
+			<li><a href="{{ link('vanta-tickets') }}" class="{{ !$statusFilter ? 'is-selected' : '' }}">{{ phrase('all') }} ({{ $counts.all|number }})</a></li>
+			<li><a href="{{ link('vanta-tickets', null, {'status': 'open'}) }}" class="{{ $statusFilter == 'open' ? 'is-selected' : '' }}">{{ phrase('vanta_ticket_status_open') }} ({{ $counts.open|number }})</a></li>
+			<li><a href="{{ link('vanta-tickets', null, {'status': 'pending'}) }}" class="{{ $statusFilter == 'pending' ? 'is-selected' : '' }}">{{ phrase('vanta_ticket_status_pending') }} ({{ $counts.pending|number }})</a></li>
+			<li><a href="{{ link('vanta-tickets', null, {'status': 'resolved'}) }}" class="{{ $statusFilter == 'resolved' ? 'is-selected' : '' }}">{{ phrase('vanta_ticket_status_resolved') }} ({{ $counts.resolved|number }})</a></li>
+			<li><a href="{{ link('vanta-tickets', null, {'status': 'closed'}) }}" class="{{ $statusFilter == 'closed' ? 'is-selected' : '' }}">{{ phrase('vanta_ticket_status_closed') }} ({{ $counts.closed|number }})</a></li>
+		</ul>
+	</div>
+</div>
+
+<div class="block-container">
+	<div class="block-body">
+		<xf:if is="{{ $tickets is empty }}">
+			<div class="block-row">{{ phrase('vanta_ticket_no_tickets') }}</div>
+		<xf:else />
+			<xf:foreach loop="$tickets" value="$ticket">
+				<div class="block-row">
+					<div class="contentRow">
+						<div class="contentRow-main">
+							<h3 class="contentRow-title">
+								<a href="{{ link('vanta-tickets/view', null, {'ticket_id': $ticket.ticket_id}) }}">#{{ $ticket.ticket_id }} &middot; {{ $ticket.title_html }}</a>
+							</h3>
+							<div class="contentRow-minor">
+								{{ $ticket.type_label }}
+								&middot; {{ phrase('vanta_ticket_opened_by') }}: <a href="{{ link('users/edit', {'user_id': $ticket.user_id}) }}">{{ $ticket.user_username ?: $ticket.username }}</a>
+								&middot; {{ phrase('vanta_ticket_messages_count') }}: {{ $ticket.message_count|number }}
+								&middot; {{ phrase('vanta_ticket_last_activity') }}: {{ date_time($ticket.last_activity) }}
+							</div>
+						</div>
+						<div class="contentRow-extra">
+							<span class="label label--primary">{{ $ticket.status_label }}</span>
+						</div>
+					</div>
+				</div>
+			</xf:foreach>
+		</xf:if>
+	</div>
+	<xf:pagenav page="{$page}" perpage="{$perPage}" total="{$total}" link="vanta-tickets" wrapperclass="block-outer-footer" />
+</div>]]></template>
+  <template type="admin" title="vanta_ticket_admin_view" version_id="1000000" version_string="1.0.0"><![CDATA[<xf:title>{{ phrase('vanta_ticket_admin') }} &middot; #{{ $ticket.ticket_id }}</xf:title>
+
+<div class="block-outer">
+	<div class="block-outer-main">
+		<h2 class="block-header">#{{ $ticket.ticket_id }} &middot; {{ $ticket.title_html }}</h2>
+	</div>
+	<div class="block-outer-opposite">
+		<a href="{{ link('vanta-tickets') }}" class="button button--link">{{ phrase('vanta_ticket_back') }}</a>
+	</div>
+</div>
+
+<div class="block-container">
+	<h2 class="block-header">{{ phrase('vanta_ticket_details') }}</h2>
+	<div class="block-body">
+		<div class="block-row">
+			<dl class="pairs pairs--justified">
+				<dt>{{ phrase('vanta_ticket_opened_by') }}</dt>
+				<dd><a href="{{ link('users/edit', {'user_id': $ticket.user_id}) }}">{{ $ticket.user_username ?: $ticket.username }}</a> (#{{ $ticket.user_id }})</dd>
+			</dl>
+		</div>
+		<div class="block-row">
+			<dl class="pairs pairs--justified">
+				<dt>{{ phrase('vanta_ticket_type') }}</dt>
+				<dd>{{ $ticket.type_label }}</dd>
+			</dl>
+		</div>
+		<div class="block-row">
+			<dl class="pairs pairs--justified">
+				<dt>{{ phrase('status') }}</dt>
+				<dd>{{ $ticket.status_label }}</dd>
+			</dl>
+		</div>
+		<div class="block-row">
+			<dl class="pairs pairs--justified">
+				<dt>{{ phrase('vanta_ticket_created') }}</dt>
+				<dd>{{ date_time($ticket.created) }}</dd>
+			</dl>
+		</div>
+		<div class="block-row">
+			<dl class="pairs pairs--justified">
+				<dt>{{ phrase('vanta_ticket_last_activity') }}</dt>
+				<dd>{{ date_time($ticket.last_activity) }}</dd>
+			</dl>
+		</div>
+		<xf:if is="{{ $ticket.ticket_type == 'hwid_reset' }}">
+			<div class="block-row">
+				<dl class="pairs pairs--justified">
+					<dt>{{ phrase('vanta_ticket_hwid') }}</dt>
+					<dd><code dir="ltr">{{ $ticket.hwid_html ?: '-' }}</code></dd>
+				</dl>
+			</div>
+		</xf:if>
+	</div>
+</div>
+
+<div class="block-outer">
+	<div class="block-outer-main">
+		<h2 class="block-header">{{ phrase('vanta_ticket_conversation') }}</h2>
+	</div>
+	<div class="block-outer-opposite">
+		<xf:form action="{{ link('vanta-tickets/status') }}" class="inline">
+			<input type="hidden" name="ticket_id" value="{{ $ticket.ticket_id }}" />
+			<input type="hidden" name="status" value="open" />
+			<button type="submit" class="button button--link">{{ phrase('vanta_ticket_status_open') }}</button>
+		</xf:form>
+		<xf:form action="{{ link('vanta-tickets/status') }}" class="inline">
+			<input type="hidden" name="ticket_id" value="{{ $ticket.ticket_id }}" />
+			<input type="hidden" name="status" value="pending" />
+			<button type="submit" class="button button--link">{{ phrase('vanta_ticket_status_pending') }}</button>
+		</xf:form>
+		<xf:form action="{{ link('vanta-tickets/status') }}" class="inline">
+			<input type="hidden" name="ticket_id" value="{{ $ticket.ticket_id }}" />
+			<input type="hidden" name="status" value="resolved" />
+			<button type="submit" class="button button--link">{{ phrase('vanta_ticket_status_resolved') }}</button>
+		</xf:form>
+		<xf:form action="{{ link('vanta-tickets/status') }}" class="inline">
+			<input type="hidden" name="ticket_id" value="{{ $ticket.ticket_id }}" />
+			<input type="hidden" name="status" value="closed" />
+			<button type="submit" class="button button--link">{{ phrase('vanta_ticket_status_closed') }}</button>
+		</xf:form>
+		<xf:if is="{{ $ticket.ticket_type == 'hwid_reset' }}">
+			<xf:form action="{{ link('vanta-tickets/resethwid') }}" class="inline">
+				<input type="hidden" name="ticket_id" value="{{ $ticket.ticket_id }}" />
+				<button type="submit" class="button button--cta">{{ phrase('vanta_ticket_hwid_reset_action') }}</button>
+			</xf:form>
+		</xf:if>
+	</div>
+</div>
+
+<div class="block-container">
+	<div class="block-body">
+		<xf:foreach loop="$messages" value="$message">
+			<div class="block-row">
+				<div class="contentRow">
+					<div class="contentRow-main">
+						<h3 class="contentRow-title">
+							{{ $message.username }}
+							<xf:if is="{{ $message.is_staff }}">
+								<span class="label label--primary">{{ phrase('staff') }}</span>
+							</xf:if>
+						</h3>
+						<div class="contentRow-minor">{{ date_time($message.created) }}</div>
+						<div class="contentRow-snippet">{{ $message.message_html }}</div>
+					</div>
+				</div>
+			</div>
+		</xf:foreach>
+	</div>
+</div>
+
+<xf:form action="{{ link('vanta-tickets/reply') }}" class="block" ajax="true">
+	<div class="block-container">
+		<h2 class="block-header">{{ phrase('vanta_ticket_reply') }}</h2>
+		<div class="block-body">
+			<input type="hidden" name="ticket_id" value="{{ $ticket.ticket_id }}" />
+			<xf:formrow label="{{ phrase('vanta_ticket_message') }}">
+				<textarea name="message" class="input" rows="5"></textarea>
+			</xf:formrow>
+		</div>
+		<xf:submitrow submit="{{ phrase('vanta_ticket_send_reply') }}" />
+	</div>
+</xf:form>]]></template>
+</templates>

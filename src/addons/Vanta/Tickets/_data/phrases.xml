@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phrases>
+  <phrase title="permission_interface_group.VantaTickets" version_id="1000000" version_string="1.0.0">Support tickets</phrase>
+  <phrase title="permission_group.VantaTickets" version_id="1000000" version_string="1.0.0">Support tickets</phrase>
+  <phrase title="permission.VantaTickets_vanta_tickets_view" version_id="1000000" version_string="1.0.0">View tickets</phrase>
+  <phrase title="permission.VantaTickets_vanta_tickets_create" version_id="1000000" version_string="1.0.0">Create tickets</phrase>
+  <phrase title="permission.VantaTickets_vanta_tickets_staff" version_id="1000000" version_string="1.0.0">Manage all tickets (staff)</phrase>
+  <phrase title="navigation.vantaTickets" version_id="1000000" version_string="1.0.0">Support</phrase>
+  <phrase title="admin_navigation.vantaSupport" version_id="1000000" version_string="1.0.0">Support tickets</phrase>
+  <phrase title="admin_permission.vantaTicketsManage" version_id="1000000" version_string="1.0.0">Manage support tickets</phrase>
+  <phrase title="vanta_tickets" version_id="1000000" version_string="1.0.0">Support tickets</phrase>
+  <phrase title="vanta_ticket_admin" version_id="1000000" version_string="1.0.0">Support tickets</phrase>
+  <phrase title="vanta_ticket_your_tickets" version_id="1000000" version_string="1.0.0">Your tickets</phrase>
+  <phrase title="vanta_ticket_all_tickets" version_id="1000000" version_string="1.0.0">All tickets</phrase>
+  <phrase title="vanta_ticket_create" version_id="1000000" version_string="1.0.0">Create ticket</phrase>
+  <phrase title="vanta_ticket_create_explain" version_id="1000000" version_string="1.0.0">Describe your issue and staff will get back to you as soon as possible.</phrase>
+  <phrase title="vanta_ticket_type" version_id="1000000" version_string="1.0.0">Type</phrase>
+  <phrase title="vanta_ticket_type_general" version_id="1000000" version_string="1.0.0">General</phrase>
+  <phrase title="vanta_ticket_type_hwid_reset" version_id="1000000" version_string="1.0.0">HWID reset</phrase>
+  <phrase title="vanta_ticket_type_other" version_id="1000000" version_string="1.0.0">Other</phrase>
+  <phrase title="vanta_ticket_title" version_id="1000000" version_string="1.0.0">Title</phrase>
+  <phrase title="vanta_ticket_message" version_id="1000000" version_string="1.0.0">Message</phrase>
+  <phrase title="vanta_ticket_submit" version_id="1000000" version_string="1.0.0">Submit ticket</phrase>
+  <phrase title="vanta_ticket_reply" version_id="1000000" version_string="1.0.0">Reply</phrase>
+  <phrase title="vanta_ticket_send_reply" version_id="1000000" version_string="1.0.0">Send reply</phrase>
+  <phrase title="vanta_ticket_close" version_id="1000000" version_string="1.0.0">Close ticket</phrase>
+  <phrase title="vanta_ticket_not_found" version_id="1000000" version_string="1.0.0">The requested ticket could not be found.</phrase>
+  <phrase title="vanta_ticket_title_or_message_required" version_id="1000000" version_string="1.0.0">A title and message are required.</phrase>
+  <phrase title="vanta_ticket_message_required" version_id="1000000" version_string="1.0.0">A message is required.</phrase>
+  <phrase title="vanta_ticket_flood" version_id="1000000" version_string="1.0.0">Please wait a minute before opening another ticket.</phrase>
+  <phrase title="vanta_ticket_no_device" version_id="1000000" version_string="1.0.0">No loader device is linked to your account, so an HWID reset cannot be requested.</phrase>
+  <phrase title="vanta_ticket_closed" version_id="1000000" version_string="1.0.0">This ticket is closed.</phrase>
+  <phrase title="vanta_ticket_invalid_status" version_id="1000000" version_string="1.0.0">Invalid status.</phrase>
+  <phrase title="vanta_ticket_not_hwid_request" version_id="1000000" version_string="1.0.0">This ticket is not an HWID reset request.</phrase>
+  <phrase title="vanta_ticket_status_open" version_id="1000000" version_string="1.0.0">Open</phrase>
+  <phrase title="vanta_ticket_status_pending" version_id="1000000" version_string="1.0.0">Awaiting user</phrase>
+  <phrase title="vanta_ticket_status_resolved" version_id="1000000" version_string="1.0.0">Resolved</phrase>
+  <phrase title="vanta_ticket_status_closed" version_id="1000000" version_string="1.0.0">Closed</phrase>
+  <phrase title="vanta_ticket_no_tickets" version_id="1000000" version_string="1.0.0">No tickets have been created yet.</phrase>
+  <phrase title="vanta_ticket_last_activity" version_id="1000000" version_string="1.0.0">Last activity</phrase>
+  <phrase title="vanta_ticket_created" version_id="1000000" version_string="1.0.0">Created</phrase>
+  <phrase title="vanta_ticket_hwid" version_id="1000000" version_string="1.0.0">HWID</phrase>
+  <phrase title="vanta_ticket_hwid_explain" version_id="1000000" version_string="1.0.0">The device currently linked to your account. A staff member will release this binding.</phrase>
+  <phrase title="vanta_ticket_hwid_reset_action" version_id="1000000" version_string="1.0.0">Reset HWID &amp; resolve</phrase>
+  <phrase title="vanta_ticket_hwid_reset_done" version_id="1000000" version_string="1.0.0">HWID reset completed by {staff}. Your device binding has been released - you can now log in on a new device.</phrase>
+  <phrase title="vanta_ticket_conversation" version_id="1000000" version_string="1.0.0">Conversation</phrase>
+  <phrase title="vanta_ticket_details" version_id="1000000" version_string="1.0.0">Ticket details</phrase>
+  <phrase title="vanta_ticket_opened_by" version_id="1000000" version_string="1.0.0">Opened by</phrase>
+  <phrase title="vanta_ticket_messages_count" version_id="1000000" version_string="1.0.0">Messages</phrase>
+  <phrase title="vanta_ticket_back" version_id="1000000" version_string="1.0.0">Back to tickets</phrase>
+</phrases>
