@@ -375,6 +375,66 @@ class Authenticator
         $this->app->db()->delete('xf_vanta_session', 'session_token = ?', $sessionToken);
     }
 
+    /**
+     * Store the hardware/software fingerprint the loader sends at sign-in.
+     * Only a fixed set of keys is kept so the loader cannot inject arbitrary
+     * payloads into the database.
+     */
+    public function recordDeviceSpecs(int $userId, ?string $hwid, string $specsJson): void
+    {
+        if (!$userId || !$hwid || $specsJson === '')
+        {
+            return;
+        }
+
+        $db = $this->app->db();
+        if (!$db->getSchemaManager()->columnExists('xf_vanta_device', 'specs'))
+        {
+            return;
+        }
+
+        $decoded = json_decode($specsJson, true);
+        if (!is_array($decoded))
+        {
+            return;
+        }
+
+        $allowed = [
+            'cpu', 'gpu', 'gpu_driver', 'ram', 'os', 'motherboard',
+            'pc_name', 'username', 'cores', 'threads', 'disk',
+            'resolution', 'uptime',
+        ];
+
+        $clean = [];
+        foreach ($allowed AS $key)
+        {
+            if (!array_key_exists($key, $decoded))
+            {
+                continue;
+            }
+
+            $value = $decoded[$key];
+            if (is_string($value))
+            {
+                $clean[$key] = mb_substr(trim($value), 0, 120);
+            }
+            else if (is_int($value) || is_float($value))
+            {
+                $clean[$key] = $value;
+            }
+        }
+
+        if (!$clean)
+        {
+            return;
+        }
+
+        $db->update('xf_vanta_device', [
+            'specs' => json_encode($clean),
+            'last_seen' => time(),
+        ], 'user_id = ? AND hwid_hash = ?', [$userId, hash('sha256', $hwid)]);
+    }
+
     public function getMaintConfig(): array
     {
         $db = $this->app->db();
@@ -411,9 +471,20 @@ class Authenticator
 
     public function getPayloadUrl(): string
     {
+        // The admin controls this from the Loader status page ("Update
+        // Download URL"), so the DLL link can be changed at any time
+        // without a loader update. The add-on option is kept as fallback.
+        $config = $this->getMaintConfig();
+        $downloadUrl = trim((string) ($config['download_url'] ?? ''));
+
+        if ($downloadUrl !== '')
+        {
+            return $downloadUrl;
+        }
+
         $options = $this->app->options();
 
-        return trim((string)($options->vanta_loader_payload_url ?? ''));
+        return trim((string) ($options->vanta_loader_payload_url ?? ''));
     }
 
     public function getPayloadInfo(): ?array

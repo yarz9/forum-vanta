@@ -15,5 +15,50 @@
 	color: #A79BAE;
 	font-weight: normal;
 }
+
+/* ====== Support ticket UI (Vanta\Tickets) ====== */
+.vantaTicket { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 18px; align-items: start; }
+.vantaTicket-main > .block-container, .vantaTicket-side > .block-container { margin-bottom: 18px; }
+.vantaTicket-side { position: sticky; top: 80px; }
+.vantaTicket-status { margin-left: 10px; vertical-align: middle; }
+.vantaTicket-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.vantaTicket-metaItem { background: rgba(233, 147, 250, .04); border: 1px solid #33223e; border-radius: 8px; padding: 10px 12px; }
+.vantaTicket-metaItem span { display: block; color: #b4a3bf; font-size: 10px; text-transform: uppercase; letter-spacing: .6px; }
+.vantaTicket-metaItem strong { display: block; margin-top: 4px; color: #f5eef9; font-weight: 650; font-size: 13px; }
+.vantaTicket-hwid { display: flex; align-items: center; gap: 12px; margin-top: 14px; padding: 10px 12px; border: 1px solid #493053; border-radius: 8px; background: #0b080e; }
+.vantaTicket-hwidLabel { color: #b4a3bf; font-size: 11px; text-transform: uppercase; letter-spacing: .6px; }
+.vantaTicket-hwid code { color: #e993fa; font-size: 12px; overflow-wrap: anywhere; }
+.vantaTicket-sep { border: none; border-top: 1px solid #33223e; margin: 16px 0; }
+.vantaTicket-controls { display: flex; flex-wrap: wrap; gap: 16px; }
+.vantaTicket-controlForm { display: flex; flex-direction: column; gap: 6px; min-width: 220px; }
+.vantaTicket-controlForm label { color: #b4a3bf; font-size: 11px; font-weight: 650; text-transform: uppercase; letter-spacing: .5px; }
+.vantaTicket-controlRow { display: flex; gap: 8px; align-items: center; }
+.vantaTicket-controlRow .input { min-width: 170px; }
+.vantaTicket-message { display: flex; gap: 12px; padding: 14px 4px; border-bottom: 1px solid #241630; }
+.vantaTicket-message:last-child { border-bottom: 0; }
+.vantaTicket-message--staff { background: rgba(233, 147, 250, .045); border-radius: 10px; padding: 14px; margin: 6px 0; border-bottom: 0; }
+.vantaTicket-message .avatar { flex: 0 0 auto; }
+.vantaTicket-messageBody { flex: 1 1 auto; min-width: 0; }
+.vantaTicket-messageHead { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.vantaTicket-author { color: #f3b8ff; font-weight: 700; }
+.vantaTicket-messageHead time { margin-left: auto; color: #8f7a9c; font-size: 11px; }
+.vantaTicket-text { margin-top: 6px; color: #efe7f4; line-height: 1.65; overflow-wrap: anywhere; }
+.vantaTicket-participant { display: flex; align-items: center; gap: 10px; padding: 8px 4px; border-bottom: 1px solid #241630; }
+.vantaTicket-participant:last-child { border-bottom: 0; }
+.vantaTicket-participantInfo { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+.vantaTicket-participantName { color: #f5eef9; font-weight: 600; font-size: 13px; }
+.vantaTicket-participantMeta { color: #8f7a9c; font-size: 10px; text-transform: uppercase; letter-spacing: .4px; }
+.vantaTicket-participantCount { background: #24132c; border: 1px solid #493053; color: #e9a1ff; border-radius: 999px; padding: 2px 8px; font-size: 11px; font-weight: 700; }
+.vantaTicket-info { display: flex; flex-direction: column; gap: 6px; }
+.vantaTicket-infoRow { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; }
+.vantaTicket-infoRow span { color: #8f7a9c; text-transform: uppercase; letter-spacing: .4px; font-size: 10px; }
+.vantaTicket-infoRow strong { color: #efe7f4; font-weight: 600; text-align: right; overflow-wrap: anywhere; }
+.vantaTicket-info--device { margin-top: 10px; padding-top: 10px; border-top: 1px solid #241630; }
+.vantaTicket-session { padding: 8px 4px; border-bottom: 1px solid #241630; }
+.vantaTicket-session:last-child { border-bottom: 0; }
+.vantaTicket-sessionRow { display: flex; justify-content: space-between; gap: 10px; font-size: 12px; color: #efe7f4; }
+.vantaTicket-sessionRow span { color: #8f7a9c; }
+.vantaTicket-sessionAgent { margin-top: 2px; color: #6f5d7d; font-size: 10px; overflow-wrap: anywhere; }
+@media (max-width: 900px) { .vantaTicket { grid-template-columns: 1fr; } .vantaTicket-side { position: static; } }
 ]]></template>
 </templates>

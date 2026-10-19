@@ -130,6 +130,21 @@ try {
 }
 ' || echo "=== Core cache rebuild failed ==="
 
+# Regenerate the Font Awesome sprite files (icons/*.svg). They live in the
+# data directory and are otherwise missing on a fresh container, which makes
+# every icon render blank (editor toolbar, navigation, buttons...).
+echo "=== Rebuilding icon sprites ==="
+php -r '
+require "/var/www/html/src/XF.php";
+\XF::start("/var/www/html");
+try {
+    \XF::repository(\XF\Repository\IconRepository::class)->runSpriteGenerator();
+    echo "Icon sprites rebuilt.\n";
+} catch (\Throwable $e) {
+    fwrite(STDERR, "Icon sprite rebuild failed: " . $e->getMessage() . "\n");
+}
+' || echo "=== Icon sprite rebuild failed ==="
+
 # Hand the persistent storage back to the web user (boot tasks run as root)
 chown -R www-data:www-data /var/www/html/storage 2>/dev/null || true
 

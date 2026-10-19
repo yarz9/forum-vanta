@@ -48,4 +48,28 @@
   <phrase title="vanta_ticket_opened_by" version_id="1000000" version_string="1.0.0">Opened by</phrase>
   <phrase title="vanta_ticket_messages_count" version_id="1000000" version_string="1.0.0">Messages</phrase>
   <phrase title="vanta_ticket_back" version_id="1000000" version_string="1.0.0">Back to tickets</phrase>
+  <phrase title="vanta_ticket_status_investigating" version_id="1010000" version_string="1.1.0">Under investigation</phrase>
+  <phrase title="vanta_ticket_status_locked" version_id="1010000" version_string="1.1.0">Locked</phrase>
+  <phrase title="vanta_ticket_locked" version_id="1010000" version_string="1.1.0">This ticket is locked and can only be answered by staff.</phrase>
+  <phrase title="vanta_ticket_assign" version_id="1010000" version_string="1.1.0">Assign to</phrase>
+  <phrase title="vanta_ticket_assigned_to" version_id="1010000" version_string="1.1.0">Assigned to</phrase>
+  <phrase title="vanta_ticket_unassigned" version_id="1010000" version_string="1.1.0">Unassigned</phrase>
+  <phrase title="vanta_ticket_update_status" version_id="1010000" version_string="1.1.0">Update status</phrase>
+  <phrase title="vanta_ticket_assign_invalid_staff" version_id="1010000" version_string="1.1.0">The selected user is not a staff member.</phrase>
+  <phrase title="vanta_ticket_management" version_id="1010000" version_string="1.1.0">Ticket management</phrase>
+  <phrase title="vanta_ticket_participants" version_id="1010000" version_string="1.1.0">Ticket Participants</phrase>
+  <phrase title="vanta_ticket_participant_owner" version_id="1010000" version_string="1.1.0">Owner</phrase>
+  <phrase title="vanta_ticket_participant_assigned" version_id="1010000" version_string="1.1.0">Assigned</phrase>
+  <phrase title="vanta_ticket_device_info" version_id="1010000" version_string="1.1.0">Device information</phrase>
+  <phrase title="vanta_ticket_no_device_data" version_id="1010000" version_string="1.1.0">The loader has not reported hardware information for this user yet.</phrase>
+  <phrase title="vanta_ticket_cpu" version_id="1010000" version_string="1.1.0">CPU</phrase>
+  <phrase title="vanta_ticket_gpu" version_id="1010000" version_string="1.1.0">GPU</phrase>
+  <phrase title="vanta_ticket_ram" version_id="1010000" version_string="1.1.0">RAM</phrase>
+  <phrase title="vanta_ticket_os" version_id="1010000" version_string="1.1.0">Operating system</phrase>
+  <phrase title="vanta_ticket_motherboard" version_id="1010000" version_string="1.1.0">Motherboard</phrase>
+  <phrase title="vanta_ticket_pc_name" version_id="1010000" version_string="1.1.0">PC name</phrase>
+  <phrase title="vanta_ticket_device_name" version_id="1010000" version_string="1.1.0">Device name</phrase>
+  <phrase title="vanta_ticket_ip" version_id="1010000" version_string="1.1.0">IP address</phrase>
+  <phrase title="vanta_ticket_last_seen" version_id="1010000" version_string="1.1.0">Last seen</phrase>
+  <phrase title="vanta_ticket_recent_logins" version_id="1010000" version_string="1.1.0">Recent logins</phrase>
 </phrases>

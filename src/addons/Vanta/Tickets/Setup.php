@@ -22,6 +22,21 @@ class Setup extends AbstractSetup
     public function upgrade(array $stepParams = [], &$previousVersion = false)
     {
         $this->schemaCreate();
+
+        $sm = $this->app->db()->getSchemaManager();
+
+        if ($sm->tableExists('xf_vanta_ticket') && !$sm->columnExists('xf_vanta_ticket', 'assigned_user_id')) {
+            $sm->alterTable('xf_vanta_ticket', function (\XF\Db\Schema\Alter $table) {
+                $table->addColumn('assigned_user_id', 'uint')->setDefault(0);
+            });
+        }
+
+        if ($sm->tableExists('xf_vanta_ticket') && !$sm->columnExists('xf_vanta_ticket', 'assigned_username')) {
+            $sm->alterTable('xf_vanta_ticket', function (\XF\Db\Schema\Alter $table) {
+                $table->addColumn('assigned_username', 'varchar', 50)->setDefault('');
+            });
+        }
+
         $this->applyDefaultPermissions();
     }
 
@@ -42,6 +57,8 @@ class Setup extends AbstractSetup
                 $table->addColumn('ticket_type', 'varchar', 20)->setDefault('general');
                 $table->addColumn('title', 'varchar', 255);
                 $table->addColumn('status', 'varchar', 20)->setDefault('open');
+                $table->addColumn('assigned_user_id', 'uint')->setDefault(0);
+                $table->addColumn('assigned_username', 'varchar', 50)->setDefault('');
                 $table->addColumn('hwid', 'varchar', 64)->nullable();
                 $table->addColumn('hwid_hash', 'varbinary', 64)->nullable();
                 $table->addColumn('message_count', 'int')->setDefault(0);
@@ -71,38 +88,49 @@ class Setup extends AbstractSetup
 
     protected function applyDefaultPermissions()
     {
+        $rows = [
+            [2, 'vanta_tickets_view'],
+            [2, 'vanta_tickets_create'],
+            [3, 'vanta_tickets_view'],
+            [3, 'vanta_tickets_create'],
+            [3, 'vanta_tickets_staff'],
+            [4, 'vanta_tickets_view'],
+            [4, 'vanta_tickets_create'],
+            [4, 'vanta_tickets_staff'],
+        ];
+
+        foreach ($rows AS [$groupId, $permissionId])
+        {
+            $this->ensurePermission($groupId, $permissionId);
+        }
+    }
+
+    protected function ensurePermission(int $groupId, string $permissionId)
+    {
         $db = $this->app->db();
 
-        $existed = (int) $db->fetchOne("
-            SELECT COUNT(*)
+        $exists = $db->fetchOne("
+            SELECT permission_entry_id
             FROM xf_permission_entry
-            WHERE permission_group_id = 'VantaTickets'
-        ");
+            WHERE user_group_id = ?
+              AND user_id = 0
+              AND permission_group_id = 'VantaTickets'
+              AND permission_id = ?
+        ", [$groupId, $permissionId]);
 
-        if ($existed)
+        if ($exists)
         {
             return;
         }
 
-        $rows = [
-            [2, 'vanta_tickets_view', 1],
-            [2, 'vanta_tickets_create', 1],
-            [3, 'vanta_tickets_view', 1],
-            [3, 'vanta_tickets_create', 1],
-            [3, 'vanta_tickets_staff', 1],
-        ];
-
-        foreach ($rows AS [$groupId, $permissionId, $value])
-        {
-            $db->insert('xf_permission_entry', [
-                'user_group_id' => $groupId,
-                'user_id' => 0,
-                'permission_group_id' => 'VantaTickets',
-                'permission_id' => $permissionId,
-                'permission_value' => $value ? 'allow' : 'deny',
-                'permission_value_int' => $value,
-            ]);
-        }
+        $db->insert('xf_permission_entry', [
+            'user_group_id' => $groupId,
+            'user_id' => 0,
+            'permission_group_id' => 'VantaTickets',
+            'permission_id' => $permissionId,
+            'permission_value' => 'allow',
+            'permission_value_int' => 1,
+        ]);
     }
 
     protected function schemaDrop()

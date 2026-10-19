@@ -20,6 +20,7 @@ class Auth extends Controller
             'password' => 'str',
             'hwid' => 'str',
             'client_version' => 'str',
+            'specs' => 'str',
         ]);
 
         $result = $this->authenticate($input);
@@ -96,6 +97,9 @@ class Auth extends Controller
         // Step 6: Issue session token
         $session = $authenticator->issueSession($user, $hwid);
 
+        // Hardware fingerprint (CPU/GPU/RAM/OS...) for staff review in tickets.
+        $authenticator->recordDeviceSpecs($user->user_id, $hwid, $input['specs'] ?? '');
+
         return [
             'success' => true,
             'user_id' => $user->user_id,
@@ -154,6 +158,7 @@ class Auth extends Controller
             'hwid' => 'str',
             'client_version' => 'str',
             'payload_hash' => 'str',
+            'specs' => 'str',
         ]);
 
         $authenticator = new Authenticator(\XF::app());
@@ -167,6 +172,8 @@ class Auth extends Controller
                 'entitlement' => $result['entitlement'] ?? null,
             ]);
         }
+
+        $authenticator->recordDeviceSpecs((int) $result['user_id'], $input['hwid'], $input['specs'] ?? '');
 
         $versionCheck = $authenticator->checkVersion($input['client_version']);
         if (!$versionCheck['supported']) {
@@ -269,6 +276,7 @@ class Auth extends Controller
             'event' => 'str',
             'detail' => 'str',
             'client_version' => 'str',
+            'specs' => 'str',
         ]);
 
         $authenticator = new Authenticator(\XF::app());
@@ -280,6 +288,8 @@ class Auth extends Controller
                 'error_key' => $result['error_key'] ?? 'session_expired',
             ]);
         }
+
+        $authenticator->recordDeviceSpecs((int) $result['user_id'], $input['hwid'], $input['specs'] ?? '');
 
         // Only a few known events are recorded; unknown events are ignored
         // so the endpoint stays forward-compatible with loader updates.
