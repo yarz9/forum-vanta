@@ -386,7 +386,7 @@ class Authenticator
 
     public function getPayloadInfo(): ?array
     {
-        $path = \XF::getAddOnDirectory('Vanta/Loader') . '/payload/csgocheat.dll';
+        $path = \XF::getAddOnDirectory() . '/Vanta/Loader/payload/csgocheat.dll';
 
         if (!is_file($path))
         {
