@@ -74,7 +74,7 @@ fi
 
 # Ensure Vanta add-ons are installed and up to date
 echo "=== Ensuring Vanta add-ons ==="
-for VA_ADDON in "Vanta/Loader" "Vanta/Tickets"; do
+for VA_ADDON in "Vanta/Loader" "Vanta/Tickets" "Vanta/Forum"; do
     VA_INSTALLED=$(php -r '
 require "/var/www/html/src/XF.php";
 \XF::start("/var/www/html");
