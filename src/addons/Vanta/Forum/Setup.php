@@ -460,6 +460,15 @@ class Setup extends AbstractSetup
             $widget->positions = $positions;
             $widget->options = [];
             $widget->save();
+
+            if (!$widget->widget_id)
+            {
+                \XF::logError(sprintf(
+                    'Vanta\Forum: failed to create widget "%s": %s',
+                    $key,
+                    implode('; ', $widget->getErrors())
+                ));
+            }
         }
     }
 

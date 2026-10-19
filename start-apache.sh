@@ -95,6 +95,23 @@ done
 echo "=== Recompiling template cache ==="
 php /var/www/html/cmd.php xf-dev:recompile-templates || echo "=== Template recompile failed ==="
 
+# Rebuild core caches (navigation, widgets, options, user groups, banners...).
+# internal_data/code_cache is ephemeral on Railway, so without this the
+# navigation bar and sidebar widgets render empty after every deploy.
+echo "=== Rebuilding core caches ==="
+php -r '
+require "/var/www/html/src/XF.php";
+\XF::start("/var/www/html");
+try {
+    $job = new \XF\Job\CoreCacheRebuild(\XF::app(), 0, []);
+    $job->run(0);
+    echo "Core caches rebuilt.\n";
+} catch (\Throwable $e) {
+    fwrite(STDERR, "Core cache rebuild failed: " . $e->getMessage() . "\n");
+    exit(1);
+}
+' || echo "=== Core cache rebuild failed ==="
+
 # Start Apache
 echo "=== Starting Apache ==="
 exec apache2-foreground
