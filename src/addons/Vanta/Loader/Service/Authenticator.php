@@ -457,12 +457,12 @@ class Authenticator
         $config = $this->getMaintConfig();
         $minVersion = $config['min_version'] ?? '';
 
-        if ($minVersion && version_compare($clientVersion, $minVersion, '<')) {
+        if ($minVersion && version_compare($clientVersion, $minVersion, '!=')) {
             return [
                 'supported' => false,
                 'min_version' => $minVersion,
                 'download_url' => $config['download_url'],
-                'message' => 'An update is required.',
+                'message' => 'Loader version mismatch.',
             ];
         }
 

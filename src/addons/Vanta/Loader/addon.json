@@ -1,7 +1,7 @@
 {
     "title": "Vanta Loader Authentication",
-    "version_string": "1.0.3",
-    "version_id": 1000300,
+    "version_string": "1.0.4",
+    "version_id": 1000400,
     "description": "Server-side authentication and entitlement service for the Vanta Loader desktop client.",
     "author": [],
     "require": {
