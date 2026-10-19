@@ -333,8 +333,8 @@ class App implements \ArrayAccess
 		];
 
 		$container['profileBannerSizeMap'] = [
-			'l' => 1280,
-			'm' => 640,
+			'l' => 2560,
+			'm' => 1280,
 		];
 
 		$container['request'] = function (Container $c)

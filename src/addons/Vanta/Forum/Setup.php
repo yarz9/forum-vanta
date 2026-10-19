@@ -125,18 +125,66 @@ class Setup extends AbstractSetup
 
     protected function runSetupTasks()
     {
-        $this->rebuildNodeTree();
+        $categoryNodeIds = [];
+        $groupIds = [];
 
-        $groupIds = $this->seedGroups();
-        $nodeIds = $this->seedNodes();
+        $this->runTask('node tree rebuild', function ()
+        {
+            $this->rebuildNodeTree();
+        });
 
-        $this->gateNodeIds($nodeIds, $groupIds);
+        $this->runTask('node seeding', function () use (&$categoryNodeIds)
+        {
+            $categoryNodeIds = $this->seedNodes();
+        });
 
-        $this->seedWidgets();
-        $this->configureMemberPages();
-        $this->repairBrokenAvatars();
+        $this->runTask('group seeding', function () use (&$groupIds)
+        {
+            $groupIds = $this->seedGroups();
+        });
 
-        $this->app->jobManager()->enqueueUnique('permissionRebuild', \XF\Job\PermissionRebuild::class);
+        $this->runTask('node permissions', function () use ($categoryNodeIds, $groupIds)
+        {
+            $this->gateNodeIds($categoryNodeIds, $groupIds);
+        });
+
+        $this->runTask('widgets', function ()
+        {
+            $this->seedWidgets();
+        });
+
+        $this->runTask('member pages', function ()
+        {
+            $this->configureMemberPages();
+        });
+
+        $this->runTask('avatar repair', function ()
+        {
+            $this->repairBrokenAvatars();
+        });
+
+        $this->runTask('permission cache rebuild', function ()
+        {
+            $this->app->jobManager()->enqueueUnique('permissionRebuild', \XF\Job\PermissionRebuild::class);
+        });
+    }
+
+    protected function runTask(string $label, callable $task)
+    {
+        try
+        {
+            $task();
+        }
+        catch (\Throwable $e)
+        {
+            \XF::logError(sprintf(
+                'Vanta\Forum setup task "%s" failed: %s (%s:%d)',
+                $label,
+                $e->getMessage(),
+                $e->getFile(),
+                $e->getLine()
+            ));
+        }
     }
 
     protected function rebuildNodeTree()
