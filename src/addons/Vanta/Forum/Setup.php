@@ -19,6 +19,7 @@ class Setup extends AbstractSetup
             'slug' => 'administration',
             'order' => 100,
             'description' => 'Official announcements, changelog and rules.',
+            'private' => false,
             'forums' => [
                 ['title' => 'Announcements', 'slug' => 'announcements', 'order' => 10, 'description' => 'Official Vanta announcements.'],
                 ['title' => 'Changelog', 'slug' => 'changelog', 'order' => 20, 'description' => 'Loader and forum changes.'],
@@ -32,6 +33,7 @@ class Setup extends AbstractSetup
             'slug' => 'public',
             'order' => 200,
             'description' => 'Open community sections.',
+            'private' => false,
             'forums' => [
                 ['title' => 'General Talk', 'slug' => 'general-talk', 'order' => 10, 'description' => 'General discussion.'],
                 ['title' => 'Reselling', 'slug' => 'reselling', 'order' => 20, 'description' => 'Reselling and trading talk.'],
@@ -44,6 +46,8 @@ class Setup extends AbstractSetup
             'slug' => 'premium',
             'order' => 300,
             'description' => 'Sections for Premium members.',
+            'private' => true,
+            'groups' => ['Premium'],
             'forums' => [
                 ['title' => 'Loader Download', 'slug' => 'loader-download', 'order' => 10, 'description' => 'Download the loader and get setup help.'],
                 ['title' => 'Configs', 'slug' => 'configs', 'order' => 20, 'description' => 'Share and request configs.'],
@@ -57,6 +61,8 @@ class Setup extends AbstractSetup
             'slug' => 'beta',
             'order' => 400,
             'description' => 'Beta release sections.',
+            'private' => true,
+            'groups' => ['Beta'],
             'forums' => [
                 ['title' => 'Updates', 'slug' => 'beta-updates', 'order' => 10, 'description' => 'Beta build updates.'],
                 ['title' => 'Rules', 'slug' => 'beta-rules', 'order' => 20, 'description' => 'Beta section rules.'],
@@ -70,6 +76,8 @@ class Setup extends AbstractSetup
             'slug' => 'laff',
             'order' => 500,
             'description' => 'Friends-only alpha section.',
+            'private' => true,
+            'groups' => ['LAFF'],
             'forums' => [
                 ['title' => 'Updates', 'slug' => 'laff-updates', 'order' => 10, 'description' => 'Alpha build updates.'],
                 ['title' => 'Known Issues', 'slug' => 'laff-known-issues', 'order' => 20, 'description' => 'Known issues in the alpha.'],
@@ -84,6 +92,8 @@ class Setup extends AbstractSetup
             'slug' => 'staff',
             'order' => 600,
             'description' => 'Internal staff area.',
+            'private' => true,
+            'groups' => [],
             'forums' => [
                 ['title' => 'Staff Chat', 'slug' => 'staff-chat', 'order' => 10, 'description' => 'Internal staff chat.'],
                 ['title' => 'Reports & Appeals', 'slug' => 'staff-reports-appeals', 'order' => 20, 'description' => 'User reports and ban appeals.'],
@@ -92,20 +102,20 @@ class Setup extends AbstractSetup
         ],
     ];
 
+    protected $groupStructure = [
+        'Premium' => ['priority' => 300, 'css' => 'color: #c084fc;', 'title' => 'Premium member'],
+        'Beta' => ['priority' => 250, 'css' => 'color: #60a5fa;', 'title' => 'Beta tester'],
+        'LAFF' => ['priority' => 200, 'css' => 'color: #f87171;', 'title' => 'LAFF member'],
+    ];
+
     public function install(array $stepParams = [])
     {
-        $this->seedNodes();
-        $this->seedWidgets();
-        $this->configureMemberPages();
-        $this->repairBrokenAvatars();
+        $this->runSetupTasks();
     }
 
     public function upgrade(array $stepParams = [], &$previousVersion = false)
     {
-        $this->seedNodes();
-        $this->seedWidgets();
-        $this->configureMemberPages();
-        $this->repairBrokenAvatars();
+        $this->runSetupTasks();
     }
 
     public function uninstall(array $stepParams = [])
@@ -113,8 +123,74 @@ class Setup extends AbstractSetup
         // intentionally left blank; user content is kept when the add-on is removed
     }
 
-    protected function seedNodes()
+    protected function runSetupTasks()
     {
+        $this->rebuildNodeTree();
+
+        $groupIds = $this->seedGroups();
+        $nodeIds = $this->seedNodes();
+
+        $this->gateNodeIds($nodeIds, $groupIds);
+
+        $this->seedWidgets();
+        $this->configureMemberPages();
+        $this->repairBrokenAvatars();
+
+        $this->app->jobManager()->enqueueUnique('permissionRebuild', \XF\Job\PermissionRebuild::class);
+    }
+
+    protected function rebuildNodeTree()
+    {
+        $this->app->db()->query("
+            UPDATE xf_node
+            SET parent_node_id = 0
+            WHERE parent_node_id IS NULL
+        ");
+
+        /** @var \XF\Service\Node\RebuildNestedSetService $service */
+        $service = $this->app->service('XF:Node\RebuildNestedSet', 'XF:Node', [
+            'parentField' => 'parent_node_id',
+            'orderField' => 'display_order',
+            'titleField' => 'title',
+            'breadcrumbField' => 'breadcrumb_data',
+            'rootId' => 0,
+        ]);
+        $service->rebuildNestedSetInfo();
+    }
+
+    protected function seedGroups(): array
+    {
+        $db = $this->app->db();
+        $groupIds = [];
+
+        foreach ($this->groupStructure AS $title => $info)
+        {
+            $existing = $db->fetchOne("SELECT user_group_id FROM xf_user_group WHERE title = ?", [$title]);
+            if ($existing)
+            {
+                $groupIds[$title] = (int) $existing;
+                continue;
+            }
+
+            /** @var \XF\Entity\UserGroup $group */
+            $group = \XF::em()->create('XF:UserGroup');
+            $group->title = $title;
+            $group->display_style_priority = $info['priority'];
+            $group->username_css = $info['css'];
+            $group->user_title = $info['title'];
+            $group->save();
+
+            $groupIds[$title] = (int) $group->user_group_id;
+        }
+
+        return $groupIds;
+    }
+
+    protected function seedNodes(): array
+    {
+        $db = $this->app->db();
+        $categoryNodeIds = [];
+
         foreach ($this->nodeStructure AS $category)
         {
             $parentId = 0;
@@ -136,7 +212,14 @@ class Setup extends AbstractSetup
                     $category['description'],
                     0
                 );
+
+                if (!$parentId)
+                {
+                    continue;
+                }
             }
+
+            $categoryNodeIds[$category['title']] = $parentId;
 
             foreach ($category['forums'] AS $forum)
             {
@@ -158,6 +241,91 @@ class Setup extends AbstractSetup
                 );
             }
         }
+
+        return $categoryNodeIds;
+    }
+
+    protected function gateNodeIds(array $categoryNodeIds, array $groupIds)
+    {
+        foreach ($this->nodeStructure AS $category)
+        {
+            if (empty($category['private']))
+            {
+                continue;
+            }
+
+            $nodeId = $categoryNodeIds[$category['title']] ?? 0;
+            if (!$nodeId)
+            {
+                continue;
+            }
+
+            $allowedGroupIds = [3, 4];
+
+            foreach ($category['groups'] ?? [] AS $groupTitle)
+            {
+                if (!empty($groupIds[$groupTitle]))
+                {
+                    $allowedGroupIds[] = $groupIds[$groupTitle];
+                }
+            }
+
+            $this->gateNode($nodeId, $allowedGroupIds);
+        }
+    }
+
+    protected function gateNode(int $nodeId, array $allowedGroupIds)
+    {
+        $db = $this->app->db();
+
+        $systemEntry = $db->fetchOne("
+            SELECT permission_entry_id
+            FROM xf_permission_entry_content
+            WHERE content_type = 'node' AND content_id = ?
+              AND user_group_id = 0 AND user_id = 0
+              AND permission_group_id = 'general' AND permission_id = 'viewNode'
+        ", $nodeId);
+
+        if (!$systemEntry)
+        {
+            $db->insert('xf_permission_entry_content', [
+                'content_type' => 'node',
+                'content_id' => $nodeId,
+                'user_group_id' => 0,
+                'user_id' => 0,
+                'permission_group_id' => 'general',
+                'permission_id' => 'viewNode',
+                'permission_value' => 'reset',
+                'permission_value_int' => 0,
+            ]);
+        }
+
+        foreach ($allowedGroupIds AS $groupId)
+        {
+            $groupEntry = $db->fetchOne("
+                SELECT permission_entry_id
+                FROM xf_permission_entry_content
+                WHERE content_type = 'node' AND content_id = ?
+                  AND user_group_id = ? AND user_id = 0
+                  AND permission_group_id = 'general' AND permission_id = 'viewNode'
+            ", [$nodeId, $groupId]);
+
+            if ($groupEntry)
+            {
+                continue;
+            }
+
+            $db->insert('xf_permission_entry_content', [
+                'content_type' => 'node',
+                'content_id' => $nodeId,
+                'user_group_id' => $groupId,
+                'user_id' => 0,
+                'permission_group_id' => 'general',
+                'permission_id' => 'viewNode',
+                'permission_value' => 'content_allow',
+                'permission_value_int' => 0,
+            ]);
+        }
     }
 
     protected function createNode(string $title, string $type, string $slug, int $order, string $description, int $parentId): int
@@ -177,6 +345,11 @@ class Setup extends AbstractSetup
         $data = $node->getDataRelationOrDefault(false);
         $node->addCascadedSave($data);
         $node->save();
+
+        if (!$node->node_id)
+        {
+            return 0;
+        }
 
         return (int) $node->node_id;
     }

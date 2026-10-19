@@ -1,7 +1,7 @@
 {
     "title": "Vanta Forum Setup",
-    "version_string": "1.0.0",
-    "version_id": 1000000,
+    "version_string": "1.0.1",
+    "version_id": 1000100,
     "description": "Seeds the Vanta forum node structure, sidebar widgets and member page settings.",
     "author": [],
     "require": {
