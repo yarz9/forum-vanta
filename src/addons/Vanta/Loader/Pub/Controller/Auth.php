@@ -153,6 +153,7 @@ class Auth extends Controller
             'session_token' => 'str',
             'hwid' => 'str',
             'client_version' => 'str',
+            'payload_hash' => 'str',
         ]);
 
         $authenticator = new Authenticator(\XF::app());
@@ -178,13 +179,49 @@ class Auth extends Controller
             ]);
         }
 
-        return $this->responseJson([
+        $response = [
             'success' => true,
             'user_id' => $result['user_id'],
             'username' => $result['username'],
             'entitlement' => $result['entitlement'],
             'device_bound' => $result['device_bound'],
-        ]);
+        ];
+
+        $payload = $authenticator->getPayloadInfo();
+        if ($payload)
+        {
+            $response['payload_hash'] = $payload['hash'];
+            $response['payload_size'] = $payload['size'];
+
+            // The loader already has these exact bytes - no transfer.
+            if ($input['payload_hash'] !== '' && hash_equals($payload['hash'], $input['payload_hash']))
+            {
+                $response['payload_current'] = true;
+            }
+            else
+            {
+                $envelope = $authenticator->encryptPayload(
+                    $payload['data'],
+                    $input['session_token'],
+                    $input['hwid']
+                );
+
+                if ($envelope === null)
+                {
+                    // No cryptography extension is available. The payload is
+                    // still served over HTTPS; this is a safe fallback only
+                    // on servers that truly have no crypto extension.
+                    $response['payload_b64'] = base64_encode($payload['data']);
+                }
+                else
+                {
+                    $response['payload_cipher'] = $envelope['cipher'];
+                    $response['payload_b64'] = base64_encode($envelope['blob']);
+                }
+            }
+        }
+
+        return $this->responseJson($response);
     }
 
     public function actionLogout()
@@ -212,6 +249,42 @@ class Auth extends Controller
             'support_url' => $config['support_url'],
             'purchase_url' => $config['purchase_url'],
         ]);
+    }
+
+    public function actionReport()
+    {
+        $input = $this->filter([
+            'session_token' => 'str',
+            'hwid' => 'str',
+            'event' => 'str',
+            'detail' => 'str',
+            'client_version' => 'str',
+        ]);
+
+        $authenticator = new Authenticator(\XF::app());
+        $result = $authenticator->verifySession($input['session_token'], $input['hwid']);
+
+        if (!$result['valid']) {
+            return $this->responseJson([
+                'success' => false,
+                'error_key' => $result['error_key'] ?? 'session_expired',
+            ]);
+        }
+
+        // Only a few known events are recorded; unknown events are ignored
+        // so the endpoint stays forward-compatible with loader updates.
+        if ($input['event'] === 'injection') {
+            \XF::db()->insert('xf_vanta_log', [
+                'user_id' => $result['user_id'],
+                'hwid_hash' => $input['hwid'] ? hash('sha256', $input['hwid']) : null,
+                'ip_address' => null,
+                'event_type' => 'injection',
+                'detail' => trim($input['detail']) ?: 'Injected',
+                'timestamp' => time(),
+            ]);
+        }
+
+        return $this->responseJson(['success' => true]);
     }
 
     protected function responseJson(array $data)

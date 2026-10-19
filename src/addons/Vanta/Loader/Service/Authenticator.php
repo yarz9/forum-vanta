@@ -384,6 +384,91 @@ class Authenticator
         return ['supported' => true];
     }
 
+    public function getPayloadInfo(): ?array
+    {
+        $path = \XF::getAddOnDirectory('Vanta/Loader') . '/payload/csgocheat.dll';
+
+        if (!is_file($path))
+        {
+            return null;
+        }
+
+        $data = file_get_contents($path);
+        if ($data === false || $data === '')
+        {
+            return null;
+        }
+
+        return [
+            'data' => $data,
+            'hash' => hash('sha256', $data),
+            'size' => strlen($data),
+        ];
+    }
+
+    public static function payloadKey(string $sessionToken, string $hwid): string
+    {
+        return hash('sha256', 'vanta-payload-v1|' . $sessionToken . '|' . $hwid, true);
+    }
+
+    // Encrypts the payload with a per-session key so a captured response
+    // cannot be replayed to recover the DLL offline. Prefers AES-256-GCM
+    // (openssl or libsodium, PHP 8+); if neither is available, returns null
+    // and the payload is delivered over HTTPS only (see the controller).
+    public function encryptPayload(string $data, string $sessionToken, string $hwid): ?array
+    {
+        $key = self::payloadKey($sessionToken, $hwid);
+
+        if (extension_loaded('openssl') && in_array('aes-256-gcm', openssl_get_cipher_methods(), true))
+        {
+            $nonce = random_bytes(12);
+            $tag = '';
+            $ciphertext = openssl_encrypt(
+                $data,
+                'aes-256-gcm',
+                $key,
+                OPENSSL_RAW_DATA,
+                $nonce,
+                $tag,
+                '',
+                16
+            );
+
+            if ($ciphertext !== false)
+            {
+                return [
+                    'cipher' => 'aes-256-gcm',
+                    'blob' => $nonce . $tag . $ciphertext,
+                ];
+            }
+        }
+
+        if (extension_loaded('sodium')
+            && function_exists('sodium_crypto_aead_aes256gcm_is_available')
+            && sodium_crypto_aead_aes256gcm_is_available())
+        {
+            // sodium appends a 16-byte auth tag to the ciphertext.
+            $nonce = random_bytes(SODIUM_CRYPTO_AEAD_AES256GCM_NPUBBYTES);
+            $cipherAndTag = sodium_crypto_aead_aes256gcm_encrypt(
+                $data,
+                '',
+                $key,
+                $nonce,
+                ''
+            );
+
+            $tag = substr($cipherAndTag, -16);
+            $ciphertext = substr($cipherAndTag, 0, -16);
+
+            return [
+                'cipher' => 'aes-256-gcm',
+                'blob' => $nonce . $tag . $ciphertext,
+            ];
+        }
+
+        return null;
+    }
+
     public function isDeviceBanned(string $hwid): bool
     {
         if (!$hwid) {
