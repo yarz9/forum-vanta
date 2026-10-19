@@ -40,9 +40,17 @@ class Loader extends AbstractController
             ? 'd.hwid'
             : "'' AS hwid";
 
+        $versionSelect = $db->getSchemaManager()->columnExists('xf_vanta_device', 'loader_version')
+            ? 'd.loader_version'
+            : "'' AS loader_version";
+
+        $hashSelect = $db->getSchemaManager()->columnExists('xf_vanta_device', 'loader_hash')
+            ? 'd.loader_hash'
+            : "'' AS loader_hash";
+
         $devices = $db->fetchAll($db->limit("
             SELECT d.device_id, d.user_id, d.hwid_hash, d.device_name, d.created, d.last_seen,
-                {$hwidSelect}, u.username,
+                {$hwidSelect}, {$versionSelect}, {$hashSelect}, u.username,
                 (SELECT MAX(l.timestamp)
                  FROM xf_vanta_log l
                  WHERE l.user_id = d.user_id AND l.event_type = 'injection') AS last_injection

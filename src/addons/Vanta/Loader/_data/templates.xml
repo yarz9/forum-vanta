@@ -77,7 +77,7 @@
 		</xf:if>
 	</div>
 </div>]]></template>
-  <template type="admin" title="vanta_loader_users" version_id="1000200" version_string="1.0.2"><![CDATA[<xf:title>{{ phrase('vanta_loader_users') }}</xf:title>
+  <template type="admin" title="vanta_loader_users" version_id="1000500" version_string="1.0.5"><![CDATA[<xf:title>{{ phrase('vanta_loader_users') }}</xf:title>
 
 <div class="block-outer">
 	<div class="block-outer-main">
@@ -110,6 +110,10 @@
 								&middot; {{ phrase('vanta_loader_created') }}: {{ date_time($device.created) }}
 								&middot; {{ phrase('vanta_loader_last_injection') }}:
 								<xf:if is="{{ $device.last_injection }}">{{ date_time($device.last_injection) }}<xf:else />&mdash;</xf:if>
+							</div>
+							<div class="contentRow-minor">
+								{{ phrase('vanta_loader_loader_version') }}: {{ $device.loader_version ?: '&mdash;' }}
+								&middot; {{ phrase('vanta_loader_loader_hash') }}: {{ $device.loader_hash ?: '&mdash;' }}
 							</div>
 						</div>
 						<xf:if is="{{ $device.user_id }}">

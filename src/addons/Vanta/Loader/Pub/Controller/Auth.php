@@ -21,6 +21,9 @@ class Auth extends Controller
             'hwid' => 'str',
             'client_version' => 'str',
             'specs' => 'str',
+            'loader_hash' => 'str',
+            'loader_version' => 'str',
+            'analysis' => 'str',
         ]);
 
         $result = $this->authenticate($input);
@@ -100,6 +103,16 @@ class Auth extends Controller
         // Hardware fingerprint (CPU/GPU/RAM/OS...) for staff review in tickets.
         $authenticator->recordDeviceSpecs($user->user_id, $hwid, $input['specs'] ?? '');
 
+        // Loader build integrity information and anti-analysis flags.
+        $authenticator->recordLoaderInfo(
+            $user->user_id,
+            $hwid,
+            $input['loader_hash'] ?? '',
+            $input['loader_version'] ?? ''
+        );
+
+        $this->recordAnalysisEvent($user->user_id, $hwid, $input['analysis'] ?? '');
+
         return [
             'success' => true,
             'user_id' => $user->user_id,
@@ -159,6 +172,9 @@ class Auth extends Controller
             'client_version' => 'str',
             'payload_hash' => 'str',
             'specs' => 'str',
+            'loader_hash' => 'str',
+            'loader_version' => 'str',
+            'analysis' => 'str',
         ]);
 
         $authenticator = new Authenticator(\XF::app());
@@ -174,6 +190,19 @@ class Auth extends Controller
         }
 
         $authenticator->recordDeviceSpecs((int) $result['user_id'], $input['hwid'], $input['specs'] ?? '');
+
+        $authenticator->recordLoaderInfo(
+            (int) $result['user_id'],
+            $input['hwid'],
+            $input['loader_hash'] ?? '',
+            $input['loader_version'] ?? ''
+        );
+
+        $this->recordAnalysisEvent(
+            (int) $result['user_id'],
+            $input['hwid'],
+            $input['analysis'] ?? ''
+        );
 
         $versionCheck = $authenticator->checkVersion($input['client_version']);
         if (!$versionCheck['supported']) {
@@ -277,6 +306,9 @@ class Auth extends Controller
             'detail' => 'str',
             'client_version' => 'str',
             'specs' => 'str',
+            'loader_hash' => 'str',
+            'loader_version' => 'str',
+            'analysis' => 'str',
         ]);
 
         $authenticator = new Authenticator(\XF::app());
@@ -291,15 +323,28 @@ class Auth extends Controller
 
         $authenticator->recordDeviceSpecs((int) $result['user_id'], $input['hwid'], $input['specs'] ?? '');
 
+        $authenticator->recordLoaderInfo(
+            (int) $result['user_id'],
+            $input['hwid'],
+            $input['loader_hash'] ?? '',
+            $input['loader_version'] ?? ''
+        );
+
+        $this->recordAnalysisEvent(
+            (int) $result['user_id'],
+            $input['hwid'],
+            $input['analysis'] ?? ''
+        );
+
         // Only a few known events are recorded; unknown events are ignored
         // so the endpoint stays forward-compatible with loader updates.
-        if ($input['event'] === 'injection') {
+        if (in_array($input['event'], ['injection', 'analysis', 'tamper'], true)) {
             $logData = [
                 'user_id' => $result['user_id'],
                 'hwid_hash' => $input['hwid'] ? hash('sha256', $input['hwid']) : null,
                 'ip_address' => null,
-                'event_type' => 'injection',
-                'detail' => trim($input['detail']) ?: 'Injected',
+                'event_type' => $input['event'],
+                'detail' => trim($input['detail']) ?: ($input['event'] === 'injection' ? 'Injected' : ''),
                 'timestamp' => time(),
             ];
 
@@ -320,6 +365,31 @@ class Auth extends Controller
         $reply->setViewOption('skipDefaultJsonParams', true);
 
         return $reply;
+    }
+
+    protected function recordAnalysisEvent(int $userId, ?string $hwid, string $analysis): void
+    {
+        if ($userId <= 0 || $analysis === '')
+        {
+            return;
+        }
+
+        $db = \XF::db();
+        $logData = [
+            'user_id' => $userId,
+            'hwid_hash' => $hwid ? hash('sha256', $hwid) : null,
+            'ip_address' => null,
+            'event_type' => 'analysis',
+            'detail' => mb_substr($analysis, 0, 255),
+            'timestamp' => time(),
+        ];
+
+        if ($hwid && $db->getSchemaManager()->columnExists('xf_vanta_log', 'hwid'))
+        {
+            $logData['hwid'] = substr($hwid, 0, 64);
+        }
+
+        $db->insert('xf_vanta_log', $logData);
     }
 
     protected function getClientIp(): string

@@ -435,6 +435,54 @@ class Authenticator
         ], 'user_id = ? AND hwid_hash = ?', [$userId, hash('sha256', $hwid)]);
     }
 
+    /**
+     * Record the loader build the client reports (version + SHA-256).
+     * Used for tamper detection and support; optional expected-hash
+     * enforcement can be layered on top later.
+     */
+    public function recordLoaderInfo(int $userId, ?string $hwid, string $hash, string $version): void
+    {
+        if (!$userId || !$hwid)
+        {
+            return;
+        }
+
+        $db = $this->app->db();
+        if (!$db->getSchemaManager()->columnExists('xf_vanta_device', 'loader_hash'))
+        {
+            return;
+        }
+
+        $hash = strtolower(trim($hash));
+        if (!preg_match('/^[a-f0-9]{64}$/', $hash))
+        {
+            $hash = '';
+        }
+
+        $version = mb_substr(trim($version), 0, 20);
+
+        $update = [
+            'last_seen' => time(),
+        ];
+
+        if ($hash !== '')
+        {
+            $update['loader_hash'] = $hash;
+        }
+
+        if ($version !== '')
+        {
+            $update['loader_version'] = $version;
+        }
+
+        $db->update(
+            'xf_vanta_device',
+            $update,
+            'user_id = ? AND hwid_hash = ?',
+            [$userId, hash('sha256', $hwid)]
+        );
+    }
+
     public function getMaintConfig(): array
     {
         $db = $this->app->db();

@@ -36,6 +36,18 @@ class Setup extends AbstractSetup
             });
         }
 
+        if ($sm->tableExists('xf_vanta_device') && !$sm->columnExists('xf_vanta_device', 'loader_hash')) {
+            $sm->alterTable('xf_vanta_device', function (\XF\Db\Schema\Alter $table) {
+                $table->addColumn('loader_hash', 'varchar', 64)->nullable();
+            });
+        }
+
+        if ($sm->tableExists('xf_vanta_device') && !$sm->columnExists('xf_vanta_device', 'loader_version')) {
+            $sm->alterTable('xf_vanta_device', function (\XF\Db\Schema\Alter $table) {
+                $table->addColumn('loader_version', 'varchar', 20)->nullable();
+            });
+        }
+
         if ($sm->tableExists('xf_vanta_log') && !$sm->columnExists('xf_vanta_log', 'hwid')) {
             $sm->alterTable('xf_vanta_log', function (\XF\Db\Schema\Alter $table) {
                 $table->addColumn('hwid', 'varchar', 64)->nullable();
@@ -75,6 +87,8 @@ class Setup extends AbstractSetup
                 $table->addColumn('hwid_hash', 'varbinary', 64);
                 $table->addColumn('hwid', 'varchar', 64)->nullable();
                 $table->addColumn('specs', 'text')->nullable();
+                $table->addColumn('loader_hash', 'varchar', 64)->nullable();
+                $table->addColumn('loader_version', 'varchar', 20)->nullable();
                 $table->addColumn('device_name', 'varchar', 255);
                 $table->addColumn('created', 'int');
                 $table->addColumn('last_seen', 'int');

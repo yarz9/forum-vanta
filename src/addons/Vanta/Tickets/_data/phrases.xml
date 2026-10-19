@@ -74,4 +74,6 @@
   <phrase title="vanta_ticket_ip" version_id="1010000" version_string="1.1.0">IP address</phrase>
   <phrase title="vanta_ticket_last_seen" version_id="1010000" version_string="1.1.0">Last seen</phrase>
   <phrase title="vanta_ticket_recent_logins" version_id="1010000" version_string="1.1.0">Recent logins</phrase>
+<phrase title="vanta_ticket_loader_version" version_id="1010500" version_string="1.1.5">Loader version</phrase>
+  <phrase title="vanta_ticket_loader_hash" version_id="1010500" version_string="1.1.5">Loader SHA-256</phrase>
 </phrases>

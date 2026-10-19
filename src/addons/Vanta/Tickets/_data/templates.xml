@@ -247,6 +247,8 @@
 							<div class="vantaTicket-infoRow"><span>{{ phrase('vanta_ticket_device_name') }}</span><strong>{{ $device.device_name }}</strong></div>
 							<div class="vantaTicket-infoRow"><span>{{ phrase('vanta_ticket_ip') }}</span><strong>{{ $device.create_ip_text ?: '-' }}</strong></div>
 							<div class="vantaTicket-infoRow"><span>{{ phrase('vanta_ticket_last_seen') }}</span><strong>{{ date_time($device.last_seen) }}</strong></div>
+							<xf:if is="{{ $device.loader_version }}"><div class="vantaTicket-infoRow"><span>{{ phrase('vanta_ticket_loader_version') }}</span><strong>{{ $device.loader_version }}</strong></div></xf:if>
+							<xf:if is="{{ $device.loader_hash }}"><div class="vantaTicket-infoRow"><span>{{ phrase('vanta_ticket_loader_hash') }}</span><strong>{{ $device.loader_hash }}</strong></div></xf:if>
 						</div>
 					</xf:if>
 				</div>

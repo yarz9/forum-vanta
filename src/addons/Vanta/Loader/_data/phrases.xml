@@ -57,4 +57,6 @@
   <phrase title="admin_permission.vantaLoaderAdmin" version_id="1000000" version_string="1.0.0">Manage loader configuration</phrase>
   <phrase title="admin_permission.vantaLoaderBan" version_id="1000000" version_string="1.0.0">Manage loader bans</phrase>
   <phrase title="admin_permission.vantaLoaderResets" version_id="1000000" version_string="1.0.0">Manage loader HWID resets</phrase>
+<phrase title="vanta_loader_loader_version" version_id="1000500" version_string="1.0.5">Loader version</phrase>
+  <phrase title="vanta_loader_loader_hash" version_id="1000500" version_string="1.0.5">Loader SHA-256</phrase>
 </phrases>
