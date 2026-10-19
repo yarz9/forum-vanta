@@ -6,6 +6,8 @@
   <phrase title="permission.VantaTickets_vanta_tickets_create" version_id="1000000" version_string="1.0.0">Create tickets</phrase>
   <phrase title="permission.VantaTickets_vanta_tickets_staff" version_id="1000000" version_string="1.0.0">Manage all tickets (staff)</phrase>
   <phrase title="nav.vantaTickets" version_id="1010200" version_string="1.1.2">Tickets</phrase>
+  <phrase title="nav.vantaStaffTickets" version_id="1010300" version_string="1.1.3">Staff Tickets</phrase>
+  <phrase title="vanta_staff_tickets" version_id="1010300" version_string="1.1.3">Staff Tickets</phrase>
   <phrase title="admin_navigation.vantaSupport" version_id="1000000" version_string="1.0.0">Support tickets</phrase>
   <phrase title="admin_permission.vantaTicketsManage" version_id="1000000" version_string="1.0.0">Manage support tickets</phrase>
   <phrase title="vanta_tickets" version_id="1000000" version_string="1.0.0">Support tickets</phrase>

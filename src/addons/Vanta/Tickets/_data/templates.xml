@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
-  <template type="public" title="vanta_ticket_list" version_id="1010000" version_string="1.1.0"><![CDATA[<xf:title>{{ phrase('vanta_tickets') }}</xf:title>
+  <template type="public" title="vanta_ticket_list" version_id="1010300" version_string="1.1.3"><![CDATA[<xf:title>{{ $staffMode ? phrase('vanta_staff_tickets') : phrase('vanta_tickets') }}</xf:title>
 
-<div class="block-outer">
-	<div class="block-outer-main">
-		<h2 class="block-header">{{ $isStaff ? phrase('vanta_ticket_all_tickets') : phrase('vanta_ticket_your_tickets') }}</h2>
+<xf:if is="{{ !$staffMode }}">
+	<div class="block-outer">
+		<div class="block-outer-main">
+			<h2 class="block-header">{{ phrase('vanta_ticket_your_tickets') }}</h2>
+		</div>
+		<div class="block-outer-opposite">
+			<a href="{{ link('tickets/create') }}" class="button button--cta">{{ phrase('vanta_ticket_create') }}</a>
+		</div>
 	</div>
-	<div class="block-outer-opposite">
-		<a href="{{ link('tickets/create') }}" class="button button--cta">{{ phrase('vanta_ticket_create') }}</a>
-	</div>
-</div>
-
-<xf:if is="{{ $isStaff }}">
+<xf:else />
 	<div class="block-tabHeader tabs hScroller">
-		<a class="tabs-tab {{ !$status ? 'is-active' : '' }}" href="{{ link('tickets/') }}">{{ phrase('all') }}</a>
+		<a class="tabs-tab {{ !$status ? 'is-active' : '' }}" href="{{ link('staff-tickets/') }}">{{ phrase('all') }}</a>
 		<xf:foreach loop="$statuses" key="$statusValue" value="$statusLabel">
-			<a class="tabs-tab {{ $status == $statusValue ? 'is-active' : '' }}" href="{{ link('tickets/', null, {'status': $statusValue}) }}">{{ $statusLabel }}</a>
+			<a class="tabs-tab {{ $status == $statusValue ? 'is-active' : '' }}" href="{{ link('staff-tickets/', null, {'status': $statusValue}) }}">{{ $statusLabel }}</a>
 		</xf:foreach>
 	</div>
 </xf:if>
 
 <div class="block-container">
+	<xf:if is="{{ $staffMode }}">
+		<h2 class="block-header">{{ phrase('vanta_staff_tickets') }}</h2>
+	</xf:if>
 	<div class="block-body">
 		<xf:if is="{{ $tickets is empty }}">
 			<div class="block-row">{{ phrase('vanta_ticket_no_tickets') }}</div>
@@ -30,12 +33,12 @@
 					<div class="contentRow">
 						<div class="contentRow-main">
 							<h3 class="contentRow-title">
-								<a href="{{ link('tickets/view', null, {'ticket_id': $ticket.ticket_id}) }}">#{{ $ticket.ticket_id }} &middot; {{ $ticket.title_html }}</a>
+								<a href="{{ link($staffMode ? 'staff-tickets/view' : 'tickets/view', null, {'ticket_id': $ticket.ticket_id}) }}">#{{ $ticket.ticket_id }} &middot; {{ $ticket.title_html }}</a>
 							</h3>
 							<div class="contentRow-minor">
 								{{ $ticket.type_label }}
 								&middot; {{ phrase('vanta_ticket_messages_count') }}: {{ $ticket.message_count|number }}
-								<xf:if is="{{ $isStaff }}">
+								<xf:if is="{{ $staffMode }}">
 									&middot; {{ phrase('vanta_ticket_opened_by') }}: {{ $ticket.username }}
 									&middot; {{ phrase('vanta_ticket_assigned_to') }}: {{ $ticket.assigned_username ?: phrase('vanta_ticket_unassigned') }}
 								</xf:if>
@@ -75,7 +78,14 @@
 		<xf:submitrow submit="{{ phrase('vanta_ticket_submit') }}" />
 	</div>
 </xf:form>]]></template>
-  <template type="public" title="vanta_ticket_view" version_id="1010000" version_string="1.1.0"><![CDATA[<xf:title>{{ $ticket.title_html }}</xf:title>
+  <template type="public" title="vanta_ticket_view" version_id="1010300" version_string="1.1.3"><![CDATA[<xf:title>{{ $ticket.title_html }}</xf:title>
+
+<div class="block-outer">
+	<div class="block-outer-main"></div>
+	<div class="block-outer-opposite">
+		<a href="{{ link($staffMode ? 'staff-tickets/' : 'tickets/') }}" class="button button--link">{{ phrase('vanta_ticket_back') }}</a>
+	</div>
+</div>
 
 <div class="vantaTicket">
 	<div class="vantaTicket-main">

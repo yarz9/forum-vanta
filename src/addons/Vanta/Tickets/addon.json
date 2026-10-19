@@ -1,7 +1,7 @@
 {
     "title": "Vanta Support Tickets",
-    "version_string": "1.1.2",
-    "version_id": 1010200,
+    "version_string": "1.1.3",
+    "version_id": 1010300,
     "description": "Support ticket system with HWID reset workflow for the Vanta loader.",
     "author": [],
     "require": {

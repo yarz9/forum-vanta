@@ -237,35 +237,14 @@ class Ticket extends AbstractController
 
         $visitor = \XF::visitor();
         $db = \XF::db();
-        $status = $this->filter('status', 'str');
-
-        $where = [];
-        $params = [];
-
-        if (!$this->isStaff())
-        {
-            $where[] = 'user_id = ?';
-            $params[] = $visitor->user_id;
-        }
-        else if ($status && in_array($status, self::STATUSES, true))
-        {
-            $where[] = 'status = ?';
-            $params[] = $status;
-        }
-        else
-        {
-            $status = '';
-        }
-
-        $whereSql = $where ? ('WHERE ' . implode(' AND ', $where)) : '';
 
         $tickets = $db->fetchAll("
             SELECT *
             FROM xf_vanta_ticket
-            {$whereSql}
+            WHERE user_id = ?
             ORDER BY last_activity DESC
             LIMIT 100
-        ", $params);
+        ", [$visitor->user_id]);
 
         foreach ($tickets AS &$ticket)
         {
@@ -277,8 +256,9 @@ class Ticket extends AbstractController
 
         return $this->view('Vanta\Tickets:Ticket', 'vanta_ticket_list', [
             'tickets' => $tickets,
-            'status' => $status,
+            'status' => '',
             'isStaff' => $this->isStaff(),
+            'staffMode' => false,
             'statuses' => $this->statusOptions(),
         ]);
     }
@@ -348,7 +328,7 @@ class Ticket extends AbstractController
 
             $now = time();
 
-            $ticketId = $db->insert('xf_vanta_ticket', [
+            $db->insert('xf_vanta_ticket', [
                 'user_id' => $visitor->user_id,
                 'username' => $visitor->username,
                 'ticket_type' => $type,
@@ -362,6 +342,9 @@ class Ticket extends AbstractController
                 'created' => $now,
                 'last_activity' => $now,
             ]);
+
+            // insert() returns affected rows, not the new ID.
+            $ticketId = (int) $db->lastInsertId();
 
             $db->insert('xf_vanta_ticket_message', [
                 'ticket_id' => $ticketId,
@@ -397,6 +380,8 @@ class Ticket extends AbstractController
 
         $db = \XF::db();
         $isStaff = $this->isStaff();
+
+        $staffMode = strpos((string) $this->request->getRoutePath(), 'staff-tickets') === 0;
 
         $messages = $db->fetchAll("
             SELECT *
@@ -451,6 +436,7 @@ class Ticket extends AbstractController
             'sessions' => $this->getRecentSessions((int) $ticket['user_id']),
             'logs' => $this->getRecentLogs((int) $ticket['user_id']),
             'statuses' => $this->statusOptions(),
+            'staffMode' => $staffMode,
         ]);
     }
 
