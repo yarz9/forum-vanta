@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+  <template type="public" title="vanta_forum.less" version_id="1000300" version_string="1.0.3"><![CDATA[.p-footer-debug
+{
+	display: none !important;
+}
+
+.p-footer-rssLink
+{
+	display: none !important;
+}
+
+.p-footer-copyright
+{
+	color: #A79BAE;
+	font-weight: normal;
+}
+]]></template>
+</templates>
